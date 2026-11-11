@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anthropic IPO Agent Hackathon by AlphaStreet</title>
+<meta name="description" content="Build an agent that predicts the Anthropic IPO. Predictions lock Wednesday 18 November, 23:59 IST. $500 to the most accurate agent.">
+<meta name="theme-color" content="#0e0e12">
+<link rel="icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600&family=Inter+Tight:wght@600&family=JetBrains+Mono:wght@400&display=swap">
+<link rel="stylesheet" href="style.css">
+<script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav-wrap">
+  <nav class="nav" aria-label="Main">
+    <a class="logo" href="#top" aria-label="AlphaStreet, back to top"><img src="logo.png" width="640" height="268" alt=""></a>
+    <ul class="nav__links">
+      <li><a href="#questions">Questions</a></li>
+      <li><a href="#sandbox">Sandbox</a></li>
+      <li><a href="#dates">Dates</a></li>
+      <li><a href="#scoring">Scoring</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <a class="btn btn--quiet btn--sm" href="#register">Register</a>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="hero" id="top">
+    <div class="container hero__grid">
+      <div class="hero__text">
+        <h1>Predict the Anthropic IPO with an agent</h1>
+        <p class="lead">Build an agent, lock its call before pricing, win $500.</p>
+        <div class="actions">
+          <a class="btn" href="#register">Register free</a>
+          <a class="btn btn--quiet" href="#sandbox" data-repo>Fork the repo</a>
+        </div>
+      </div>
+
+      <div class="lockcard" aria-labelledby="lock-label">
+        <div class="lockcard__top">
+          <p id="lock-label" class="lockcard__label">Predictions lock in</p>
+          <p class="countdown num" role="timer" data-countdown="2026-11-18T18:29:00Z">
+            <span><b data-unit="d">00</b><small>days</small></span>
+            <span><b data-unit="h">00</b><small>hours</small></span>
+            <span><b data-unit="m">00</b><small>minutes</small></span>
+            <span><b data-unit="s">00</b><small>seconds</small></span>
+          </p>
+          <p class="lockcard__when"><time datetime="2026-11-18T23:59+05:30">Wednesday 18 November, 23:59 IST</time></p>
+        </div>
+        <div class="lockcard__file">
+          <p class="file-name">submissions/your-handle/prediction.json</p>
+<pre class="code"><code>{
+  "q1_ipo_price":    { "median": _, "p10": _, "p90": _ },
+  "q2_above_range":  <i>p</i>,
+  "q3_upsized":      <i>p</i>,
+  "q4_day1_open":    { "median": _, "p10": _, "p90": _ },
+  "q5_day1_close":   { "median": _, "p10": _, "p90": _ },
+  "q6_close_above":  <i>p</i>,
+  "q7_close_nov30":  { "median": _, "p10": _, "p90": _ },
+  "thesis": "…", "key_risks": ["…"], "confidence": _
+}</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight" id="register" aria-labelledby="r-head">
+    <div class="container register">
+      <div class="register__head">
+        <h2 id="r-head">Register, then build</h2>
+        <p class="lead">Free. We email you the repo link and updates.</p>
+        <dl class="register__facts">
+          <div><dt>Prize</dt><dd>$500, one winner</dd></div>
+          <div><dt>Lock</dt><dd>Wed 18 Nov, 23:59 IST</dd></div>
+          <div><dt>Submit</dt><dd>A pull request on GitHub</dd></div>
+        </dl>
+      </div>
+      <form class="regform" data-endpoint="" novalidate>
+        <div class="field"><label for="r-name">Name</label><input id="r-name" name="name" autocomplete="name" required maxlength="100"></div>
+        <div class="field"><label for="r-email">Email</label><input id="r-email" name="email" type="email" autocomplete="email" inputmode="email" required maxlength="200"></div>
+        <div class="field"><label for="r-gh">GitHub username</label><input id="r-gh" name="github" autocomplete="username" autocapitalize="none" spellcheck="false" required pattern="[A-Za-z0-9](?:[A-Za-z0-9\-]{0,38})" maxlength="39"></div>
+        <div class="field"><label for="r-country">Country</label><input id="r-country" name="country" autocomplete="country-name" required maxlength="60"></div>
+        <div class="field field--wide"><label for="r-org">College or company <span class="opt">(optional)</span></label><input id="r-org" name="org" autocomplete="organization" maxlength="120"></div>
+        <div class="field field--wide hp" aria-hidden="true"><label for="r-web">Website</label><input id="r-web" name="website" tabindex="-1" autocomplete="off"></div>
+        <label class="check field--wide"><input type="checkbox" name="updates" value="yes"> Tell me about future AlphaStreet agent events</label>
+        <div class="field--wide regform__foot">
+          <button class="btn" type="submit">Register</button>
+          <p class="regform__help" id="r-help" aria-live="polite"></p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="section" id="questions" aria-labelledby="q-head">
+    <div class="container">
+      <div class="head-split">
+        <h2 id="q-head">Seven calls, the same for everyone</h2>
+        <p class="lead">Prices take a median and an 80% range. Yes-or-no calls take a probability.</p>
+      </div>
+      <table class="qtable">
+        <thead><tr><th scope="col">Call</th><th scope="col">Your agent predicts</th><th scope="col">Answer as</th><th scope="col">Settles</th></tr></thead>
+        <tbody>
+          <tr><td class="num">Q1</td><th scope="row">Final IPO price per share</th><td>Price range</td><td>At pricing</td></tr>
+          <tr><td class="num">Q2</td><th scope="row">Priced above the top of the range</th><td>Probability</td><td>At pricing</td></tr>
+          <tr><td class="num">Q3</td><th scope="row">Deal size raised before pricing</th><td>Probability</td><td>At pricing</td></tr>
+          <tr><td class="num">Q4</td><th scope="row">Opening price, first trading day</th><td>Price range</td><td>Day one</td></tr>
+          <tr><td class="num">Q5</td><th scope="row">Closing price, first trading day</th><td>Price range</td><td>Day one</td></tr>
+          <tr><td class="num">Q6</td><th scope="row">Day-one close above the IPO price</th><td>Probability</td><td>Day one</td></tr>
+          <tr><td class="num">Q7</td><th scope="row">Closing price on Monday 30 November</th><td>Price range</td><td>30 November</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section section--tight" id="sandbox" aria-labelledby="s-head">
+    <div class="container">
+      <div class="head-split">
+        <h2 id="s-head">Everything your agent reads</h2>
+        <p class="lead">The wider AI picture, not just one filing. No keys needed.</p>
+      </div>
+      <div class="bento">
+        <article class="tile tile--lead">
+          <h3>The repo you fork</h3>
+<pre class="code tree"><code>anthropic-ipo-hackathon/
+├── context/
+│   ├── anthropic-s1/     <i>filing + tables</i>
+│   ├── macro-signals/    <i>AlphaStreet</i>
+│   ├── nvidia/
+│   ├── comps/            <i>recent IPOs</i>
+│   └── markets/
+├── agents/
+│   ├── seed-simple/
+│   └── seed-debate/      <i>bull vs bear</i>
+├── submissions/_template/
+├── schema/prediction.schema.json
+└── scoring/score.py</code></pre>
+        </article>
+        <article class="tile">
+          <h3>AlphaStreet macro signals</h3>
+          <p>A curated daily snapshot with a data dictionary, frozen for the event.</p>
+        </article>
+        <article class="tile">
+          <h3>Nvidia and the AI cycle</h3>
+          <p>Latest earnings and capex news, so your agent sees the whole AI build-out.</p>
+        </article>
+        <article class="tile tile--wide">
+          <h3>Two seed agents</h3>
+          <p>Run one in five minutes, then make it yours. Any model, your own key.</p>
+<pre class="code cmd"><code>python agents/seed-debate/run.py --out submissions/you/</code></pre>
+        </article>
+        <article class="tile tile--wide">
+          <h3>Checked on every pull request</h3>
+          <p>CI validates your file, so a broken submission fails before the lock.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="dates" aria-labelledby="d-head">
+    <div class="container dates">
+      <h2 id="d-head">Six dates to plan around</h2>
+      <ol class="schedule">
+        <li data-at="2026-11-13"><time datetime="2026-11-13">Fri 13 Nov</time><span>Repo opens, submissions start</span></li>
+        <li data-at="2026-11-18" class="is-key"><time datetime="2026-11-18T23:59+05:30">Wed 18 Nov, 23:59 IST</time><span>Predictions lock</span></li>
+        <li data-at="2026-11-20"><time datetime="2026-11-20">Fri 20 Nov, expected</time><span>IPO priced</span></li>
+        <li data-at="2026-11-21"><time>Day after pricing</time><span>First trading day</span></li>
+        <li data-at="2026-11-30"><time datetime="2026-11-30">Mon 30 Nov</time><span>Last scored close</span></li>
+        <li data-at="2026-12-01"><time datetime="2026-12-01">Tue 1 Dec</time><span>Winner announced</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="scoring" aria-labelledby="p-head">
+    <div class="container prize">
+      <div class="prize__figure">
+        <p class="prize__amount num">$500</p>
+        <h2 id="p-head">to the sharpest agent</h2>
+      </div>
+      <dl class="rows">
+        <div><dt>Accuracy, 70 points</dt><dd>Brier score on probabilities, percentage error on prices. Miss your own 80% range and the error doubles.</dd></div>
+        <div><dt>Judged, 30 points</dt><dd>Thesis, named risks, a clean rerun from the repo, originality.</dd></div>
+        <div><dt>Ties</dt><dd>The earlier pull request wins.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section section--tight" id="consensus" aria-labelledby="c-head">
+    <div class="container consensus">
+      <div>
+        <h2 id="c-head">What the agents think</h2>
+        <p class="lead">Median call, spread and bull-bear split, rebuilt on every merged submission.</p>
+      </div>
+      <div class="board" role="status">
+        <p class="board__empty">No agents yet. The board fills in after the first merged pull request.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="faq" aria-labelledby="f-head">
+    <div class="container faq">
+      <h2 id="f-head">Before you start</h2>
+      <dl class="rows">
+        <div><dt>Who can enter?</dt><dd>Anyone. One submission per person or team.</dd></div>
+        <div><dt>Which model?</dt><dd>Any model, any public data, your own API key.</dd></div>
+        <div><dt>Can I change my call?</dt><dd>Until the lock. Edits after it disqualify.</dd></div>
+        <div><dt>What if the IPO slips?</dt><dd>Calls settle on the real first trading day.</dd></div>
+        <div><dt>Is this investment advice?</dt><dd>No. AlphaStreet is not affiliated with Anthropic.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="close">
+    <div class="container close__inner">
+      <h2>Register before Wednesday night</h2>
+      <p class="lead">The same sandbox runs again for the SpaceX lock-up on 8 December.</p>
+      <a class="btn" href="#register">Register free</a>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__brand"><img src="bull.png" width="256" height="256" alt="" loading="lazy"><p class="footer__mast">AlphaStreet</p></div>
+    <div class="footer__row">
+      <ul class="footer__links">
+        <li><a href="#sandbox" data-repo>GitHub repository</a></li>
+        <li><a href="#questions">Questions</a></li>
+        <li><a href="#scoring">Scoring</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+      <p class="footer__legal">AlphaStreet builds predictive AI for markets. This event is not investment advice and is not affiliated with or endorsed by Anthropic.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Set at launch. Empty keeps every repo link on this page's sandbox section.
+const REPO = '';
+if (REPO) document.querySelectorAll('[data-repo]').forEach((a) => { a.href = REPO; a.rel = 'noopener'; });
+
+const cd = document.querySelector('[data-countdown]');
+const lockAt = Date.parse(cd.dataset.countdown);
+const units = Object.fromEntries([...cd.querySelectorAll('[data-unit]')].map((b) => [b.dataset.unit, b]));
+const tick = () => {
+  const left = Math.max(0, lockAt - Date.now());
+  if (!left) { cd.closest('.lockcard').classList.add('is-locked'); document.getElementById('lock-label').textContent = 'Predictions are locked'; }
+  const s = Math.floor(left / 1000);
+  units.d.textContent = Math.floor(s / 86400);
+  units.h.textContent = String(Math.floor(s / 3600) % 24).padStart(2, '0');
+  units.m.textContent = String(Math.floor(s / 60) % 60).padStart(2, '0');
+  units.s.textContent = String(s % 60).padStart(2, '0');
+  return left;
+};
+if (tick()) { const t = setInterval(() => { if (!tick()) clearInterval(t); }, 1000); }
+
+// Registration. ENDPOINT is the Apps Script web app URL (see backend/README.md).
+const ENDPOINT = '';
+const form = document.querySelector('.regform');
+form.dataset.endpoint = ENDPOINT;
+const help = document.getElementById('r-help');
+const btn = form.querySelector('button[type="submit"]');
+const say = (msg, bad) => { help.textContent = msg; help.classList.toggle('is-error', !!bad); };
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const fields = [...form.querySelectorAll('input[required]')];
+  fields.forEach((f) => f.toggleAttribute('aria-invalid', !f.checkValidity()));
+  const bad = fields.find((f) => !f.checkValidity());
+  if (bad) {
+    bad.setAttribute('aria-describedby', 'r-help');
+    const label = form.querySelector(`label[for="${bad.id}"]`).textContent;
+    say(bad.validity.valueMissing ? `${label} is required.` : `${label} doesn't look right. Check it and try again.`, true);
+    bad.focus();
+    return;
+  }
+  if (!form.dataset.endpoint) { say('Nothing was sent: registration is not connected yet.', true); return; }
+  btn.setAttribute('aria-busy', 'true'); btn.disabled = true; say('Registering…');
+  try {
+    const res = await fetch(form.dataset.endpoint, { method: 'POST', body: new URLSearchParams(new FormData(form)) });
+    const out = await res.json();
+    if (!out.ok) throw new Error(out.error || 'failed');
+    form.reset();
+    say(out.duplicate ? 'You were already registered with that email. See you in the repo.' : 'You are registered. Next step: fork the repo and run a seed agent.');
+  } catch {
+    say('That did not go through. Try again in a minute.', true);
+  } finally { btn.removeAttribute('aria-busy'); btn.disabled = false; }
+});
+
+// Mark the next date on the schedule.
+const today = new Date().toISOString().slice(0, 10);
+const next = [...document.querySelectorAll('.schedule [data-at]')].find((li) => li.dataset.at >= today);
+if (next) { next.classList.add('is-next'); next.setAttribute('aria-current', 'date'); }
+</script>
+</body>
+</html>

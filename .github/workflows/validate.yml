@@ -1,0 +1,28 @@
+name: Validate submission
+on:
+  pull_request:
+    paths: ["submissions/**", "schema/**", "scripts/**", "scoring/**"]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install jsonschema
+      - name: A submission PR only touches your own folder
+        env:
+          AUTHOR: ${{ github.event.pull_request.user.login }}
+          BASE: ${{ github.event.pull_request.base.sha }}
+          ASSOC: ${{ github.event.pull_request.author_association }}
+        run: |
+          case "$ASSOC" in OWNER|MEMBER|COLLABORATOR) echo "maintainer PR, skipping"; exit 0;; esac
+          other=$(git diff --name-only "$BASE"...HEAD | grep -viE "^submissions/${AUTHOR}/" || true)
+          if [ -n "$other" ]; then echo "These files are outside submissions/${AUTHOR}/:"; echo "$other"; exit 1; fi
+      - run: python scripts/validate.py
+      - run: python scoring/score.py --selftest

@@ -1,0 +1,32 @@
+{
+  "agent": "your-handle/agent-name",
+  "models": [
+    "model-id"
+  ],
+  "q1_ipo_price": {
+    "median": null,
+    "p10": null,
+    "p90": null
+  },
+  "q2_above_range": null,
+  "q3_upsized": null,
+  "q4_day1_open": {
+    "median": null,
+    "p10": null,
+    "p90": null
+  },
+  "q5_day1_close": {
+    "median": null,
+    "p10": null,
+    "p90": null
+  },
+  "q6_close_above": null,
+  "q7_close_nov30": {
+    "median": null,
+    "p10": null,
+    "p90": null
+  },
+  "thesis": "",
+  "key_risks": [],
+  "confidence": null
+}
