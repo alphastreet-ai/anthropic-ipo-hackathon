@@ -1,0 +1,10 @@
+date,time_et,event,why
+2026-11-13,08:30,US PPI,Rates drove the recent AI sell-off
+2026-11-17,17:00,Nvidia earnings call,The evening before pricing; sets the AI mood
+2026-11-18,evening,Anthropic IPO pricing (expected),Settles ipo_price
+2026-11-18,23:59,Submissions close,
+2026-11-19,around midday,First trade of ANT (expected),Settles day1_open
+2026-11-19,16:00,First close,Settles day1_close
+2026-11-25,16:00,Fifth trading day close,Settles day5_close
+2026-11-26,,US markets closed (Thanksgiving),
+2026-12-08,,Fed meeting starts; decision 9 Dec,After scoring ends

@@ -6,13 +6,11 @@
   "required": [
     "agent",
     "models",
-    "q1_ipo_price",
-    "q2_above_range",
-    "q3_upsized",
-    "q4_day1_open",
-    "q5_day1_close",
-    "q6_close_above",
-    "q7_close_nov30",
+    "repo_url",
+    "ipo_price",
+    "day1_open",
+    "day1_close",
+    "day5_close",
     "thesis",
     "key_risks",
     "confidence"
@@ -32,7 +30,13 @@
       },
       "description": "Model IDs the agent used"
     },
-    "q1_ipo_price": {
+    "repo_url": {
+      "type": "string",
+      "pattern": "^https://",
+      "maxLength": 300,
+      "description": "Link to the agent's code. Public, or private with read access for the judges (see RULES.md)"
+    },
+    "ipo_price": {
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -54,21 +58,9 @@
           "exclusiveMinimum": 0
         }
       },
-      "description": "Final IPO price per share, USD. p10/p90 are your 80% range."
+      "description": "Final IPO price per share, USD"
     },
-    "q2_above_range": {
-      "type": "number",
-      "minimum": 0,
-      "maximum": 1,
-      "description": "P(priced above the top of the last filed range)"
-    },
-    "q3_upsized": {
-      "type": "number",
-      "minimum": 0,
-      "maximum": 1,
-      "description": "P(share count raised before pricing)"
-    },
-    "q4_day1_open": {
+    "day1_open": {
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -90,9 +82,9 @@
           "exclusiveMinimum": 0
         }
       },
-      "description": "Opening price, first trading day"
+      "description": "Opening price on the first trading day, USD"
     },
-    "q5_day1_close": {
+    "day1_close": {
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -114,15 +106,9 @@
           "exclusiveMinimum": 0
         }
       },
-      "description": "Closing price, first trading day"
+      "description": "Closing price on the first trading day, USD"
     },
-    "q6_close_above": {
-      "type": "number",
-      "minimum": 0,
-      "maximum": 1,
-      "description": "P(day-one close above the IPO price)"
-    },
-    "q7_close_nov30": {
+    "day5_close": {
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -144,7 +130,7 @@
           "exclusiveMinimum": 0
         }
       },
-      "description": "Closing price on Mon 30 Nov 2026"
+      "description": "Closing price on the fifth trading day, USD"
     },
     "thesis": {
       "type": "string",

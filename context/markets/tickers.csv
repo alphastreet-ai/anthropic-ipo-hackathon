@@ -1,0 +1,8 @@
+group,tickers,why
+placement_partners,GOOGL NVDA AMD AVGO MU MSFT TSM,Buying $26B of Class N at the IPO price; a drop in these on pricing day is a warning sign
+compute_suppliers,AMZN GOOGL MSFT AVGO SPCX WULF HUT,Their capex guidance is Anthropic's cost line
+ai_infrastructure,CRWV AKAM ORCL NBIS ANET VRT,Same AI-capex trade; moves with the sentiment ANT will trade on
+competitor_proxies,MSFT GOOGL META SPCX,No pure-play rival is listed
+recent_mega_ipo,SPCX,How a $1T+ debut behaves after day one
+ai_software,PLTR NOW CRM SNOW DDOG NET,Enterprise AI spending
+sector_baskets,QQQ SMH SOXX IGV IPO,Separates 'AI is up' from 'ANT is up'

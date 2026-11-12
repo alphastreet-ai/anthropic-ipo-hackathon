@@ -1,0 +1,282 @@
+date,series,name,value,source=FRED fetched_at=2026-11-12T08:10:58Z
+2026-08-03,DGS10,10-year Treasury yield,4.70
+2026-08-04,DGS10,10-year Treasury yield,4.63
+2026-08-05,DGS10,10-year Treasury yield,4.63
+2026-08-06,DGS10,10-year Treasury yield,4.69
+2026-08-07,DGS10,10-year Treasury yield,4.65
+2026-08-10,DGS10,10-year Treasury yield,4.72
+2026-08-11,DGS10,10-year Treasury yield,4.70
+2026-08-12,DGS10,10-year Treasury yield,4.68
+2026-08-13,DGS10,10-year Treasury yield,4.63
+2026-08-14,DGS10,10-year Treasury yield,4.68
+2026-08-17,DGS10,10-year Treasury yield,4.72
+2026-08-18,DGS10,10-year Treasury yield,4.71
+2026-08-19,DGS10,10-year Treasury yield,4.65
+2026-08-20,DGS10,10-year Treasury yield,4.69
+2026-08-21,DGS10,10-year Treasury yield,4.74
+2026-08-24,DGS10,10-year Treasury yield,4.70
+2026-08-25,DGS10,10-year Treasury yield,4.64
+2026-08-26,DGS10,10-year Treasury yield,4.66
+2026-08-27,DGS10,10-year Treasury yield,4.67
+2026-08-28,DGS10,10-year Treasury yield,4.73
+2026-08-31,DGS10,10-year Treasury yield,4.75
+2026-09-01,DGS10,10-year Treasury yield,4.79
+2026-09-02,DGS10,10-year Treasury yield,4.79
+2026-09-03,DGS10,10-year Treasury yield,4.77
+2026-09-04,DGS10,10-year Treasury yield,4.78
+2026-09-08,DGS10,10-year Treasury yield,4.80
+2026-09-09,DGS10,10-year Treasury yield,4.83
+2026-09-10,DGS10,10-year Treasury yield,4.95
+2026-09-11,DGS10,10-year Treasury yield,4.96
+2026-09-14,DGS10,10-year Treasury yield,4.97
+2026-09-15,DGS10,10-year Treasury yield,5.00
+2026-09-16,DGS10,10-year Treasury yield,5.01
+2026-09-17,DGS10,10-year Treasury yield,4.94
+2026-09-18,DGS10,10-year Treasury yield,5.01
+2026-09-21,DGS10,10-year Treasury yield,4.96
+2026-09-22,DGS10,10-year Treasury yield,4.96
+2026-09-23,DGS10,10-year Treasury yield,5.11
+2026-09-24,DGS10,10-year Treasury yield,5.18
+2026-09-25,DGS10,10-year Treasury yield,5.17
+2026-09-28,DGS10,10-year Treasury yield,5.24
+2026-09-29,DGS10,10-year Treasury yield,5.26
+2026-09-30,DGS10,10-year Treasury yield,5.29
+2026-10-01,DGS10,10-year Treasury yield,5.24
+2026-10-02,DGS10,10-year Treasury yield,5.28
+2026-10-05,DGS10,10-year Treasury yield,5.31
+2026-10-06,DGS10,10-year Treasury yield,5.27
+2026-10-07,DGS10,10-year Treasury yield,5.28
+2026-10-08,DGS10,10-year Treasury yield,5.22
+2026-10-09,DGS10,10-year Treasury yield,5.24
+2026-10-13,DGS10,10-year Treasury yield,5.21
+2026-10-14,DGS10,10-year Treasury yield,5.19
+2026-10-15,DGS10,10-year Treasury yield,5.10
+2026-10-16,DGS10,10-year Treasury yield,5.09
+2026-10-19,DGS10,10-year Treasury yield,5.15
+2026-10-20,DGS10,10-year Treasury yield,5.12
+2026-10-21,DGS10,10-year Treasury yield,5.13
+2026-10-22,DGS10,10-year Treasury yield,4.96
+2026-10-23,DGS10,10-year Treasury yield,5.00
+2026-10-26,DGS10,10-year Treasury yield,5.00
+2026-10-27,DGS10,10-year Treasury yield,4.99
+2026-10-28,DGS10,10-year Treasury yield,5.05
+2026-10-29,DGS10,10-year Treasury yield,4.98
+2026-10-30,DGS10,10-year Treasury yield,4.94
+2026-11-02,DGS10,10-year Treasury yield,4.91
+2026-11-03,DGS10,10-year Treasury yield,4.95
+2026-11-04,DGS10,10-year Treasury yield,4.90
+2026-11-05,DGS10,10-year Treasury yield,4.84
+2026-11-06,DGS10,10-year Treasury yield,4.86
+2026-11-09,DGS10,10-year Treasury yield,4.88
+2026-08-03,DGS2,2-year Treasury yield,4.25
+2026-08-04,DGS2,2-year Treasury yield,4.20
+2026-08-05,DGS2,2-year Treasury yield,4.18
+2026-08-06,DGS2,2-year Treasury yield,4.25
+2026-08-07,DGS2,2-year Treasury yield,4.19
+2026-08-10,DGS2,2-year Treasury yield,4.25
+2026-08-11,DGS2,2-year Treasury yield,4.22
+2026-08-12,DGS2,2-year Treasury yield,4.20
+2026-08-13,DGS2,2-year Treasury yield,4.15
+2026-08-14,DGS2,2-year Treasury yield,4.17
+2026-08-17,DGS2,2-year Treasury yield,4.19
+2026-08-18,DGS2,2-year Treasury yield,4.19
+2026-08-19,DGS2,2-year Treasury yield,4.19
+2026-08-20,DGS2,2-year Treasury yield,4.19
+2026-08-21,DGS2,2-year Treasury yield,4.24
+2026-08-24,DGS2,2-year Treasury yield,4.24
+2026-08-25,DGS2,2-year Treasury yield,4.17
+2026-08-26,DGS2,2-year Treasury yield,4.19
+2026-08-27,DGS2,2-year Treasury yield,4.20
+2026-08-28,DGS2,2-year Treasury yield,4.34
+2026-08-31,DGS2,2-year Treasury yield,4.34
+2026-09-01,DGS2,2-year Treasury yield,4.39
+2026-09-02,DGS2,2-year Treasury yield,4.39
+2026-09-03,DGS2,2-year Treasury yield,4.34
+2026-09-04,DGS2,2-year Treasury yield,4.37
+2026-09-08,DGS2,2-year Treasury yield,4.39
+2026-09-09,DGS2,2-year Treasury yield,4.43
+2026-09-10,DGS2,2-year Treasury yield,4.56
+2026-09-11,DGS2,2-year Treasury yield,4.63
+2026-09-14,DGS2,2-year Treasury yield,4.65
+2026-09-15,DGS2,2-year Treasury yield,4.67
+2026-09-16,DGS2,2-year Treasury yield,4.74
+2026-09-17,DGS2,2-year Treasury yield,4.67
+2026-09-18,DGS2,2-year Treasury yield,4.76
+2026-09-21,DGS2,2-year Treasury yield,4.76
+2026-09-22,DGS2,2-year Treasury yield,4.71
+2026-09-23,DGS2,2-year Treasury yield,4.85
+2026-09-24,DGS2,2-year Treasury yield,4.87
+2026-09-25,DGS2,2-year Treasury yield,4.81
+2026-09-28,DGS2,2-year Treasury yield,4.92
+2026-09-29,DGS2,2-year Treasury yield,4.89
+2026-09-30,DGS2,2-year Treasury yield,4.88
+2026-10-01,DGS2,2-year Treasury yield,4.78
+2026-10-02,DGS2,2-year Treasury yield,4.83
+2026-10-05,DGS2,2-year Treasury yield,4.84
+2026-10-06,DGS2,2-year Treasury yield,4.79
+2026-10-07,DGS2,2-year Treasury yield,4.77
+2026-10-08,DGS2,2-year Treasury yield,4.75
+2026-10-09,DGS2,2-year Treasury yield,4.80
+2026-10-13,DGS2,2-year Treasury yield,4.79
+2026-10-14,DGS2,2-year Treasury yield,4.82
+2026-10-15,DGS2,2-year Treasury yield,4.77
+2026-10-16,DGS2,2-year Treasury yield,4.74
+2026-10-19,DGS2,2-year Treasury yield,4.77
+2026-10-20,DGS2,2-year Treasury yield,4.79
+2026-10-21,DGS2,2-year Treasury yield,4.81
+2026-10-22,DGS2,2-year Treasury yield,4.65
+2026-10-23,DGS2,2-year Treasury yield,4.69
+2026-10-26,DGS2,2-year Treasury yield,4.68
+2026-10-27,DGS2,2-year Treasury yield,4.70
+2026-10-28,DGS2,2-year Treasury yield,4.67
+2026-10-29,DGS2,2-year Treasury yield,4.61
+2026-10-30,DGS2,2-year Treasury yield,4.56
+2026-11-02,DGS2,2-year Treasury yield,4.59
+2026-11-03,DGS2,2-year Treasury yield,4.61
+2026-11-04,DGS2,2-year Treasury yield,4.58
+2026-11-05,DGS2,2-year Treasury yield,4.46
+2026-11-06,DGS2,2-year Treasury yield,4.51
+2026-11-09,DGS2,2-year Treasury yield,4.56
+2026-08-03,VIXCLS,VIX,15.86
+2026-08-04,VIXCLS,VIX,16.50
+2026-08-05,VIXCLS,VIX,15.81
+2026-08-06,VIXCLS,VIX,15.15
+2026-08-07,VIXCLS,VIX,14.90
+2026-08-10,VIXCLS,VIX,15.46
+2026-08-11,VIXCLS,VIX,15.28
+2026-08-12,VIXCLS,VIX,14.55
+2026-08-13,VIXCLS,VIX,14.63
+2026-08-14,VIXCLS,VIX,14.25
+2026-08-17,VIXCLS,VIX,15.19
+2026-08-18,VIXCLS,VIX,15.84
+2026-08-19,VIXCLS,VIX,14.89
+2026-08-20,VIXCLS,VIX,16.01
+2026-08-21,VIXCLS,VIX,15.13
+2026-08-24,VIXCLS,VIX,15.85
+2026-08-25,VIXCLS,VIX,15.45
+2026-08-26,VIXCLS,VIX,15.21
+2026-08-27,VIXCLS,VIX,14.51
+2026-08-28,VIXCLS,VIX,14.43
+2026-08-31,VIXCLS,VIX,14.92
+2026-09-01,VIXCLS,VIX,16.34
+2026-09-02,VIXCLS,VIX,15.20
+2026-09-03,VIXCLS,VIX,14.32
+2026-09-04,VIXCLS,VIX,14.53
+2026-09-07,VIXCLS,VIX,15.30
+2026-09-08,VIXCLS,VIX,15.72
+2026-09-09,VIXCLS,VIX,16.46
+2026-09-10,VIXCLS,VIX,17.84
+2026-09-11,VIXCLS,VIX,15.84
+2026-09-14,VIXCLS,VIX,17.10
+2026-09-15,VIXCLS,VIX,17.20
+2026-09-16,VIXCLS,VIX,17.71
+2026-09-17,VIXCLS,VIX,15.44
+2026-09-18,VIXCLS,VIX,14.81
+2026-09-21,VIXCLS,VIX,14.87
+2026-09-22,VIXCLS,VIX,14.21
+2026-09-23,VIXCLS,VIX,15.18
+2026-09-24,VIXCLS,VIX,15.67
+2026-09-25,VIXCLS,VIX,14.87
+2026-09-28,VIXCLS,VIX,16.07
+2026-09-29,VIXCLS,VIX,16.04
+2026-09-30,VIXCLS,VIX,16.34
+2026-10-01,VIXCLS,VIX,16.39
+2026-10-02,VIXCLS,VIX,15.31
+2026-10-05,VIXCLS,VIX,15.52
+2026-10-06,VIXCLS,VIX,15.01
+2026-10-07,VIXCLS,VIX,15.08
+2026-10-08,VIXCLS,VIX,15.41
+2026-10-09,VIXCLS,VIX,14.84
+2026-10-12,VIXCLS,VIX,15.21
+2026-10-13,VIXCLS,VIX,15.27
+2026-10-14,VIXCLS,VIX,16.87
+2026-10-15,VIXCLS,VIX,16.46
+2026-10-16,VIXCLS,VIX,19.99
+2026-10-19,VIXCLS,VIX,18.44
+2026-10-20,VIXCLS,VIX,17.31
+2026-10-21,VIXCLS,VIX,16.68
+2026-10-22,VIXCLS,VIX,19.03
+2026-10-23,VIXCLS,VIX,19.45
+2026-10-26,VIXCLS,VIX,18.39
+2026-10-27,VIXCLS,VIX,17.52
+2026-10-28,VIXCLS,VIX,16.91
+2026-10-29,VIXCLS,VIX,17.20
+2026-10-30,VIXCLS,VIX,19.42
+2026-11-02,VIXCLS,VIX,21.15
+2026-11-03,VIXCLS,VIX,20.83
+2026-11-04,VIXCLS,VIX,16.61
+2026-11-05,VIXCLS,VIX,28.18
+2026-11-06,VIXCLS,VIX,25.64
+2026-11-09,VIXCLS,VIX,19.92
+2026-11-10,VIXCLS,VIX,19.46
+2026-08-03,BAMLH0A0HYM2,High-yield credit spread,2.78
+2026-08-04,BAMLH0A0HYM2,High-yield credit spread,2.73
+2026-08-05,BAMLH0A0HYM2,High-yield credit spread,2.75
+2026-08-06,BAMLH0A0HYM2,High-yield credit spread,2.71
+2026-08-07,BAMLH0A0HYM2,High-yield credit spread,2.70
+2026-08-10,BAMLH0A0HYM2,High-yield credit spread,2.70
+2026-08-11,BAMLH0A0HYM2,High-yield credit spread,2.72
+2026-08-12,BAMLH0A0HYM2,High-yield credit spread,2.71
+2026-08-13,BAMLH0A0HYM2,High-yield credit spread,2.71
+2026-08-14,BAMLH0A0HYM2,High-yield credit spread,2.67
+2026-08-17,BAMLH0A0HYM2,High-yield credit spread,2.70
+2026-08-18,BAMLH0A0HYM2,High-yield credit spread,2.75
+2026-08-19,BAMLH0A0HYM2,High-yield credit spread,2.73
+2026-08-20,BAMLH0A0HYM2,High-yield credit spread,2.75
+2026-08-21,BAMLH0A0HYM2,High-yield credit spread,2.70
+2026-08-24,BAMLH0A0HYM2,High-yield credit spread,2.69
+2026-08-25,BAMLH0A0HYM2,High-yield credit spread,2.70
+2026-08-26,BAMLH0A0HYM2,High-yield credit spread,2.67
+2026-08-27,BAMLH0A0HYM2,High-yield credit spread,2.63
+2026-08-28,BAMLH0A0HYM2,High-yield credit spread,2.60
+2026-08-31,BAMLH0A0HYM2,High-yield credit spread,2.63
+2026-09-01,BAMLH0A0HYM2,High-yield credit spread,2.65
+2026-09-02,BAMLH0A0HYM2,High-yield credit spread,2.66
+2026-09-03,BAMLH0A0HYM2,High-yield credit spread,2.65
+2026-09-04,BAMLH0A0HYM2,High-yield credit spread,2.68
+2026-09-07,BAMLH0A0HYM2,High-yield credit spread,2.68
+2026-09-08,BAMLH0A0HYM2,High-yield credit spread,2.67
+2026-09-09,BAMLH0A0HYM2,High-yield credit spread,2.71
+2026-09-10,BAMLH0A0HYM2,High-yield credit spread,2.70
+2026-09-11,BAMLH0A0HYM2,High-yield credit spread,2.65
+2026-09-14,BAMLH0A0HYM2,High-yield credit spread,2.71
+2026-09-15,BAMLH0A0HYM2,High-yield credit spread,2.76
+2026-09-16,BAMLH0A0HYM2,High-yield credit spread,2.70
+2026-09-17,BAMLH0A0HYM2,High-yield credit spread,2.70
+2026-09-18,BAMLH0A0HYM2,High-yield credit spread,2.68
+2026-09-21,BAMLH0A0HYM2,High-yield credit spread,2.66
+2026-09-22,BAMLH0A0HYM2,High-yield credit spread,2.68
+2026-09-23,BAMLH0A0HYM2,High-yield credit spread,2.73
+2026-09-24,BAMLH0A0HYM2,High-yield credit spread,2.80
+2026-09-25,BAMLH0A0HYM2,High-yield credit spread,2.93
+2026-09-28,BAMLH0A0HYM2,High-yield credit spread,3.02
+2026-09-29,BAMLH0A0HYM2,High-yield credit spread,3.08
+2026-09-30,BAMLH0A0HYM2,High-yield credit spread,3.12
+2026-10-01,BAMLH0A0HYM2,High-yield credit spread,3.24
+2026-10-02,BAMLH0A0HYM2,High-yield credit spread,3.10
+2026-10-05,BAMLH0A0HYM2,High-yield credit spread,3.12
+2026-10-06,BAMLH0A0HYM2,High-yield credit spread,3.03
+2026-10-07,BAMLH0A0HYM2,High-yield credit spread,3.09
+2026-10-08,BAMLH0A0HYM2,High-yield credit spread,3.15
+2026-10-09,BAMLH0A0HYM2,High-yield credit spread,3.11
+2026-10-12,BAMLH0A0HYM2,High-yield credit spread,3.11
+2026-10-13,BAMLH0A0HYM2,High-yield credit spread,3.16
+2026-10-14,BAMLH0A0HYM2,High-yield credit spread,3.25
+2026-10-15,BAMLH0A0HYM2,High-yield credit spread,3.23
+2026-10-16,BAMLH0A0HYM2,High-yield credit spread,3.31
+2026-10-19,BAMLH0A0HYM2,High-yield credit spread,3.29
+2026-10-20,BAMLH0A0HYM2,High-yield credit spread,3.33
+2026-10-21,BAMLH0A0HYM2,High-yield credit spread,3.27
+2026-10-22,BAMLH0A0HYM2,High-yield credit spread,3.40
+2026-10-23,BAMLH0A0HYM2,High-yield credit spread,3.38
+2026-10-26,BAMLH0A0HYM2,High-yield credit spread,3.30
+2026-10-27,BAMLH0A0HYM2,High-yield credit spread,3.18
+2026-10-28,BAMLH0A0HYM2,High-yield credit spread,3.14
+2026-10-29,BAMLH0A0HYM2,High-yield credit spread,3.26
+2026-10-30,BAMLH0A0HYM2,High-yield credit spread,3.44
+2026-11-02,BAMLH0A0HYM2,High-yield credit spread,3.43
+2026-11-03,BAMLH0A0HYM2,High-yield credit spread,3.40
+2026-11-04,BAMLH0A0HYM2,High-yield credit spread,3.32
+2026-11-05,BAMLH0A0HYM2,High-yield credit spread,3.48
+2026-11-06,BAMLH0A0HYM2,High-yield credit spread,3.42
+2026-11-09,BAMLH0A0HYM2,High-yield credit spread,3.34

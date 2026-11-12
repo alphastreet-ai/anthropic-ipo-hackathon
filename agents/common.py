@@ -7,10 +7,10 @@ import anthropic
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = json.loads((ROOT / "schema/prediction.schema.json").read_text())
 MODEL = "claude-opus-5-5"
-TEXT = {".md", ".txt", ".csv", ".json"}
+TEXT = {".md", ".txt", ".csv", ".json", ".jsonl"}
 # Structured outputs take a plain JSON schema; range and length limits are enforced by scripts/validate.py instead.
 UNSUPPORTED = {"$schema", "title", "minimum", "maximum", "exclusiveMinimum", "minLength", "maxLength", "minItems", "maxItems", "pattern"}
-SET_BY_CODE = {"agent", "models", "extra_predictions"}
+SET_BY_CODE = {"agent", "models", "repo_url", "extra_predictions"}
 
 client = anthropic.Anthropic()  # reads ANTHROPIC_API_KEY (or an `ant auth login` profile)
 
@@ -57,14 +57,15 @@ def ask(context: str, prompt: str, schema: dict | None = None) -> str:
     return "".join(b.text for b in msg.content if b.type == "text")
 
 
-def save(prediction: dict, agent: str, out_dir: str) -> None:
+def save(prediction: dict, agent: str, out_dir: str, repo_url: str) -> None:
     out = Path(out_dir) / "prediction.json"
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps({"agent": agent, "models": [MODEL], **prediction}, indent=2) + "\n")
+    out.write_text(json.dumps({"agent": agent, "models": [MODEL], "repo_url": repo_url, **prediction}, indent=2) + "\n")
     sys.exit(subprocess.run([sys.executable, str(ROOT / "scripts/validate.py"), str(out)]).returncode)
 
 
-QUESTIONS = """Answer the seven questions in the schema:
-q1 final IPO price per share; q2 probability it prices above the top of the last filed range; q3 probability the share count is raised before pricing;
-q4 opening price and q5 closing price on the first trading day; q6 probability the day-one close is above the IPO price; q7 closing price on Mon 30 Nov 2026.
-Prices are USD with a median and an 80% range (p10, p90). Add a thesis under 300 words, three to five key risks, and an overall confidence from 0 to 1."""
+QUESTIONS = """Make the four price calls in the schema, all in USD per share:
+ipo_price, the final IPO price; day1_open and day1_close, the opening and closing price on the first trading day;
+day5_close, the closing price on the fifth trading day. Each is a median with an 80% range (p10, p90).
+Reason about day one and day five as a percentage move from the IPO price, then convert to prices.
+Add a thesis under 300 words, three to five key risks, and an overall confidence from 0 to 1."""

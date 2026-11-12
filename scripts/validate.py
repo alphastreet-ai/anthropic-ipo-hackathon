@@ -6,7 +6,7 @@ from jsonschema import Draft202012Validator
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = json.loads((ROOT / "schema/prediction.schema.json").read_text())
-PRICE_KEYS = ["q1_ipo_price", "q4_day1_open", "q5_day1_close", "q7_close_nov30"]
+PRICE_KEYS = ["ipo_price", "day1_open", "day1_close", "day5_close"]
 HANDLE = re.compile(r"^[A-Za-z0-9](?:[A-Za-z0-9-]{0,38})$")
 
 

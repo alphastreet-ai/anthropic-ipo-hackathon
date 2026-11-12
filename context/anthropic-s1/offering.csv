@@ -1,0 +1,23 @@
+item,value,unit,source
+price_range_low,70,USD per share,https://www.sec.gov/Archives/edgar/data/2130357/000162828026072484/anthropicpbc-sx1ax2.htm
+price_range_high,78,USD per share,https://www.sec.gov/Archives/edgar/data/2130357/000162828026072484/anthropicpbc-sx1ax2.htm
+shares_offered,825000000,Class A shares,https://www.sec.gov/Archives/edgar/data/2130357/000162828026072484/anthropicpbc-sx1ax2.htm
+shares_new,801351354,Class A shares,https://www.sec.gov/Archives/edgar/data/2130357/000162828026072484/anthropicpbc-sx1ax2.htm
+shares_from_selling_stockholders,23648646,Class A shares,https://www.sec.gov/Archives/edgar/data/2130357/000162828026072484/anthropicpbc-sx1ax2.htm
+underwriters_option,123750000,Class A shares,https://www.sec.gov/Archives/edgar/data/2130357/000162828026072484/anthropicpbc-sx1ax2.htm
+class_n_placement,26,USD billions at the IPO price,https://www.sec.gov/Archives/edgar/data/2130357/000162828026072484/anthropicpbc-sx1ax2.htm
+shares_outstanding_after_ipo,13086672593,all classes,https://ipo.anthropic.com/documents/us/prospectus.pdf
+float_share_of_total,6.3,percent,https://ipo.anthropic.com/documents/us/prospectus.pdf
+fully_diluted_shares,16.9,billions (approximate),coverage quoting the S-1/A
+retail_allocation_up_to,20,percent of the offering,coverage quoting the S-1/A
+lead_underwriters,Goldman Sachs; Morgan Stanley,22 underwriters in total,https://www.sec.gov/Archives/edgar/data/2130357/000162828026072484/anthropicpbc-sx1ax2.htm
+exchange_and_ticker,Nasdaq: ANT,,https://www.sec.gov/Archives/edgar/data/2130357/000162828026072484/anthropicpbc-sx1ax2.htm
+expected_pricing_date,2026-11-18,reported not confirmed,press reports
+expected_first_trade,2026-11-19,reported not confirmed,press reports
+first_day_lockup_release_up_to,316000000,shares,https://ipo.anthropic.com/documents/us/prospectus.pdf
+cash_and_equivalents_sep30,95.6,USD billions,https://ipo.anthropic.com/documents/us/prospectus.pdf
+short_term_investments_sep30,36.3,USD billions,https://ipo.anthropic.com/documents/us/prospectus.pdf
+commitments_total,900.9,USD billions,https://ipo.anthropic.com/documents/us/prospectus.pdf
+commitments_next_12_months,70.7,USD billions,https://ipo.anthropic.com/documents/us/prospectus.pdf
+commitments_through_2030,451.6,USD billions,https://ipo.anthropic.com/documents/us/prospectus.pdf
+run_rate_revenue_oct31,81,USD billions,https://ipo.anthropic.com/documents/us/prospectus.pdf

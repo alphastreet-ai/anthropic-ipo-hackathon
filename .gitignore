@@ -3,4 +3,5 @@ __pycache__/
 .env
 .DS_Store
 .hallmark/
-leaderboard.json
+scoring/judged.json
+internal/
