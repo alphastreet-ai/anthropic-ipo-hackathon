@@ -5,3 +5,4 @@ __pycache__/
 .hallmark/
 scoring/judged.json
 internal/
+context/ocn/raw/
