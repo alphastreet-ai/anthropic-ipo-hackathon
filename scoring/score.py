@@ -59,7 +59,7 @@ def build(outcomes, judged):
             continue
         pred, handle = json.loads(f.read_text()), f.parent.name
         j = judged.get(handle, {})
-        row = {"handle": handle, "agent": pred["agent"], "repo_url": pred["repo_url"], "thesis": pred["thesis"][:240],
+        row = {"handle": handle, "name": pred["name"], "method": pred["method"], "repo_url": pred["repo_url"], "thesis": pred["thesis"][:240],
                **{k: pred[k] for k in PRICE},
                "prediction": round(prediction_points(pred, outcomes), 2), "harness": j.get("harness", 0), "idea": j.get("idea", 0)}
         row["total"] = round(row["prediction"] + row["harness"] + row["idea"], 2)
@@ -96,9 +96,9 @@ def main():
     (ROOT / "site/leaderboard.json").write_text(json.dumps(board, indent=2) + "\n")
     usd = lambda r, k: f"${r[k]['median']:g}"
     md = ["# Leaderboard", "", "Final." if board["final"] else f"Provisional. Settled so far: {', '.join(settled) or 'nothing yet'}.", "",
-          "| # | Agent | IPO price | Day-1 open | Day-1 close | Day-5 close | Prediction /50 | Harness /30 | Idea /20 | Total | Badges |",
-          "|---|---|---|---|---|---|---|---|---|---|---|"]
-    md += [f"| {i} | [{r['agent']}]({r['repo_url']}) | {usd(r, 'ipo_price')} | {usd(r, 'day1_open')} | {usd(r, 'day1_close')} | {usd(r, 'day5_close')} "
+          "| # | Entry | Method | IPO price | Day-1 open | Day-1 close | Day-5 close | Prediction /50 | Harness /30 | Idea /20 | Total | Badges |",
+          "|---|---|---|---|---|---|---|---|---|---|---|---|"]
+    md += [f"| {i} | [{r['name']}]({r['repo_url']}) | {r['method']} | {usd(r, 'ipo_price')} | {usd(r, 'day1_open')} | {usd(r, 'day1_close')} | {usd(r, 'day5_close')} "
            f"| {r['prediction']} | {r['harness']} | {r['idea']} | **{r['total']}** | {', '.join(r['badges'])} |" for i, r in enumerate(rows, 1)]
     (ROOT / "LEADERBOARD.md").write_text("\n".join(md) + "\n")
     print(f"{len(rows)} entries, settled: {settled or 'none'}")

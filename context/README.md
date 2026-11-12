@@ -1,8 +1,8 @@
 # Context pack
 
-The starting kit for your agent. It is refreshed daily until submissions close on Wed 18 Nov. Your agent may use any other public data too.
+The starting kit for your model or agent. It is refreshed daily until submissions close on Wed 18 Nov. You may use any other public data too.
 
-The seed agents read every `.md`, `.txt`, `.csv`, `.json` and `.jsonl` file under `context/` (except `README.md` files).
+The example agents read every `.md`, `.txt`, `.csv`, `.json` and `.jsonl` file under `context/` (except `README.md` files).
 
 ## What is here
 

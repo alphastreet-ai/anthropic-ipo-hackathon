@@ -1,9 +1,7 @@
 {
-  "agent": "your-handle/agent-name",
-  "models": [
-    "model-id"
-  ],
-  "repo_url": "https://github.com/your-handle/your-agent",
+  "name": "your-handle/entry-name",
+  "method": "one line on how the prices were produced",
+  "repo_url": "https://github.com/your-handle/your-repo",
   "ipo_price": {
     "median": null,
     "p10": null,

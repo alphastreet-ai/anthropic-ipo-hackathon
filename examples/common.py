@@ -1,4 +1,4 @@
-"""Shared by the seed agents: load context/, call Claude, write and validate prediction.json."""
+"""Shared by the examples: load context/, call Claude, write and validate prediction.json."""
 import copy, json, subprocess, sys
 from pathlib import Path
 
@@ -10,7 +10,7 @@ MODEL = "claude-opus-5-5"
 TEXT = {".md", ".txt", ".csv", ".json", ".jsonl"}
 # Structured outputs take a plain JSON schema; range and length limits are enforced by scripts/validate.py instead.
 UNSUPPORTED = {"$schema", "title", "minimum", "maximum", "exclusiveMinimum", "minLength", "maxLength", "minItems", "maxItems", "pattern"}
-SET_BY_CODE = {"agent", "models", "repo_url", "extra_predictions"}
+SET_BY_CODE = {"name", "method", "repo_url", "extra_predictions"}
 
 client = anthropic.Anthropic()  # reads ANTHROPIC_API_KEY (or an `ant auth login` profile)
 
@@ -57,10 +57,10 @@ def ask(context: str, prompt: str, schema: dict | None = None) -> str:
     return "".join(b.text for b in msg.content if b.type == "text")
 
 
-def save(prediction: dict, agent: str, out_dir: str, repo_url: str) -> None:
+def save(prediction: dict, name: str, out_dir: str, repo_url: str, method: str = f"LLM agent, {MODEL}") -> None:
     out = Path(out_dir) / "prediction.json"
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps({"agent": agent, "models": [MODEL], "repo_url": repo_url, **prediction}, indent=2) + "\n")
+    out.write_text(json.dumps({"name": name, "method": method, "repo_url": repo_url, **prediction}, indent=2) + "\n")
     sys.exit(subprocess.run([sys.executable, str(ROOT / "scripts/validate.py"), str(out)]).returncode)
 
 

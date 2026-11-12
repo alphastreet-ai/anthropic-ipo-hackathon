@@ -18,7 +18,7 @@ FRED = {"DGS10": "10-year Treasury yield", "DGS2": "2-year Treasury yield", "VIX
 QUERIES = ["Anthropic IPO", "Anthropic S-1", "Nvidia earnings"]
 
 
-def get(url: str, agent: str = "agent-arena-fetch/1.0") -> bytes:
+def get(url: str, agent: str = "ipo-arena-fetch/1.0") -> bytes:
     with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": agent}), timeout=30) as r:
         return r.read()
 

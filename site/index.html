@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Agent Arena: the Anthropic IPO hackathon by AlphaStreet</title>
-<meta name="description" content="Build an agent that predicts the Anthropic IPO. Four prices, locked before the first trade. Submissions close Wednesday 18 November, 23:59 ET. $500 to the best agent.">
+<title>IPO Arena: the Anthropic IPO hackathon by AlphaStreet</title>
+<meta name="description" content="Predict the Anthropic IPO with code: an agent, an ML model or anything else, in any language. Four prices, locked before the first trade. Submissions close Wednesday 18 November, 23:59 ET. $500 to the best entry.">
 <meta name="theme-color" content="#0e0e12">
 <link rel="icon" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,8 +35,8 @@
   <section class="hero" id="top">
     <div class="container hero__grid">
       <div class="hero__text">
-        <h1>Predict the Anthropic IPO with an agent</h1>
-        <p class="lead">Four prices, locked before the first trade. The best agent wins $500.</p>
+        <h1>Predict the Anthropic IPO with code</h1>
+        <p class="lead">An agent, an ML model or anything else, in any language. Four prices, locked before the first trade. The best entry wins $500.</p>
         <div class="actions">
           <a class="btn" href="#register">Register free</a>
           <a class="btn btn--quiet" href="#sandbox" data-repo>Fork the repo</a>
@@ -75,7 +75,7 @@
         <h2 id="r-head">Register, then build</h2>
         <p class="lead">Free. Start any time from Sunday, submit any time before the close.</p>
         <dl class="register__facts">
-          <div><dt>Prize</dt><dd>$500 for the best agent</dd></div>
+          <div><dt>Prize</dt><dd>$500 for the best entry</dd></div>
           <div><dt>Build window</dt><dd>Sun 15 to Wed 18 Nov</dd></div>
           <div><dt>Close</dt><dd>Wed 18 Nov, 23:59 ET</dd></div>
           <div><dt>Submit</dt><dd>A pull request on GitHub</dd></div>
@@ -88,7 +88,7 @@
         <div class="field"><label for="r-country">Country</label><input id="r-country" name="country" autocomplete="country-name" required maxlength="60"></div>
         <div class="field field--wide"><label for="r-org">College or company <span class="opt">(optional)</span></label><input id="r-org" name="org" autocomplete="organization" maxlength="120"></div>
         <div class="field field--wide hp" aria-hidden="true"><label for="r-web">Website</label><input id="r-web" name="website" tabindex="-1" autocomplete="off"></div>
-        <label class="check field--wide"><input type="checkbox" name="updates" value="yes"> Tell me about future AlphaStreet agent events</label>
+        <label class="check field--wide"><input type="checkbox" name="updates" value="yes"> Tell me about future AlphaStreet events</label>
         <div class="field--wide regform__foot">
           <button class="btn" type="submit">Register</button>
           <p class="regform__help" id="r-help" aria-live="polite"></p>
@@ -104,7 +104,7 @@
         <p class="lead">Anthropic set a range of $70 to $78. Each call is a best guess with an 80% range.</p>
       </div>
       <table class="qtable">
-        <thead><tr><th scope="col">#</th><th scope="col">Your agent predicts</th><th scope="col">What it means</th><th scope="col">When we find out</th></tr></thead>
+        <thead><tr><th scope="col">#</th><th scope="col">You predict</th><th scope="col">What it means</th><th scope="col">When we find out</th></tr></thead>
         <tbody>
           <tr><td class="num">1</td><th scope="row">IPO price</th><td>The final price per share the banks set</td><td>Wed 18 Nov, evening</td></tr>
           <tr><td class="num">2</td><th scope="row">Day-1 open</th><td>The very first trade of ANT</td><td>Thu 19 Nov, midday</td></tr>
@@ -118,7 +118,7 @@
   <section class="section section--tight" id="sandbox" aria-labelledby="s-head">
     <div class="container">
       <div class="head-split">
-        <h2 id="s-head">Everything your agent reads</h2>
+        <h2 id="s-head">The data you start with</h2>
         <p class="lead">The filing, the market around it and our own signals, refreshed every day until the close.</p>
       </div>
       <div class="bento">
@@ -133,7 +133,8 @@
 │   ├── comps/            <i>recent IPOs</i>
 │   ├── markets/
 │   └── news/             <i>headlines</i>
-├── agents/
+├── examples/
+│   ├── baseline/         <i>no LLM, no key</i>
 │   ├── seed-simple/
 │   └── seed-debate/      <i>bull vs bear</i>
 ├── submissions/_template/
@@ -149,13 +150,13 @@
           <p>Nvidia reports on Tuesday 17 November. The pack updates that evening.</p>
         </article>
         <article class="tile tile--wide">
-          <h3>Two seed agents</h3>
-          <p>Run one in five minutes, then make it yours. Any model, your own key.</p>
-<pre class="code cmd"><code>python agents/seed-debate/run.py --out submissions/you/</code></pre>
+          <h3>Three starting points</h3>
+          <p>A base-rate model with no LLM, and two LLM agents. Run one in two minutes, then beat it your way.</p>
+<pre class="code cmd"><code>python examples/baseline/run.py --out submissions/you/</code></pre>
         </article>
         <article class="tile tile--wide">
           <h3>What you submit</h3>
-          <p>Your prediction file, a link to your agent's repo, and read access for the judges. CI checks the file on every pull request.</p>
+          <p>Your prediction file, a link to your code, and read access for the judges. CI checks the file on every pull request.</p>
         </article>
       </div>
     </div>
@@ -179,12 +180,12 @@
     <div class="container prize">
       <div class="prize__figure">
         <p class="prize__amount num">$500</p>
-        <h2 id="p-head">to the best agent</h2>
+        <h2 id="p-head">to the best entry</h2>
       </div>
       <dl class="rows">
         <div><dt>Prediction, 50 points</dt><dd>Percentage error on the four prices. Miss your own 80% range and the error doubles.</dd></div>
-        <div><dt>Harness, thesis, docs, 30 points</dt><dd>Judged. The agent reruns from your repo, the thesis argues from evidence, the docs explain it.</dd></div>
-        <div><dt>Innovative idea, 20 points</dt><dd>Judged. A new angle, data source or agent design.</dd></div>
+        <div><dt>Harness, thesis, docs, 30 points</dt><dd>Judged. The entry reruns from your repo, the thesis argues from evidence, the docs explain it.</dd></div>
+        <div><dt>Innovative idea, 20 points</dt><dd>Judged. A new angle, data source or method.</dd></div>
         <div><dt>Badges</dt><dd>Locked before first trade, closest call on each price, calibrated 4 of 4, best harness, most original, winner.</dd></div>
         <div><dt>Ties</dt><dd>The higher judged score wins, then the earlier pull request.</dd></div>
       </dl>
@@ -198,11 +199,11 @@
         <p class="lead" id="lb-status">Every locked call, scored as each price settles.</p>
       </div>
       <div class="board" role="status">
-        <p class="board__empty">No agents yet. The board fills in after the first merged pull request.</p>
+        <p class="board__empty">No entries yet. The board fills in after the first merged pull request.</p>
       </div>
       <div class="lb-wrap" hidden>
         <table class="qtable lb">
-          <thead><tr><th scope="col">#</th><th scope="col">Agent</th><th scope="col">IPO price</th><th scope="col">Day-1 open</th><th scope="col">Day-1 close</th><th scope="col">Day-5 close</th><th scope="col">Score</th><th scope="col">Badges</th></tr></thead>
+          <thead><tr><th scope="col">#</th><th scope="col">Entry</th><th scope="col">IPO price</th><th scope="col">Day-1 open</th><th scope="col">Day-1 close</th><th scope="col">Day-5 close</th><th scope="col">Score</th><th scope="col">Badges</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -215,7 +216,7 @@
       <dl class="rows">
         <div><dt>Who can enter?</dt><dd>Anyone. One submission per person or team.</dd></div>
         <div><dt>When can I start?</dt><dd>Any time from Sunday 15 November. Submit any time before the close.</dd></div>
-        <div><dt>Which model?</dt><dd>Any model, any public data, your own API key.</dd></div>
+        <div><dt>Does it have to be an agent?</dt><dd>No. An LLM agent, an ML model, a statistical model or a script, in any language.</dd></div>
         <div><dt>Can I change my call?</dt><dd>Until the close. The IPO price call must be in before the price is announced.</dd></div>
         <div><dt>Does my code have to be public?</dt><dd>The judges must be able to read and rerun it. Public, or private with access for them.</dd></div>
         <div><dt>What if the IPO slips?</dt><dd>The close and the scoring days move with it.</dd></div>
@@ -295,7 +296,7 @@ form.addEventListener('submit', async (e) => {
     const out = await res.json();
     if (!out.ok) throw new Error(out.error || 'failed');
     form.reset();
-    say(out.duplicate ? 'You were already registered with that email. See you in the repo.' : 'You are registered. Next step: fork the repo and run a seed agent.');
+    say(out.duplicate ? 'You were already registered with that email. See you in the repo.' : 'You are registered. Next step: fork the repo and run an example.');
   } catch {
     say('That did not go through. Try again in a minute.', true);
   } finally { btn.removeAttribute('aria-busy'); btn.disabled = false; }
@@ -309,7 +310,7 @@ fetch('leaderboard.json').then((r) => r.json()).then((lb) => {
   lb.entries.forEach((e, i) => {
     const tr = document.createElement('tr');
     const th = document.createElement('th'); th.scope = 'row';
-    const a = document.createElement('a'); a.textContent = e.agent; a.rel = 'noopener';
+    const a = document.createElement('a'); a.textContent = e.name; a.rel = 'noopener';
     if (/^https:\/\//.test(e.repo_url)) a.href = e.repo_url;
     th.append(a);
     tr.append(cell(i + 1, 'num'), th, ...['ipo_price', 'day1_open', 'day1_close', 'day5_close'].map((k) => cell('$' + e[k].median, 'tabular')),

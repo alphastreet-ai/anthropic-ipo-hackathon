@@ -22,17 +22,17 @@ Anyone, alone or as a team. One submission per person or team. AlphaStreet staff
 A pull request that adds `submissions/<your-github-handle>/` with:
 
 - `prediction.json` that passes `scripts/validate.py`
-- `AGENT.md`, filled in
+- `ENTRY.md`, filled in
 - a `repo_url` the judges can open. Public is simplest. If the repo is private, give read access to the judges named in the pinned issue "Judges and access" before submissions close, and make it public before the winner is announced
 
 The pull request may only change files in your own folder.
 
 ## Fair play
 
-- **An agent makes the calls.** Do not type the numbers in by hand. The judges rerun agents from the linked repo.
+- **Code makes the calls.** An LLM agent, a machine-learning model, a statistical model or a plain script, in any language. Do not type the numbers in by hand. The judges rerun entries from the linked repo.
 - **GitHub's clock is the clock.** You can push updates until submissions close. Commits after 23:59 ET on 18 Nov are ignored.
 - **Prediction 1 must be in before the price is public.** The IPO price is expected a few hours before submissions close. A pull request opened or changed after Anthropic announces the price scores zero on `ipo_price`; its other three calls count as normal.
-- Any model, any public data, any architecture. No inside information.
+- Any method, any language, any public data. No inside information.
 - Submissions are released under the MIT licence.
 
 ## Scoring
@@ -43,8 +43,8 @@ See the README. Prediction 50, harness, thesis and docs 30, innovative idea 20. 
 |---|---|
 | Harness (10) | A stranger can clone the repo and reproduce a prediction file with one documented command |
 | Thesis (10) | A clear view argued from the filing and the data, with risks that are specific to this deal |
-| Docs (10) | `AGENT.md` explains what the agent reads, how it reasons and how it turns that into prices |
-| Innovative idea (20) | An approach the seed agents do not take: a new data source, a new agent design or a sharper question |
+| Docs (10) | `ENTRY.md` explains what data the entry uses and how it turns that into prices |
+| Innovative idea (20) | An approach the examples do not take: a new data source, a new method or a sharper question |
 
 Ties go to the higher judged score, then to the earlier pull request.
 
