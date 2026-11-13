@@ -15,7 +15,8 @@ Rows are otherwise stored exactly as OCN returns them. scripts/build_signals.py 
 
 A finished file is skipped on the next run; delete it to pull it again.
 """
-import argparse, csv, gzip, json, os, re, sys, time, urllib.error, urllib.parse, urllib.request
+import argparse, base64, csv, gzip, json, os, re, shutil, sys, time, urllib.error, urllib.parse, urllib.request
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -104,12 +105,58 @@ def save_matching(name: str, path: str, key: str, **params) -> tuple[int, int] |
     return kept, seen
 
 
+CHUNK, WORKERS = 10_000, 8  # ponytail: 8 parallel walks keeps the shared staging API comfortable; raise if it stays fast
+
+
+def cursor_at(article_id: int) -> str:
+    return base64.b64encode(json.dumps({"id": article_id}).encode()).decode()  # OCN's cursor is base64 {"id": n}
+
+
+def scan_chunk(domain: str, lo: int, hi: int, since: str | None) -> tuple[int, int]:
+    """Walk one domain over article ids [lo, hi), newest first. Saved per chunk so a rerun resumes."""
+    final = OUT / f"articles/.chunks/{domain}/{lo:07d}.jsonl.gz"
+    if final.exists():
+        return tuple(json.loads(final.with_suffix(".count").read_text()))
+    final.parent.mkdir(parents=True, exist_ok=True)
+    part, seen, kept, cursor = final.with_name(final.name + ".part"), 0, 0, cursor_at(hi)
+    with gzip.open(part, "wt", encoding="utf-8") as f:
+        while cursor:
+            page = ocn("/news/articles", domain=domain, limit=100, include_body="true", from_date=since, cursor=cursor)
+            rows = [r for r in page["articles"] if int(r["id"]) >= lo]
+            for row in rows:
+                if hit := matches(row):
+                    f.write(json.dumps({**row, **hit}, ensure_ascii=False) + "\n")
+                    kept += 1
+            seen += len(rows)
+            cursor = page.get("next_cursor") if len(rows) == len(page["articles"]) else None
+    final.with_suffix(".count").write_text(json.dumps([kept, seen]))
+    part.rename(final)
+    return kept, seen
+
+
 def articles(since: str | None, counts: dict) -> None:
-    domains = ocn("/news/domains")
-    save_json("domains.json", domains)
-    for d in domains:
-        if r := save_matching(f"articles/{d['slug']}.jsonl.gz", "/news/articles", "articles", domain=d["slug"], limit=100, include_body="true", from_date=since):
-            counts[f"articles/{d['slug']}"] = {"kept": r[0], "scanned": r[1]}
+    domains = [d["slug"] for d in ocn("/news/domains")]
+    save_json("domains.json", ocn("/news/domains"))
+    top = max((int(p["articles"][0]["id"]) for d in domains if (p := ocn("/news/articles", domain=d, limit=1))["articles"]), default=0) + 1
+    jobs = [(d, lo, min(lo + CHUNK, top)) for d in domains if not (OUT / f"articles/{d}.jsonl.gz").exists() for lo in range(0, top, CHUNK)]
+    totals: dict[str, list[int]] = {d: [0, 0] for d in domains}
+    done = 0
+    with ThreadPoolExecutor(WORKERS) as pool:
+        futures = {pool.submit(scan_chunk, d, lo, hi, since): d for d, lo, hi in jobs}
+        for fut in as_completed(futures):
+            k, s = fut.result()
+            totals[futures[fut]][0] += k
+            totals[futures[fut]][1] += s
+            done += 1
+            print(f"{done}/{len(jobs)} chunks; kept {sum(t[0] for t in totals.values())} of {sum(t[1] for t in totals.values())}", flush=True)
+    for d in {d for d, _, _ in jobs}:  # stitch chunks into one file per domain, newest first
+        chunks = sorted((OUT / f"articles/.chunks/{d}").glob("*.jsonl.gz"), reverse=True)
+        with gzip.open(OUT / f"articles/{d}.jsonl.gz", "wt", encoding="utf-8") as f:
+            for c in chunks:
+                f.writelines(sorted(gzip.open(c, "rt", encoding="utf-8"), key=lambda l: -int(json.loads(l)["id"])))
+        counts[f"articles/{d}"] = {"kept": totals[d][0], "scanned": totals[d][1]}
+        print(f"  {d}: {totals[d][0]} kept of {totals[d][1]}")
+    shutil.rmtree(OUT / "articles/.chunks", ignore_errors=True)
 
 
 def ocn_keyed(counts: dict) -> None:
