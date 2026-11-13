@@ -104,8 +104,11 @@ def load(raw: Path) -> list[dict]:
             r["_t"] = r["_pub"] or r["_seen"]
             r["_emb"], r["_norm"] = unit(m.get("title_embedding")), norm_title(r.get("title"))
             r["_domains"], r["_also"] = [r["domain"]], list(m.get("also_reported_by") or [])
-            r.setdefault("_match", []), r.setdefault("_links", [])
-            rows.append(r)
+            r.setdefault("_match", [])
+            # Alpha Vantage tags every ticker an article mentions, so a tag alone is not "about"; only headline links count
+            r["_links"] = [l for l in r.get("_links", []) if l.get("via") != "ticker_sentiment"]
+            if r["_match"] or r["_links"]:
+                rows.append(r)
     return [r for r in rows if r["_t"] and r.get("title")]
 
 

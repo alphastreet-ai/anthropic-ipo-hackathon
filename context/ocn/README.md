@@ -12,7 +12,7 @@ python scripts/build_signals.py   # 2. dedup and structure them into signals/ (s
 OCN does not track Anthropic as a company yet, so rows are found by text. An article is kept when either:
 
 - it mentions Anthropic anywhere: Anthropic, Amodei, Claude product names. "Claude" alone is left out because it is also a first name.
-- its headline names a company linked to Anthropic in [`../markets/links.csv`](../markets/links.csv), or Alpha Vantage tags that company's ticker with relevance 0.5 or more.
+- its headline names a company linked to Anthropic in [`../markets/links.csv`](../markets/links.csv). Alpha Vantage's ticker tags on company_news are not enough on their own: they mark every company an article mentions, so they pulled in ETF holdings lists and dividend notices.
 
 | Link to Anthropic | Companies | What it tells you |
 |---|---|---|

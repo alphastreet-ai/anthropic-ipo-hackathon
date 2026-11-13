@@ -10,7 +10,7 @@ OCN does not track Anthropic as a company (no ticker until 19 Nov), so its artic
 Each OCN domain is walked with bodies and a row is kept when either:
   - it mentions Anthropic anywhere (MATCH); the matched words go in `_match`, or
   - its headline names a company linked to Anthropic in context/markets/links.csv (competitor, supplier,
-    customer, peer, sector), or Alpha Vantage tags that company's ticker with relevance >= 0.5; these go in `_links`.
+    customer, peer, sector); these go in `_links`.
 Rows are otherwise stored exactly as OCN returns them. scripts/build_signals.py dedups and structures them.
 
 A finished file is skipped on the next run; delete it to pull it again.
@@ -55,18 +55,12 @@ def ocn(path: str, **params):
 LINKS = list(csv.DictReader(open(ROOT / "context/markets/links.csv")))
 for l in LINKS:
     l["re"] = re.compile(l["title_pattern"])
-BY_TICKER = {l["ticker"]: l for l in LINKS if l["ticker"]} | {"GOOG": next(l for l in LINKS if l["ticker"] == "GOOGL")}
 
 
 def links(row: dict) -> list[dict]:
-    meta = row.get("metadata") if isinstance(row.get("metadata"), dict) else {}
-    found = {l["issuer_id"]: {"issuer_id": l["issuer_id"], "link_type": l["link_type"], "via": "title"}
-             for l in LINKS if l["re"].search(row.get("title") or "")}
-    for t in meta.get("ticker_sentiment") or []:  # company_news: Alpha Vantage tags tickers with a relevance score
-        l = BY_TICKER.get(t.get("ticker"))
-        if l and float(t.get("relevance_score") or 0) >= 0.5:
-            found.setdefault(l["issuer_id"], {"issuer_id": l["issuer_id"], "link_type": l["link_type"], "via": "ticker_sentiment"})
-    return sorted(found.values(), key=lambda x: x["issuer_id"])
+    # Headline only. Alpha Vantage's ticker tags (company_news) mark mentions, not subjects, so they are not used here.
+    return [{"issuer_id": l["issuer_id"], "link_type": l["link_type"], "via": "title"}
+            for l in sorted(LINKS, key=lambda l: l["issuer_id"]) if l["re"].search(row.get("title") or "")]
 
 
 def matches(row: dict) -> dict | None:
