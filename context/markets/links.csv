@@ -1,0 +1,28 @@
+issuer_id,ticker,link_type,title_pattern,why
+OPENAI,,competitor,(?i)\bopenai\b|\bchatgpt\b|\bsam altman\b|\bgpt-[45]|\bcodex\b,Closest rival; its pricing and revenue set the comparison for Anthropic
+SPCX,SPCX,competitor,(?i)\bxai\b|\bgrok\b|\bspacex\b,xAI sits inside the listed SpaceX; the nearest listed rival
+GOOGL,GOOGL,supplier,(?i)\bgoogle\b|\balphabet\b|\bgemini\b|\bdeepmind\b|\btpus?\b,TPU and cloud supplier and an investor; Gemini also competes
+AMZN,AMZN,supplier,(?i)\bamazon\b|\bAWS\b|\btrainium\b|\bbedrock\b,Main cloud and chip supplier and an investor
+MSFT,MSFT,supplier,(?i)\bmicrosoft\b|\bazure\b|\bcopilot\b,Azure compute deal and an investor; also sells Claude
+NVDA,NVDA,supplier,(?i)\bnvidia\b|\bjensen huang\b,GPU supplier and an investor
+AMD,AMD,supplier,\bAMD\b|(?i:advanced micro devices),Chip supplier and placement partner
+AVGO,AVGO,supplier,(?i)\bbroadcom\b,Custom accelerator supplier
+MU,MU,supplier,(?i)\bmicron\b,Memory supplier and placement partner
+TSM,TSM,supplier,(?i)\btsmc\b|\btaiwan semiconductor\b,Makes the chips every supplier sells
+WULF,WULF,supplier,(?i)\bterawulf\b,Data-centre host
+HUT,HUT,supplier,(?i)\bhut 8\b,Data-centre host
+META,META,competitor,(?i)\bmeta platforms\b|\bllama\b|\bzuckerberg\b|\bmeta(?=['’]s\b| ai\b| superintelligence),Open-weight rival and big AI spender
+MISTRAL,,competitor,(?i)\bmistral\b,Private rival
+DEEPSEEK,,competitor,(?i)\bdeepseek\b,Low-cost rival; moved AI stocks in Jan 2025
+CRWV,CRWV,peer,(?i)\bcoreweave\b,Same AI-capex trade
+ORCL,ORCL,peer,(?i)\boracle\b,Same AI-capex trade
+NBIS,NBIS,peer,(?i)\bnebius\b,Same AI-capex trade
+AKAM,AKAM,sector,(?i)\bakamai\b,AI infrastructure
+ANET,ANET,sector,(?i)\barista networks\b,AI networking
+VRT,VRT,sector,(?i)\bvertiv\b,Data-centre power and cooling
+PLTR,PLTR,customer,(?i)\bpalantir\b,Enterprise AI demand; resells Claude
+NOW,NOW,customer,(?i)\bservicenow\b,Enterprise AI demand
+CRM,CRM,customer,(?i)\bsalesforce\b,Enterprise AI demand; uses Claude
+SNOW,SNOW,customer,(?i)\bsnowflake\b,Enterprise AI demand; resells Claude
+DDOG,DDOG,customer,(?i)\bdatadog\b,Enterprise AI demand
+NET,NET,customer,(?i)\bcloudflare\b,Enterprise AI demand

@@ -6,10 +6,12 @@
   SEC_USER_AGENT="Name email" python scripts/pull_ocn.py       # + Anthropic's own company data from SEC EDGAR
   python scripts/pull_ocn.py --since 2026-10-01                # only articles published on or after a date
 
-OCN does not track Anthropic as a company (no ticker until 19 Nov), so its articles are found by text:
-each OCN domain is walked with bodies and only rows matching MATCH are kept, with the matched words noted
-in `_match`. Rows are otherwise stored exactly as OCN returns them; OCN has already deduped by URL and
-folded near-duplicates into metadata.also_reported_by. Structure and further dedup come later.
+OCN does not track Anthropic as a company (no ticker until 19 Nov), so its articles are found by text.
+Each OCN domain is walked with bodies and a row is kept when either:
+  - it mentions Anthropic anywhere (MATCH); the matched words go in `_match`, or
+  - its headline names a company linked to Anthropic in context/markets/links.csv (competitor, supplier,
+    customer, peer, sector), or Alpha Vantage tags that company's ticker with relevance >= 0.5; these go in `_links`.
+Rows are otherwise stored exactly as OCN returns them. scripts/build_signals.py dedups and structures them.
 
 A finished file is skipped on the next run; delete it to pull it again.
 """
@@ -47,9 +49,29 @@ def ocn(path: str, **params):
     return get(f"{BASE}{path}{'?' + query if query else ''}", {"Authorization": f"Bearer {KEY}"} if KEY else None)
 
 
-def matches(row: dict) -> list[str]:
+# Companies linked to Anthropic (competitor, supplier, customer, peer, sector). Matched on the headline only,
+# so a passing mention in a long body does not pull in general tech news.
+LINKS = list(csv.DictReader(open(ROOT / "context/markets/links.csv")))
+for l in LINKS:
+    l["re"] = re.compile(l["title_pattern"])
+BY_TICKER = {l["ticker"]: l for l in LINKS if l["ticker"]} | {"GOOG": next(l for l in LINKS if l["ticker"] == "GOOGL")}
+
+
+def links(row: dict) -> list[dict]:
+    meta = row.get("metadata") if isinstance(row.get("metadata"), dict) else {}
+    found = {l["issuer_id"]: {"issuer_id": l["issuer_id"], "link_type": l["link_type"], "via": "title"}
+             for l in LINKS if l["re"].search(row.get("title") or "")}
+    for t in meta.get("ticker_sentiment") or []:  # company_news: Alpha Vantage tags tickers with a relevance score
+        l = BY_TICKER.get(t.get("ticker"))
+        if l and float(t.get("relevance_score") or 0) >= 0.5:
+            found.setdefault(l["issuer_id"], {"issuer_id": l["issuer_id"], "link_type": l["link_type"], "via": "ticker_sentiment"})
+    return sorted(found.values(), key=lambda x: x["issuer_id"])
+
+
+def matches(row: dict) -> dict | None:
     text = " ".join(str(row.get(k) or "") for k in ("title", "summary", "body", "text", "headline")) + " " + json.dumps(row.get("metadata") or {}, ensure_ascii=False)
-    return sorted({m.lower() for m in MATCH.findall(text)})
+    terms, linked = sorted({m.lower() for m in MATCH.findall(text)}), links(row)
+    return {"_match": terms, "_links": linked} if terms or linked else None
 
 
 def save_json(name: str, data) -> None:
@@ -70,7 +92,7 @@ def save_matching(name: str, path: str, key: str, **params) -> tuple[int, int] |
             page = ocn(path, cursor=cursor, **params)
             for row in page[key]:
                 if hit := matches(row):
-                    f.write(json.dumps({**row, "_match": hit}, ensure_ascii=False) + "\n")
+                    f.write(json.dumps({**row, **hit}, ensure_ascii=False) + "\n")
                     kept += 1
             seen += len(page[key])
             cursor = page.get("next_cursor")
