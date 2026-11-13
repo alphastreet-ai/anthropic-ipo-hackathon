@@ -7,6 +7,19 @@ python scripts/pull_ocn.py        # 1. copy matching OCN rows into raw/ (about 4
 python scripts/build_signals.py   # 2. dedup and structure them into signals/ (seconds)
 ```
 
+## Weights
+
+Every tunable number is in [`weights.json`](weights.json), and the numbers quoted below are its current values:
+- link confidence for each link to ANT
+- source reliability priors
+- half-lives by category
+- how OCN's high/medium/low grades become numbers
+- the size at which each family's strength reaches 1.0
+- dedup windows and thresholds
+- which macro channels and geopolitical categories count as relevant
+
+Edit it and rerun `python3 scripts/build_signals.py`; no new pull is needed. The `relevance` block is the exception: it is applied when pulling, so rerun `python3 scripts/pull_ocn.py`. A missing key stops the build instead of falling back to a hidden default. The 48 linked companies are in [`../markets/links.csv`](../markets/links.csv). Noise rules and topic keywords stay in `build_signals.py`; bump `RULES_VERSION` there when you change them.
+
 ## Browse it
 
 Two pages in `explorer/` read the pack straight from `signals/`, so they hold no data of their own:

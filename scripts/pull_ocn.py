@@ -136,15 +136,15 @@ LOCAL_CODES = {c for l in LINKS for c in l["local_codes"].split()}
 TICKERS = {l["ticker"] for l in LINKS if l["ticker"]} | {"GOOG"}
 # Geopolitics reaches ANT through AI supply, demand and capital: OCN's AI-universe categories, or an AI/chip headline
 # Energy & Grid and Data Centers are left out on their own: they are mostly fuel and local permitting stories
-GEO_CATEGORIES = {"Semiconductor Manufacturing", "Financial Infrastructure & AI Capital", "Compute Hardware & Edge Systems",
-                  "Cloud & Compute Platforms", "Networking, Optical & Interconnect", "Defense, Aerospace & Sovereign AI"}
-GEO_ASSETS = {"semiconductors", "broad_equities"}
+REL_W = json.load(open(ROOT / "context/ocn/weights.json"))["relevance"]
+GEO_CATEGORIES = set(REL_W["geo_categories"])
+GEO_ASSETS = set(REL_W["geo_assets"])
 # "data center" alone is left out: local zoning and permitting stories do not move the IPO
 AI_HEADLINE = re.compile(r"\b(?:ai|a\.i\.|artificial intelligence|chips?|chipmakers?|semiconductors?|gpus?|export controls?|"
                          r"entity list|hyperscalers?|llms?|hbm)\b", re.I)
 # Macro reaches a growth IPO through the discount rate and risk appetite, not through energy, housing or consumer data
-MACRO_CHANNELS = {"policy_path", "discount_rate", "credit", "liquidity", "risk_appetite"}
-MACRO_SERIES = re.compile(r"^(?:DGS|DFII|T10Y|T5Y|BAML|VIX|NASDAQ|SP500|DFF|SOFR|WALCL|RRP)")
+MACRO_CHANNELS = set(REL_W["macro_channels"])
+MACRO_SERIES = re.compile(r"^(?:" + "|".join(map(re.escape, REL_W["macro_level_series_prefixes"])) + ")")
 
 
 def text_of(row: dict) -> str:

@@ -26,11 +26,12 @@ ROOT = Path(__file__).resolve().parents[1]
 RAW, OUT = ROOT / "context/ocn/raw/articles", ROOT / "context/ocn/signals"
 SCHEMA_VERSION = 1  # major; this pack is v1.1 (additive: signal_detection, category, matched_in_title, link_type in the impact key)
 
-# Copied from OCN news-retrieval/src/pipeline.py (_TITLE_DEDUP_DOMAINS and the per-domain maps).
-WINDOW_HOURS = {"ai_news": 48, "smart_money": 48, "geopolitical_news": 168, "korea_market_signal": 24,
-                "middle_east_market_signal": 168, "japan_market_signal": 24}
-THRESHOLD = {"geopolitical_news": 0.82, "middle_east_market_signal": 0.82, "japan_market_signal": 0.95}
-DEFAULT_THRESHOLD = 0.90
+# Every tunable number lives in context/ocn/weights.json; a missing key fails here rather than falling back silently.
+W = json.load(open(ROOT / "context/ocn/weights.json"))
+# Dedup windows and thresholds, copied from OCN news-retrieval/src/pipeline.py (_TITLE_DEDUP_DOMAINS and the per-domain maps).
+WINDOW_HOURS = W["dedup"]["window_hours"]
+THRESHOLD = W["dedup"]["threshold"]
+DEFAULT_THRESHOLD = W["dedup"]["default_threshold"]
 EXCLUDED_CATEGORIES = {"korea_market_signal": {"dart_filing", "kr_customs_export"},
                        "middle_east_market_signal": {"me_official_wire", "me_us_policy", "me_fund_stake"},
                        "japan_market_signal": {"jp_forecast", "jp_results", "jp_buyback", "jp_buyback_status", "jp_buyback_announce",
@@ -39,8 +40,10 @@ EXCLUDED_CATEGORIES = {"korea_market_signal": {"dart_filing", "kr_customs_export
 SAME_DAY_TZ = {"japan_market_signal": timezone(timedelta(hours=9))}
 # ponytail: OCN embeds a title when it has none; we have no embedding key, so a pair without two stored
 # embeddings is compared by text instead, at a stricter near-verbatim bar. Embed missing titles to match OCN exactly.
-TEXT_THRESHOLD = 0.90
-CLUSTER_WINDOW_HOURS = 48
+TEXT_THRESHOLD = W["dedup"]["text_threshold"]
+CLUSTER_WINDOW_HOURS = W["dedup"]["cluster_window_hours"]
+CLUSTER_WORD_OVERLAP = W["dedup"]["cluster_word_overlap"]
+BACKFILLED_AFTER = timedelta(days=W["dedup"]["backfilled_after_days"])
 
 REGION = {"taiwan_market_signal": "TW", "korea_market_signal": "KR", "japan_market_signal": "JP",
           "china_market_signal": "CN", "middle_east_market_signal": "ME"}
@@ -49,11 +52,13 @@ FILING_CATEGORIES = {"dart_filing", "kr_quarterly_results", "cn_disclosure", "jp
 STATE_CATEGORIES = {"kr_quarterly_results"}  # a quarter's results hold until the next quarter's
 OFFICIAL_PRESS = {"cn_policy", "me_official_wire"}
 # Starting priors from signal.v1 (Overall-plan.md); calibration replaces them.
-RELIABILITY = [(0.8, r"reuters|bloomberg|associated press|apnews|dow jones|marketwatch"),
-               (0.7, r"financial times|ft\.com|wall street journal|wsj|new york times|nytimes|cnbc|guardian|techcrunch|the verge|"
-                     r"mit technology review|the information|axios|fortune|business insider|forbes|wired|ars technica|semafor|economist")]
-LINK_CONFIDENCE = {"supplier": 0.8, "competitor": 0.6, "customer": 0.5, "peer": 0.4, "sector": 0.4}
-AV_DIRECTION = {"Bullish": 1, "Somewhat-Bullish": 1, "Neutral": 0, "Somewhat-Bearish": -1, "Bearish": -1}
+REL = W["source_reliability"]
+RELIABILITY = [(v, rx) for v, rx in REL["patterns"]]
+LC = W["link_confidence"]
+LINK_CONFIDENCE = {k: LC[k] for k in ("supplier", "competitor", "customer", "peer", "sector")}
+AV_DIRECTION = W["grade_scale"]["alpha_vantage_direction"]
+HL = W["half_life_days"]
+SF = W["strength_full_at"]
 
 LINKS = list(csv.DictReader(open(ROOT / "context/markets/links.csv")))
 for _l in LINKS:
@@ -77,20 +82,20 @@ MOVE_WITH_REASON = re.compile(r"\b(?:earnings|beat|miss|guidance|results|deal|ac
 # Topic categories. Half-life priors follow signal.v1: days (2) for momentum, pricing, competition, demand;
 # weeks (10) for supply, geopolitics and deal events; quarters (30) for regulation and export controls.
 CATEGORIES = [
-    ("ipo", 10, r"\bipo\b|\bs-1\b|roadshow|\blisting\b|lock-?up|underwrit|\bdebut\b|price range|go(?:es|ing)? public"),
-    ("funding", 10, r"\braises?\b.{0,30}\$|\bfunding\b|\bvaluation\b|valued at|\bround\b|\binvest(?:s|ment|ing)\b|private placement|tender offer"),
-    ("earnings", 4, r"\bearnings\b|\bquarter(?:ly)?\b|\bq[1-4]\b|\bresults\b|\bguidance\b|\boutlook\b|\bprofit\b|\brevenue\b"),
-    ("pricing", 2, r"\bprice (?:cut|hike|war)|\bpricing\b|per token|\bsubscription\b|\bcheaper\b|\bdiscount"),
-    ("product", 4, r"\blaunch(?:es|ed)?\b|\breleas(?:es|ed)\b|\bunveil|\bintroduc|\bnew model\b|\bagents?\b|\bfeature\b|\bbeta\b|\bupgrade"),
-    ("demand", 2, r"\bcustomers?\b|\badoption\b|\bcontract\b|\bdeal\b|\bpartnership\b|\bpartners? with\b|\bsigns?\b|\bbookings\b|\borders?\b|\benterprise\b"),
-    ("supply", 10, r"\bchips?\b|\bgpus?\b|\bhbm\b|\bcapacity\b|data ?cent(?:er|re)s?\b|\bpower\b|\bppa\b|\bcompute\b|\bfabs?\b|\bshortage\b|\bmemory\b|\bnuclear\b|\bmegawatts?\b|\b\d+ ?[gm]w\b|\bcapex\b"),
-    ("competition", 2, r"\brivals?\b|\bcompetit|\bmarket share\b|\bovertakes?\b|\bbeats?\b|\bvs\.?\b|\bversus\b|\bchallenger?\b"),
-    ("talent", 4, r"\bhires?\b|\bhired\b|\bceo\b|\bexecutives?\b|\bdeparts?\b|\bresigns?\b|\bpoach|\bjoins\b|\blayoffs?\b"),
-    ("legal", 30, r"\blawsuit\b|\bsues?\b|\bsued\b|\bcourt\b|\bjudge\b|\bcopyright\b|\bsettle(?:s|ment)\b|\bantitrust\b|\bftc\b|\bdoj\b"),
-    ("regulation", 30, r"\bregulat|\brules\b|\blaw\b|\bbill\b|\bai act\b|\bpolicy\b|\bcongress\b|\bsenate\b|\bwhite house\b|\bexecutive order\b"),
-    ("export_controls", 30, r"export control|export ban|entity list|chip ban|\bexport rules?\b"),
-    ("geopolitics", 10, r"\btariffs?\b|\bsanctions?\b|\bchina\b|\btaiwan\b|\bwar\b|\belection\b|\bmidterms?\b|\bpentagon\b|\bdefen[cs]e\b"),
-    ("momentum", 2, r"\bstocks?\b|\bshares\b|\brally\b|\bslides?\b|\bjumps?\b|\bfalls?\b|\brises?\b|\bsurges?\b|\bplunges?\b|\bsell-?off\b|\bsoars?\b|\btumbles?\b"),
+    ("ipo", HL["category"]["ipo"], r"\bipo\b|\bs-1\b|roadshow|\blisting\b|lock-?up|underwrit|\bdebut\b|price range|go(?:es|ing)? public"),
+    ("funding", HL["category"]["funding"], r"\braises?\b.{0,30}\$|\bfunding\b|\bvaluation\b|valued at|\bround\b|\binvest(?:s|ment|ing)\b|private placement|tender offer"),
+    ("earnings", HL["category"]["earnings"], r"\bearnings\b|\bquarter(?:ly)?\b|\bq[1-4]\b|\bresults\b|\bguidance\b|\boutlook\b|\bprofit\b|\brevenue\b"),
+    ("pricing", HL["category"]["pricing"], r"\bprice (?:cut|hike|war)|\bpricing\b|per token|\bsubscription\b|\bcheaper\b|\bdiscount"),
+    ("product", HL["category"]["product"], r"\blaunch(?:es|ed)?\b|\breleas(?:es|ed)\b|\bunveil|\bintroduc|\bnew model\b|\bagents?\b|\bfeature\b|\bbeta\b|\bupgrade"),
+    ("demand", HL["category"]["demand"], r"\bcustomers?\b|\badoption\b|\bcontract\b|\bdeal\b|\bpartnership\b|\bpartners? with\b|\bsigns?\b|\bbookings\b|\borders?\b|\benterprise\b"),
+    ("supply", HL["category"]["supply"], r"\bchips?\b|\bgpus?\b|\bhbm\b|\bcapacity\b|data ?cent(?:er|re)s?\b|\bpower\b|\bppa\b|\bcompute\b|\bfabs?\b|\bshortage\b|\bmemory\b|\bnuclear\b|\bmegawatts?\b|\b\d+ ?[gm]w\b|\bcapex\b"),
+    ("competition", HL["category"]["competition"], r"\brivals?\b|\bcompetit|\bmarket share\b|\bovertakes?\b|\bbeats?\b|\bvs\.?\b|\bversus\b|\bchallenger?\b"),
+    ("talent", HL["category"]["talent"], r"\bhires?\b|\bhired\b|\bceo\b|\bexecutives?\b|\bdeparts?\b|\bresigns?\b|\bpoach|\bjoins\b|\blayoffs?\b"),
+    ("legal", HL["category"]["legal"], r"\blawsuit\b|\bsues?\b|\bsued\b|\bcourt\b|\bjudge\b|\bcopyright\b|\bsettle(?:s|ment)\b|\bantitrust\b|\bftc\b|\bdoj\b"),
+    ("regulation", HL["category"]["regulation"], r"\bregulat|\brules\b|\blaw\b|\bbill\b|\bai act\b|\bpolicy\b|\bcongress\b|\bsenate\b|\bwhite house\b|\bexecutive order\b"),
+    ("export_controls", HL["category"]["export_controls"], r"export control|export ban|entity list|chip ban|\bexport rules?\b"),
+    ("geopolitics", HL["category"]["geopolitics"], r"\btariffs?\b|\bsanctions?\b|\bchina\b|\btaiwan\b|\bwar\b|\belection\b|\bmidterms?\b|\bpentagon\b|\bdefen[cs]e\b"),
+    ("momentum", HL["category"]["momentum"], r"\bstocks?\b|\bshares\b|\brally\b|\bslides?\b|\bjumps?\b|\bfalls?\b|\brises?\b|\bsurges?\b|\bplunges?\b|\bsell-?off\b|\bsoars?\b|\btumbles?\b"),
 ]
 CATEGORIES = [(name, hl, re.compile(rx, re.I)) for name, hl, rx in CATEGORIES]
 
@@ -262,7 +267,7 @@ def cluster(rows: list[dict]) -> None:
             if set(o["_domains"]) & set(r["_domains"]) & WINDOW_HOURS.keys():
                 continue  # same-domain pairs in OCN's title-dedup domains were already judged by dedup_titles
             w = words[i] | words[j]
-            if w and len(words[i] & words[j]) / len(w) >= 0.2 and is_dup(r, o, DEFAULT_THRESHOLD):
+            if w and len(words[i] & words[j]) / len(w) >= CLUSTER_WORD_OVERLAP and is_dup(r, o, DEFAULT_THRESHOLD):
                 r["_cluster"] = o["_cluster"]
                 break
 
@@ -333,18 +338,18 @@ def family_strength(det: str, m: dict) -> float | None:
         if isinstance(z, dict):
             z = max((abs(v) for v in z.values() if isinstance(v, (int, float))), default=None)
         if z is not None:
-            return cap(z, 4)  # |z| of 4 or more is full strength
+            return cap(z, SF["macro_abs_z"])
         if m.get("percentile") is not None:
-            return cap(float(m["percentile"]) - 50, 50)  # distance from the median of its 20-year range
+            return cap(float(m["percentile"]) - 50, SF["macro_percentile_from_median"])  # distance from the median of its 20-year range
         return None
     if det == "china":
-        return cap(m.get("deviation_mads"), 10) if m.get("deviation_mads") is not None else cap(m.get("capex_change_pct"), 100)
+        return cap(m.get("deviation_mads"), SF["china_deviation_mads"]) if m.get("deviation_mads") is not None else cap(m.get("capex_change_pct"), SF["china_capex_change_pct"])
     if det == "taiwan":
-        return cap(m.get("revenue_deviation"), 3)
+        return cap(m.get("revenue_deviation"), SF["taiwan_revenue_deviation"])
     if det == "korea":
-        return cap(m.get("pct_of_revenue"), 30)
+        return cap(m.get("pct_of_revenue"), SF["korea_pct_of_revenue"])
     if det == "japan":
-        return cap(m.get("operating_profit_pct_change") if m.get("operating_profit_pct_change") is not None else m.get("revenue_pct_change"), 50)
+        return cap(m.get("operating_profit_pct_change") if m.get("operating_profit_pct_change") is not None else m.get("revenue_pct_change"), SF["japan_revision_pct"])
     return None
 
 
@@ -355,14 +360,15 @@ def signal(r: dict) -> dict:
     long_form = "substack.com" in url or m.get("source_type") == "substack_post" or re.search(r"newsletter|substack", source, re.I)
     kind = "exchange_disclosure" if cat in FILING_CATEGORIES else "long_form" if long_form else "news_article"
     hay = f"{source} {outlet(url)}".lower()
-    reliability = (0.9 if kind == "exchange_disclosure" else 0.8 if cat in OFFICIAL_PRESS else 0.5 if long_form
-                   else next((p for p, rx in RELIABILITY if re.search(rx, hay)), 0.6))
+    reliability = (REL["exchange_filing_or_data_release"] if kind == "exchange_disclosure" else REL["state_wire"] if cat in OFFICIAL_PRESS
+                   else REL["newsletter"] if long_form else next((p for p, rx in RELIABILITY if re.search(rx, hay)), REL["other_news"]))
     in_title = [l["issuer_id"] for l in r["_links"]]
     subject = "ANT" if r["_match"] and (r["_ant_in_title"] or not in_title) else (in_title[0] if len(in_title) == 1 else None)
     cats = categories(r)
     hl = max((h for n, h, _ in CATEGORIES if n in cats), default=None)
     if hl is None:
-        hl = 25 if kind == "long_form" else 15 if r["domain"] in ("geopolitical_news", "middle_east_market_signal") else 4
+        nc = HL["no_category"]
+        hl = nc["newsletter"] if kind == "long_form" else nc["geopolitical_news"] if r["domain"] in ("geopolitical_news", "middle_east_market_signal") else nc["news"]
     label, evidence = detect(r)
     lang = language(r["_title"], m.get("language"))
     summary = r.get("summary") if r.get("summary") not in (None, "None", "") else None
@@ -393,7 +399,7 @@ def signal(r: dict) -> dict:
         "producer": "anthropic-ipo-hackathon/scripts/build_signals.py", "model": None, "prompt_version": None,
         "signal_type": "state" if cat in STATE_CATEGORIES else "event", "superseded_by": None, "superseded_at": None,
         # OCN's detected_at is kept as the real point-in-time; backfilled marks rows it found long after publication
-        "backfilled": bool(pub and seen and seen - pub > timedelta(days=7)),
+        "backfilled": bool(pub and seen and seen - pub > BACKFILLED_AFTER),
         "_ocn": {"article_id": r["id"], "run_id": r.get("run_id"), "domains": r["_domains"], "source_category": cat,
                  "match_terms": r["_match"], "raw_title": r["_raw_title"], "also_reported_by": r["_also"],
                  "av_overall_sentiment": m.get("overall_sentiment_label")},
@@ -411,14 +417,14 @@ def impacts(r: dict, s: dict) -> list[dict]:
         "exposure": None, "exposure_source": src, "link_confidence": conf}
     out = []
     if r["_match"]:
-        out.append(row("ANT", "direct", 0, None, "not measured", 1.0 if r["_ant_in_title"] else 0.5))
+        out.append(row("ANT", "direct", 0, None, "not measured", LC["ant_direct_headline"] if r["_ant_in_title"] else LC["ant_direct_body_only"]))
     if not r["_ant_in_title"]:
         for lt in sorted({t for l in r["_links"] for t in l["types"]}):
             out.append(row("ANT", lt, 1, None, "not measured", LINK_CONFIDENCE[lt]))
     for l in r["_links"]:
         t = LINK_BY_ID[l["issuer_id"]]["ticker"]
         d = av.get(t) if t else None
-        out.append(row(l["issuer_id"], "direct", 0, d, "Alpha Vantage ticker sentiment" if d is not None else "not measured", 1.0))
+        out.append(row(l["issuer_id"], "direct", 0, d, "Alpha Vantage ticker sentiment" if d is not None else "not measured", LC["named_company"]))
     return out
 
 
@@ -431,10 +437,10 @@ EXCHANGE = {"taiwan": ("TWSE", "TW"), "korea": ("KRX", "KR"), "japan": ("TSE", "
 LOCAL = {c: l["issuer_id"] for l in LINKS for c in l.get("local_codes", "").split()}
 TICKER_TO_ID = {l["ticker"]: l["issuer_id"] for l in LINKS if l["ticker"]} | {"GOOG": "GOOGL"}
 ANT_MATCH = re.compile(r"\banthropic\b|\bamodei\b|\bclaude[ -](?:code|cowork|opus|sonnet|haiku|fable|mythos|\d)|\bclaude\.ai\b", re.I)
-LEVEL = {"high": 0.9, "medium": 0.6, "low": 0.3, "none": 0.0}
-NOVELTY = {"step_change": 1.0, "meaningful_update": 0.66, "incremental_update": 0.33, "repeated_coverage": 0.0}
+LEVEL = W["grade_scale"]["level"]
+NOVELTY = W["grade_scale"]["novelty"]
 RELATIONSHIP = {"competitor": "competitor", "supplier": "supplier", "customer": "customer"}
-MACRO_PRIOR, GEO_PRIOR, REGIONAL_PRIOR = 4, 15, 4
+MACRO_PRIOR, GEO_PRIOR, REGIONAL_PRIOR = HL["no_category"]["macro"], HL["no_category"]["geo_or_middle_east"], HL["no_category"]["regional"]
 KR_FILINGS = {"supply_contract", "capacity_commitment", "preliminary_earnings", "guidance_disclosure", "rumour_adjudication",
               "voluntary_clarification", "rumour_confirmation"}
 
@@ -509,8 +515,8 @@ def graded(st: str, row: dict) -> tuple[dict, list[dict]]:
     publisher = (m.get("outlet") or src.get("name") or (m.get("release_agency") and f"{m['release_agency']} {m.get('release_name') or ''}".strip())
                  or outlet(row.get("url") or "") or {"taiwan": "MOPS", "korea": "DART", "japan": "TDnet", "china": "CNINFO/HKEX"}.get(det, "OCN"))
     hay = f"{publisher} {outlet(row.get('url') or '')}".lower()
-    reliability = (0.9 if kind in ("exchange_disclosure", "government_document", "data_release")
-                   else next((p for p, rx in RELIABILITY if re.search(rx, hay)), 0.6))
+    reliability = (REL["exchange_filing_or_data_release"] if kind in ("exchange_disclosure", "government_document", "data_release")
+                   else next((p for p, rx in RELIABILITY if re.search(rx, hay)), REL["other_news"]))
     cats = sorted(set(row.get("category") or []) | set(categories({"_title": title, "summary": m.get("summary")})))
     hl = max((h for n, h, _ in CATEGORIES if n in cats), default=None) or (
         MACRO_PRIOR if det == "macro" else GEO_PRIOR if det in ("geo", "middle_east") else REGIONAL_PRIOR)
@@ -552,7 +558,7 @@ def graded(st: str, row: dict) -> tuple[dict, list[dict]]:
                     "matched_issuers": (["ANT"] if ant else []) + sorted(named), "matched_in_title": [], **typed},
         "producer": "ocn/signal-detection-agent", "model": extracted.get("model"), "prompt_version": extracted.get("prompt"),
         "signal_type": "state" if m.get("signal_type") == "level" else "event", "superseded_by": None, "superseded_at": None,
-        "backfilled": bool(pub and seen and seen - pub > timedelta(days=7)),
+        "backfilled": bool(pub and seen and seen - pub > BACKFILLED_AFTER),
         "_ocn": {"result_id": row["id"], "source_type": st, "article_id": row.get("article_id"), "source_id": row.get("source_id"),
                  "corroboration": (m.get("corroboration") or {}).get("count"), "also_reported_by": m.get("also_reported_by") or []},
     }
@@ -560,22 +566,22 @@ def graded(st: str, row: dict) -> tuple[dict, list[dict]]:
                                                    "direction": d, "exposure": None, "exposure_source": src_, "link_confidence": conf}
     imps = []
     if ant:
-        imps.append(row_("ANT", "direct", 0, None, "not measured", 1.0))
+        imps.append(row_("ANT", "direct", 0, None, "not measured", LC["ant_direct_headline"]))
     else:
         for lt in sorted({t for i in named for t in LINK_BY_ID[i]["types"]}):
             imps.append(row_("ANT", lt, 1, None, "not measured", LINK_CONFIDENCE[lt]))
         if det in ("macro", "geo", "middle_east"):
             # ponytail: a flat prior until ANT has a price history to measure its rate and risk beta
-            imps.append(row_("ANT", "macro", 1, None, "prior: growth IPO rate and risk sensitivity", 0.3))
+            imps.append(row_("ANT", "macro", 1, None, "prior: growth IPO rate and risk sensitivity", LC["ant_macro"]))
     rt_dir = {i: rt.get("relationship") for i, rt in read_through}
     for i in sorted(named):
         d = me_dir.get(i) if i in me_dir else (direction if i == subject else None)
-        imps.append(row_(i, "direct", 0, d, "OCN share_price effect" if i in me_dir and d is not None else "not measured", 1.0))
+        imps.append(row_(i, "direct", 0, d, "OCN share_price effect" if i in me_dir and d is not None else "not measured", LC["named_company"]))
     if subject and subject not in named and subject not in LINK_BY_ID:
-        imps.append(row_(subject, "direct", 0, direction, "not measured", 1.0))
+        imps.append(row_(subject, "direct", 0, direction, "not measured", LC["named_company"]))
     for i, rel in rt_dir.items():
         if rel in RELATIONSHIP and not any(x["issuer_id"] == i and x["link_type"] == RELATIONSHIP[rel] for x in imps):
-            imps.append(row_(i, RELATIONSHIP[rel], 1, None, "OCN read_through", 0.6))
+            imps.append(row_(i, RELATIONSHIP[rel], 1, None, "OCN read_through", LC["china_read_through"]))
     return s, imps
 
 
