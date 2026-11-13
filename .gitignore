@@ -5,6 +5,5 @@ __pycache__/
 .hallmark/
 scoring/judged.json
 internal/
-organisers/raw/
 # headlines and summaries from licensed sources; commit only after the pack is cleared for publishing
 signals/pack/

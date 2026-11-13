@@ -1,4 +1,4 @@
-date,series,name,value,source=FRED fetched_at=2026-11-12T08:10:58Z
+date,series,name,value,source=FRED fetched_at=2026-11-13T15:09:11Z
 2026-08-03,DGS10,10-year Treasury yield,4.70
 2026-08-04,DGS10,10-year Treasury yield,4.63
 2026-08-05,DGS10,10-year Treasury yield,4.63
@@ -68,6 +68,7 @@ date,series,name,value,source=FRED fetched_at=2026-11-12T08:10:58Z
 2026-11-05,DGS10,10-year Treasury yield,4.84
 2026-11-06,DGS10,10-year Treasury yield,4.86
 2026-11-09,DGS10,10-year Treasury yield,4.88
+2026-11-10,DGS10,10-year Treasury yield,4.98
 2026-08-03,DGS2,2-year Treasury yield,4.25
 2026-08-04,DGS2,2-year Treasury yield,4.20
 2026-08-05,DGS2,2-year Treasury yield,4.18
@@ -137,6 +138,7 @@ date,series,name,value,source=FRED fetched_at=2026-11-12T08:10:58Z
 2026-11-05,DGS2,2-year Treasury yield,4.46
 2026-11-06,DGS2,2-year Treasury yield,4.51
 2026-11-09,DGS2,2-year Treasury yield,4.56
+2026-11-10,DGS2,2-year Treasury yield,4.73
 2026-08-03,VIXCLS,VIX,15.86
 2026-08-04,VIXCLS,VIX,16.50
 2026-08-05,VIXCLS,VIX,15.81
@@ -209,6 +211,8 @@ date,series,name,value,source=FRED fetched_at=2026-11-12T08:10:58Z
 2026-11-06,VIXCLS,VIX,25.64
 2026-11-09,VIXCLS,VIX,19.92
 2026-11-10,VIXCLS,VIX,19.46
+2026-11-11,VIXCLS,VIX,17.49
+2026-11-12,VIXCLS,VIX,18.70
 2026-08-03,BAMLH0A0HYM2,High-yield credit spread,2.78
 2026-08-04,BAMLH0A0HYM2,High-yield credit spread,2.73
 2026-08-05,BAMLH0A0HYM2,High-yield credit spread,2.75
@@ -280,3 +284,5 @@ date,series,name,value,source=FRED fetched_at=2026-11-12T08:10:58Z
 2026-11-05,BAMLH0A0HYM2,High-yield credit spread,3.48
 2026-11-06,BAMLH0A0HYM2,High-yield credit spread,3.42
 2026-11-09,BAMLH0A0HYM2,High-yield credit spread,3.34
+2026-11-11,BAMLH0A0HYM2,High-yield credit spread,3.30
+2026-11-12,BAMLH0A0HYM2,High-yield credit spread,3.20

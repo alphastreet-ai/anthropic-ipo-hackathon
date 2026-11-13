@@ -83,7 +83,7 @@
     "japan_revision_pct": 50
   },
   "build": {
-    "_about": "Used only when the organisers build the pack from AlphaStreet's feed (organisers/). Changing these has no effect on apply_weights.py.",
+    "_about": "Used only when AlphaStreet builds the pack from its feed. Changing these has no effect on apply_weights.py.",
     "alpha_vantage_direction": {
       "Bullish": 1,
       "Somewhat-Bullish": 1,

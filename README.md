@@ -102,7 +102,6 @@ submissions/      one folder per entrant, plus _template/
 schema/           prediction.schema.json
 scripts/          apply_weights.py, validate.py (run by CI on every pull request), fetch_context.py
 scoring/          score.py, which also builds the leaderboard
-organisers/       how AlphaStreet builds the pack; entrants do not need it
 ```
 
 The pack and `context/` are refreshed daily until submissions close. Every source, with links and what you may redistribute, is in [`context/README.md`](context/README.md). You may use any other public data.
