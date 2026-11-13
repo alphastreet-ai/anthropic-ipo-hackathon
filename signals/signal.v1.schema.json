@@ -98,7 +98,8 @@
         "geo",
         "macro",
         "sec",
-        "social"
+        "social",
+        "custom"
       ]
     },
     "subtype": {
@@ -110,7 +111,7 @@
         "weak_signal",
         "noise"
       ],
-      "description": "Relevance label. Rule-based in this pack until OCN's classifier grades the rows; the rule is named in evidence"
+      "description": "Relevance label: from a classifier where one graded the row, otherwise a headline rule; the reason is in evidence"
     },
     "category": {
       "type": "array",
@@ -118,7 +119,7 @@
         "type": "string"
       },
       "uniqueItems": true,
-      "description": "Topics: this pack's keyword topics (ipo, funding, earnings, pricing, product, demand, supply, competition, talent, legal, regulation, export_controls, geopolitics, momentum) plus OCN's own impacted categories. The longest half-life prior among them sets half_life_days"
+      "description": "Topics: this pack's keyword topics (ipo, funding, earnings, pricing, product, demand, supply, competition, talent, legal, regulation, export_controls, geopolitics, momentum) plus the classifier's impacted categories. The longest half-life prior among them sets half_life_days"
     },
     "title": {
       "type": "string",
@@ -375,9 +376,9 @@
     "backfilled": {
       "type": "boolean"
     },
-    "_ocn": {
+    "_source": {
       "type": "object",
-      "description": "Provenance from OCN; not part of the contract"
+      "description": "Where the signal came from, and `basis`: the raw inputs scripts/apply_weights.py turns into weighted numbers. Not part of the contract."
     }
   },
   "additionalProperties": false,
@@ -714,6 +715,35 @@
                 "transmission",
                 "z_score",
                 "move_bp"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "detector": {
+            "const": "custom"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "details": {
+            "required": [
+              "publisher",
+              "entities",
+              "matched_issuers",
+              "matched_in_title"
+            ],
+            "propertyNames": {
+              "enum": [
+                "publisher",
+                "entities",
+                "matched_issuers",
+                "matched_in_title"
               ]
             }
           }

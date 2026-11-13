@@ -141,7 +141,7 @@ a { color: var(--accent); }
 
 <script>
 function failed(e) {
-  document.getElementById("loadmsg").innerHTML = "Could not load the signal pack (" + String(e).replace(/[<>&]/g, "") + "). Build it with <code>python3 scripts/build_signals.py</code>, then serve the repo root with <code>python3 -m http.server 8000</code> and open this page from <code>http://localhost:8000/explorer/</code>.";
+  document.getElementById("loadmsg").innerHTML = "Could not load the signal pack (" + String(e).replace(/[<>&]/g, "") + "). Make sure <code>signals/pack/</code> is there, then serve the repo root with <code>python3 -m http.server 8000</code> and open this page from <code>http://localhost:8000/explorer/</code>.";
 }
 const lines = (t) => t.split("\n").filter(Boolean).map((l) => JSON.parse(l));
 async function get(p, kind) { const r = await fetch(p); if (!r.ok) throw new Error(p + " " + r.status); return kind === "json" ? r.json() : r.text(); }
@@ -257,12 +257,12 @@ $("rows").addEventListener("keydown", (e) => { if ((e.key === "Enter" || e.key =
 
 const ant = IMP.filter((i) => i.issuer === "ANT").length;
 $("summary").innerHTML = `<span>Impacts <b>${IMP.length.toLocaleString()}</b></span><span>Signals <b>${SIG.length.toLocaleString()}</b></span><span>Reaching ANT <b>${ant.toLocaleString()}</b></span><span>Companies <b>${new Set(IMP.map((i) => i.issuer)).size}</b></span><span>Built <b>${esc(D.built_at)}</b></span>`;
-$("note").textContent = "Exposure is null in every row: nothing measures yet how much of a company a signal touches. Direction comes from Alpha Vantage per-ticker sentiment and OCN's Middle East share-price effects; elsewhere it is null. Headlines come from licensed sources and are for internal review.";
+$("note").textContent = "Exposure is null in every row: nothing measures yet how much of a company a signal touches. Direction comes from Alpha Vantage per-ticker sentiment and the Middle East share-price effects; elsewhere it is null. Headlines come from licensed sources and are for internal review.";
 render();
 }
 
 const F = ["signal_id","title","detector","subtype","label","scope","subject","event_direction","source","reliability","url","published","half_life","category","evidence"];
-Promise.all([get("../context/ocn/signals/signals.v1.jsonl"), get("../context/ocn/signals/signal_impacts.v1.jsonl"), get("../context/ocn/signals/stats.json", "json"), get("../context/markets/links.csv")]).then(([s, i, stats, links]) => {
+Promise.all([get("../pack/signals.v1.jsonl"), get("../pack/signal_impacts.v1.jsonl"), get("../pack/stats.json", "json"), get("../companies.csv")]).then(([s, i, stats, links]) => {
   const S = lines(s), idx = new Map(S.map((x, n) => [x.signal_id, n])), src = [];
   const signals = S.map((x) => [x.signal_id, x.title, x.detector, x.subtype, x.signal_detection, x.scope, x.subject_issuer_id, x.event_direction, x.source_name,
     x.source_reliability, x.source_url, (x.published_at || x.detected_at || "").slice(0, 19), x.half_life_days, x.category, x.evidence]);

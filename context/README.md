@@ -1,6 +1,6 @@
 # Context pack
 
-The starting kit for your model or agent. It is refreshed daily until submissions close on Wed 18 Nov. You may use any other public data too.
+Background for your model or agent: the filing, comparable IPOs, macro series, tickers, headlines and dates. The signals themselves are in [`../signals/`](../signals/README.md). It is refreshed daily until submissions close on Wed 18 Nov. You may use any other public data too.
 
 The example agents read every `.md`, `.txt`, `.csv`, `.json` and `.jsonl` file under `context/` (except `README.md` files).
 
@@ -9,7 +9,6 @@ The example agents read every `.md`, `.txt`, `.csv`, `.json` and `.jsonl` file u
 | Folder | What is in it | Refreshed |
 |---|---|---|
 | `anthropic-s1/` | Links to every filing, offering terms, quarterly results, compute commitments, valuation history | When a new filing lands |
-| `ocn/` | AlphaStreet's own signals feed | Daily until 18 Nov |
 | `macro/` | Treasury yields, VIX and credit spreads from FRED | Daily |
 | `nvidia/` | Nvidia earnings summary and guidance | Tue 17 Nov, after the call |
 | `comps/` | SpaceX and other large tech IPOs: IPO price, open, day-1 and day-5 close | Static |
@@ -51,6 +50,6 @@ All four hang on one number, the final IPO price. Model day one and day five as 
 - Prices: derived numbers only (returns, summaries).
 - News: headline, link, date and source. Never article text.
 - Social: counts and tone only. No copied posts or usernames.
-- AlphaStreet signals: only the pack in `ocn/`.
+- AlphaStreet signals: only the pack in `signals/pack/`.
 
 Every data file names its `source`. Numbers in `anthropic-s1/*.csv` come from the filings or from coverage quoting them; if a number matters to your thesis, check it against the filing itself.

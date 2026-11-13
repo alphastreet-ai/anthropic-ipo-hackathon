@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
-"""Pull Anthropic-related data from OCN into context/ocn/raw/, as-is. Standard library only.
+"""Organisers only: pull Anthropic-related data from AlphaStreet's feed into organisers/raw/, as-is. Standard library only.
+Needs feed access: ALPHASTREET_FEED_URL and ALPHASTREET_FEED_KEY. Participants do not run this; they get the built pack.
 
-  python scripts/pull_ocn.py                                   # every OCN article that mentions Anthropic
-  OCN_API_KEY=... python scripts/pull_ocn.py                   # + OCN's graded regional, geopolitical and macro signals, market data
-  SEC_USER_AGENT="Name email" python scripts/pull_ocn.py       # + Anthropic's own company data from SEC EDGAR
-  python scripts/pull_ocn.py --since 2026-10-01                # only articles published on or after a date
+  python organisers/pull_signals.py                              # articles that mention Anthropic or a linked company
+  (with ALPHASTREET_FEED_KEY set)                                # + graded regional, geopolitical and macro signals, market data
+  SEC_USER_AGENT="Name email" python organisers/pull_signals.py  # + Anthropic's own company data from SEC EDGAR
+  python organisers/pull_signals.py --since 2026-10-01           # only articles published on or after a date
 
-OCN does not track Anthropic as a company (no ticker until 19 Nov), so its articles are found by text.
-Each OCN domain is walked with bodies and a row is kept when either:
+Anthropic has no ticker until 19 Nov, so its articles are found by text. Each feed domain is walked with bodies
+and a row is kept when either:
   - it mentions Anthropic anywhere (MATCH); the matched words go in `_match`, or
-  - its headline names a company linked to Anthropic in context/markets/links.csv (competitor, supplier,
+  - its headline names a company linked to Anthropic in signals/companies.csv (competitor, supplier,
     customer, peer, sector); these go in `_links`.
-Rows are otherwise stored exactly as OCN returns them. scripts/build_signals.py dedups and structures them.
+Rows are otherwise stored exactly as the feed returns them. organisers/build_signals.py dedups and structures them.
 
 A finished file is skipped on the next run; delete it to pull it again.
 """
@@ -21,9 +22,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "context/ocn/raw"
-BASE = os.environ.get("OCN_BASE_URL", "http://staging-ocn-alb-1788409195.eu-north-1.elb.amazonaws.com").rstrip("/")
-KEY = os.environ.get("OCN_API_KEY")
+OUT = ROOT / "organisers/raw"
+BASE = os.environ.get("ALPHASTREET_FEED_URL", "").rstrip("/")  # the feed's address is not kept in the repo
+KEY = os.environ.get("ALPHASTREET_FEED_KEY")
 SEC_UA = os.environ.get("SEC_USER_AGENT")
 CIK = "0002130357"  # Anthropic PBC
 # ponytail: plain keyword match; "Claude" alone is left out because it is also a first name
@@ -45,14 +46,14 @@ def get(url: str, headers: dict | None = None):
         time.sleep(2 ** attempt)
 
 
-def ocn(path: str, **params):
+def feed(path: str, **params):
     query = urllib.parse.urlencode([(k, v) for k, v in params.items() if v is not None])
     return get(f"{BASE}{path}{'?' + query if query else ''}", {"Authorization": f"Bearer {KEY}"} if KEY else None)
 
 
 # Companies linked to Anthropic (competitor, supplier, customer, peer, sector). Matched on the headline only,
 # so a passing mention in a long body does not pull in general tech news.
-LINKS = list(csv.DictReader(open(ROOT / "context/markets/links.csv")))
+LINKS = list(csv.DictReader(open(ROOT / "signals/companies.csv")))
 for l in LINKS:
     l["re"] = re.compile(l["title_pattern"])
 
@@ -78,7 +79,7 @@ CHUNK, WORKERS = 10_000, 8  # ponytail: 8 parallel walks keeps the shared stagin
 
 
 def cursor_at(article_id: int) -> str:
-    return base64.b64encode(json.dumps({"id": article_id}).encode()).decode()  # OCN's cursor is base64 {"id": n}
+    return base64.b64encode(json.dumps({"id": article_id}).encode()).decode()  # the feed's cursor is base64 {"id": n}
 
 
 def scan_chunk(domain: str, lo: int, hi: int, since: str | None) -> tuple[int, int]:
@@ -90,7 +91,7 @@ def scan_chunk(domain: str, lo: int, hi: int, since: str | None) -> tuple[int, i
     part, seen, kept, cursor = final.with_name(final.name + ".part"), 0, 0, cursor_at(hi)
     with gzip.open(part, "wt", encoding="utf-8") as f:
         while cursor:
-            page = ocn("/news/articles", domain=domain, limit=100, include_body="true", from_date=since, cursor=cursor)
+            page = feed("/news/articles", domain=domain, limit=100, include_body="true", from_date=since, cursor=cursor)
             rows = [r for r in page["articles"] if int(r["id"]) >= lo]
             for row in rows:
                 if hit := matches(row):
@@ -104,9 +105,9 @@ def scan_chunk(domain: str, lo: int, hi: int, since: str | None) -> tuple[int, i
 
 
 def articles(since: str | None, counts: dict) -> None:
-    domains = [d["slug"] for d in ocn("/news/domains")]
-    save_json("domains.json", ocn("/news/domains"))
-    top = max((int(p["articles"][0]["id"]) for d in domains if (p := ocn("/news/articles", domain=d, limit=1))["articles"]), default=0) + 1
+    domains = [d["slug"] for d in feed("/news/domains")]
+    save_json("domains.json", feed("/news/domains"))
+    top = max((int(p["articles"][0]["id"]) for d in domains if (p := feed("/news/articles", domain=d, limit=1))["articles"]), default=0) + 1
     jobs = [(d, lo, min(lo + CHUNK, top)) for d in domains if not (OUT / f"articles/{d}.jsonl.gz").exists() for lo in range(0, top, CHUNK)]
     totals: dict[str, list[int]] = {d: [0, 0] for d in domains}
     done = 0
@@ -128,15 +129,15 @@ def articles(since: str | None, counts: dict) -> None:
     shutil.rmtree(OUT / "articles/.chunks", ignore_errors=True)
 
 
-# OCN's graded signal families, one event per row (view=events drops rows folded into a story).
+# The feed's graded signal families, one event per row (view=events drops rows folded into a story).
 # Only rows that can move the Anthropic IPO are kept (see relevant()); build_signals.py maps them into signal.v1.1.
 FAMILIES = ["taiwan_market_signal", "korea_market_signal", "japan_market_signal", "china_market_signal",
             "middle_east_market_signal", "geopolitical_signal", "macro_signal"]
 LOCAL_CODES = {c for l in LINKS for c in l["local_codes"].split()}
 TICKERS = {l["ticker"] for l in LINKS if l["ticker"]} | {"GOOG"}
-# Geopolitics reaches ANT through AI supply, demand and capital: OCN's AI-universe categories, or an AI/chip headline
+# Geopolitics reaches ANT through AI supply, demand and capital: the feed's AI categories, or an AI/chip headline
 # Energy & Grid and Data Centers are left out on their own: they are mostly fuel and local permitting stories
-REL_W = json.load(open(ROOT / "context/ocn/weights.json"))["relevance"]
+REL_W = json.load(open(ROOT / "signals/weights.json"))["build"]["relevance"]
 GEO_CATEGORIES = set(REL_W["geo_categories"])
 GEO_ASSETS = set(REL_W["geo_assets"])
 # "data center" alone is left out: local zoning and permitting stories do not move the IPO
@@ -170,13 +171,13 @@ def headline_names_linked(row: dict) -> bool:
 
 
 def relevant(st: str, row: dict) -> bool:
-    """Can this graded OCN row move the Anthropic IPO, directly or through a linked company, AI geopolitics or rates?
+    """Can this graded feed row move the Anthropic IPO, directly or through a linked company, AI geopolitics or rates?
     A weak_signal must name Anthropic or a linked company in its headline (geo: or a chip, export-control or AI headline);
-    a full signal may also qualify through OCN's tickers, read-through, categories and assets."""
+    a full signal may also qualify through the feed's tickers, read-through, categories and assets."""
     m = row.get("metadata") or {}
     label = row.get("signal_detection")
     if label not in ("signal", "weak_signal") or m.get("suppressed_by"):
-        return False  # OCN judged it noise, or it is a macro audit row
+        return False  # the classifier judged it noise, or it is a macro audit row
     if st == "macro_signal":
         if m.get("signal_type") == "change":
             return m.get("channel") in MACRO_CHANNELS
@@ -192,20 +193,20 @@ def relevant(st: str, row: dict) -> bool:
 
 
 def article_ids() -> set[str]:
-    """OCN article ids already in the article pull; OCN's AI-news grades are kept only for these."""
+    """Feed article ids already in the article pull; AI-news grades are kept only for these."""
     return {str(json.loads(l)["id"]) for f in (OUT / "articles").glob("*.jsonl.gz") for l in gzip.open(f, "rt", encoding="utf-8")}
 
 
-def ocn_results(counts: dict) -> None:
+def feed_results(counts: dict) -> None:
     ours = article_ids()
-    keep = {"news": lambda r: str(r.get("article_id")) in ours}  # OCN's own grades (score, confidence, materiality, novelty)
+    keep = {"news": lambda r: str(r.get("article_id")) in ours}  # the classifier's grades (score, confidence, materiality, novelty)
     for st in ["news"] + FAMILIES:
         final = OUT / f"signals/{st}.jsonl.gz"
         final.parent.mkdir(parents=True, exist_ok=True)
         part, seen, kept, cursor = final.with_name(final.name + ".part"), 0, 0, None
         with gzip.open(part, "wt", encoding="utf-8") as f:
             while True:
-                page = ocn("/agent/results", source_type=st, view="events", limit=500, cursor=cursor)
+                page = feed("/agent/results", source_type=st, view="events", limit=500, cursor=cursor)
                 for r in page["results"]:
                     if keep[st](r) if st in keep else relevant(st, r):
                         (r.get("metadata") or {}).pop("body", None)  # geo rows carry the full article; not needed
@@ -216,13 +217,13 @@ def ocn_results(counts: dict) -> None:
                 print(f"\r  signals/{st}: {kept} kept of {seen}", end="", flush=True)
                 if not cursor or not page["results"]:
                     break
-        part.replace(final)  # graded labels change as OCN regroups stories, so this is refreshed every run
+        part.replace(final)  # graded labels change as the feed regroups stories, so this is refreshed every run
         print()
         counts[f"signals/{st}"] = {"kept": kept, "scanned": seen}
 
 
-def ocn_keyed(counts: dict) -> None:
-    ocn_results(counts)
+def feed_keyed(counts: dict) -> None:
+    feed_results(counts)
     tickers = ["ANT"] + sorted({t for row in csv.DictReader(open(ROOT / "context/markets/tickers.csv")) for t in row["tickers"].split()})
     out = {}
     for t in tickers:
@@ -230,10 +231,10 @@ def ocn_keyed(counts: dict) -> None:
         for kind, path, params in (("quote", "quote", {}), ("overview", "overview", {}), ("price_history", "price-history", {"days": 260}),
                                    ("earnings", "earnings", {}), ("sec_filings", "sec-filings", {})):
             try:
-                out[t][kind] = ocn(f"/news/market/{path}/{t}", **params)
+                out[t][kind] = feed(f"/news/market/{path}/{t}", **params)
             except urllib.error.HTTPError as e:
-                out[t][kind] = {"error": e.code}  # 404 = OCN does not track this ticker
-    out["_indices"], out["_macro"] = ocn("/news/market/indices"), ocn("/news/market/macro")
+                out[t][kind] = {"error": e.code}  # 404 = the feed does not track this ticker
+    out["_indices"], out["_macro"] = feed("/news/market/indices"), feed("/news/market/macro")
     save_json("market/anthropic_and_partners.json", out)
     counts["market/tickers"] = {"tracked": sum(1 for t in tickers if "error" not in out[t]["quote"]), "asked": len(tickers)}
 
@@ -250,16 +251,18 @@ def sec(counts: dict) -> None:
 
 
 def main() -> int:
+    if not BASE:
+        sys.exit("Set ALPHASTREET_FEED_URL (and ALPHASTREET_FEED_KEY for graded signals). Only organisers have feed access.")
     ap = argparse.ArgumentParser()
     ap.add_argument("--since", help="only articles published on or after YYYY-MM-DD")
     a = ap.parse_args()
     started, counts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), {}
-    print(f"OCN at {BASE}; OCN key {'set' if KEY else 'not set'}; SEC user agent {'set' if SEC_UA else 'not set'}")
+    print(f"feed {'set' if BASE else 'NOT SET (ALPHASTREET_FEED_URL)'}; feed key {'set' if KEY else 'not set'}; SEC user agent {'set' if SEC_UA else 'not set'}")
     if SEC_UA:
         sec(counts)
     articles(a.since, counts)
     if KEY:
-        ocn_keyed(counts)  # after articles: OCN's AI-news grades are matched to the pulled articles
+        feed_keyed(counts)  # after articles: AI-news grades are matched to the pulled articles
     manifest = OUT / "manifest.json"
     prior = json.loads(manifest.read_text()) if manifest.exists() else {}
     prior.update({"source": BASE, "match": MATCH.pattern, "last_pulled_at": started, "since": a.since,

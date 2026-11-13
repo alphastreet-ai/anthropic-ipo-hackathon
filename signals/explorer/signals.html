@@ -83,7 +83,7 @@ a { color: var(--accent); }
   <header>
     <nav class="pages" aria-label="Explorer pages"><a href="signals.html" aria-current="page">Signals</a><a href="impacts.html">Impacts</a></nav>
     <h1>IPO Arena Signal Explorer</h1>
-    <p>Signals that can move the Anthropic IPO, in AlphaStreet's <code>signal.v1.1</code> structure: OCN news, regional exchange filings, Middle East, geopolitical and macro. Click a row to see every field and how it reaches ANT.</p>
+    <p>Signals that can move the Anthropic IPO, in AlphaStreet's <code>signal.v1.1</code> structure: news, regional exchange filings, Middle East, geopolitical and macro. Click a row to see every field and how it reaches ANT.</p>
   </header>
   <div class="summary" id="summary"></div>
 
@@ -114,7 +114,7 @@ a { color: var(--accent); }
 
 <script>
 function failed(e) {
-  document.getElementById("loadmsg").innerHTML = "Could not load the signal pack (" + String(e).replace(/[<>&]/g, "") + "). Build it with <code>python3 scripts/build_signals.py</code>, then serve the repo root with <code>python3 -m http.server 8000</code> and open this page from <code>http://localhost:8000/explorer/</code>.";
+  document.getElementById("loadmsg").innerHTML = "Could not load the signal pack (" + String(e).replace(/[<>&]/g, "") + "). Make sure <code>signals/pack/</code> is there, then serve the repo root with <code>python3 -m http.server 8000</code> and open this page from <code>http://localhost:8000/explorer/</code>.";
 }
 const lines = (t) => t.split("\n").filter(Boolean).map((l) => JSON.parse(l));
 async function get(p, kind) { const r = await fetch(p); if (!r.ok) throw new Error(p + " " + r.status); return kind === "json" ? r.json() : r.text(); }
@@ -185,11 +185,11 @@ const GROUPS = [
 function sheet(s) {
   const groups = GROUPS.map(([h, ks]) => `<div class="group"><h3>${h}</h3><dl>${ks.map((k) => `<dt>${k}</dt>${val(s[k])}`).join("")}</dl></div>`).join("");
   const det = `<div class="group"><h3>details (${esc(s.detector)})</h3><dl>${Object.entries(s.details).map(([k, v]) => `<dt>${esc(k)}</dt>${val(v)}`).join("")}</dl></div>`;
-  const ocn = `<div class="group"><h3>_ocn provenance</h3><dl>${Object.entries(s._ocn || {}).map(([k, v]) => `<dt>${esc(k)}</dt>${val(v)}`).join("")}</dl></div>`;
+  const prov = `<div class="group"><h3>_source</h3><dl>${Object.entries(s._source || {}).map(([k, v]) => `<dt>${esc(k)}</dt>${val(v)}`).join("")}</dl></div>`;
   const im = (IMP[s.signal_id] || []);
   const imps = `<div class="group full"><h3>signal_impacts (${im.length})</h3><div style="overflow-x:auto"><table class="imps"><thead><tr><th>issuer_id</th><th>link_type</th><th>link_hops</th><th>direction</th><th>exposure</th><th>exposure_source</th><th>link_confidence</th></tr></thead><tbody>${
     im.map((i) => `<tr><td>${esc(i.issuer_id)}</td><td>${esc(i.link_type)}</td><td>${i.link_hops}</td><td>${i.direction ?? "null"}</td><td>${i.exposure ?? "null"}</td><td>${esc(i.exposure_source)}</td><td>${i.link_confidence}</td></tr>`).join("")}</tbody></table></div></div>`;
-  return `<tr class="sheet"><td colspan="7"><div class="sheetin">${groups}${det}${ocn}${imps}</div></td></tr>`;
+  return `<tr class="sheet"><td colspan="7"><div class="sheetin">${groups}${det}${prov}${imps}</div></td></tr>`;
 }
 
 function render() {
@@ -214,11 +214,11 @@ $("rows").addEventListener("keydown", (e) => { if ((e.key === "Enter" || e.key =
 
 const m = D.meta;
 $("summary").innerHTML = `<span>Pack <b>${m.total_signals.toLocaleString()}</b> signals, <b>${m.total_impacts.toLocaleString()}</b> impacts</span><span>Built <b>${esc(m.built_at)}</b></span><span>Schema <b>signal.v1.1</b></span>`;
-$("note").textContent = `This page reads the whole local pack: ${m.graded.toLocaleString()} OCN-graded signals and ${m.news_total.toLocaleString()} news signals. Grades in the news rows come from headline rules until OCN's classifier grades them. Headlines and summaries come from licensed sources and are for internal review.`;
+$("note").textContent = `This page reads the whole local pack: ${m.graded.toLocaleString()} classifier-graded signals and ${m.news_total.toLocaleString()} news signals. News rows without a classifier grade are labelled by headline rules. Headlines and summaries come from licensed sources and are for internal review.`;
 render();
 }
 
-Promise.all([get("../context/ocn/signals/signals.v1.jsonl"), get("../context/ocn/signals/signal_impacts.v1.jsonl"), get("../context/ocn/signals/stats.json", "json")]).then(([s, i, stats]) => {
+Promise.all([get("../pack/signals.v1.jsonl"), get("../pack/signal_impacts.v1.jsonl"), get("../pack/stats.json", "json")]).then(([s, i, stats]) => {
   const signals = lines(s), impacts = {};
   lines(i).forEach((x) => { (impacts[x.signal_id] ||= []).push(x); });
   start({ signals, impacts, meta: { total_signals: signals.length, total_impacts: Object.values(impacts).reduce((n, a) => n + a.length, 0),

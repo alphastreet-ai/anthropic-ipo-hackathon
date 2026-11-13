@@ -1,8 +1,12 @@
 # IPO Arena: predict the Anthropic IPO
 
-**Call the Anthropic IPO with code. Four prices, locked before the first trade. Best entry wins $500.**
+**Call the Anthropic IPO with code, from the signals that move it. Four prices, locked before the first trade. Best entry wins $500.**
 
-Anthropic set a $70–$78 range for 825 million shares. Pricing is expected on Wed 18 Nov and the first trade on Thu 19 Nov, under the ticker ANT. Bring an LLM agent, a machine-learning model, a statistical model or a plain script, in any language. Make the call, and the market scores it. Run by AlphaStreet, who build predictive AI for markets.
+Anthropic set a $70–$78 range for 825 million shares. Pricing is expected on Wed 18 Nov and the first trade on Thu 19 Nov, under the ticker ANT.
+
+You get about 12,000 signals that can move that price. Each one is a dated event from news, exchange filings in Taiwan, Korea, Japan and China, Gulf and geopolitical events, or rates and credit data. Each one is mapped to the companies it touches and to how it reaches ANT, for example as a supplier, a competitor or a customer. Turn them into four prices with an LLM agent, a machine-learning model, a statistical model or a plain script, in any language. The market scores the call.
+
+Run by AlphaStreet, who build predictive AI for markets.
 
 | | |
 |---|---|
@@ -14,28 +18,9 @@ Anthropic set a $70–$78 range for 825 million shares. Pricing is expected on W
 
 Most entries will be wrong. That is the point: every call is public, dated and scored.
 
-## Quick start
+## The task
 
-```bash
-git clone https://github.com/alphastreet-ai/anthropic-ipo-hackathon && cd anthropic-ipo-hackathon
-python examples/baseline/run.py --out submissions/<your-handle>/ --name <your-handle>/my-entry --repo <link to your code>
-```
-
-That writes `submissions/<your-handle>/prediction.json` with no API key and no installs. It is a base-rate model, there to be beaten.
-
-Prefer an LLM agent? Two are included:
-
-```bash
-pip install -r requirements.txt
-export ANTHROPIC_API_KEY=...
-python examples/seed-debate/run.py --out submissions/<your-handle>/ --name <your-handle>/my-entry --repo <link to your code>
-```
-
-## Any method, any language
-
-You are not limited to agents, to LLMs or to Python. A gradient-boosted model in R, a Monte Carlo simulation in Java, a regression in a spreadsheet exported by a script: all fine. The only contract is the output file, `prediction.json`, in the format below. CI validates it on your pull request, so you do not need Python on your machine.
-
-## The four predictions
+Predict four prices for ANT, each as a median and an 80% range.
 
 | # | Field | What it means | When we find out |
 |---|---|---|---|
@@ -44,15 +29,50 @@ You are not limited to agents, to LLMs or to Python. A gradient-boosted model in
 | 3 | `day1_close` | The price when the market closes on the first day | Thu 19 Nov, 4 PM ET |
 | 4 | `day5_close` | The price after five trading days, once the first excitement has settled | Wed 25 Nov, 4 PM ET |
 
-Each one is a `median` plus an 80% range (`p10`, `p90`): you expect the real price to land inside the range four times out of five. Every submission also carries a `thesis`, three to five `key_risks`, an overall `confidence`, a one-line `method` and a `repo_url`. The exact format is [`schema/prediction.schema.json`](schema/prediction.schema.json).
+The 80% range is `p10` to `p90`: you expect the real price to land inside it four times out of five. The exact format is [`schema/prediction.schema.json`](schema/prediction.schema.json).
+
+## How it works
+
+1. **Explore the signals.** Browse the pack in two pages: every signal, and every company each signal reaches.
+   ```bash
+   python3 -m http.server 8000      # then open http://localhost:8000/signals/explorer/signals.html
+   ```
+2. **Make it yours.** The pack is a starting view, not the answer:
+   - Change how much each kind of signal counts in [`signals/weights.json`](signals/weights.json): for example, how much a supplier's news matters to ANT, which sources to trust, or how fast a story fades. Then run `python3 scripts/apply_weights.py`.
+   - Add signals from any public source to [`signals/custom/`](signals/custom/README.md), such as prediction-market odds, options data, analyst notes or your own scraping. The same script merges them in.
+3. **Turn signals into prices.** Read `signals/pack/` and build a model that outputs the four prices. The included examples show the file you need to write.
+4. **Submit.** Open a pull request with your `prediction.json` and the code that produced it.
+
+[`signals/README.md`](signals/README.md) explains every field, how a signal reaches ANT, and what each weight does.
+
+## Quick start
+
+```bash
+git clone https://github.com/alphastreet-ai/anthropic-ipo-hackathon && cd anthropic-ipo-hackathon
+python3 examples/baseline/run.py --out submissions/<your-handle>/ --name <your-handle>/my-entry --repo <link to your code>
+```
+
+That writes `submissions/<your-handle>/prediction.json` with no API key and no installs. It is a base-rate model that ignores the signals, there to be beaten.
+
+Prefer an LLM agent? Two are included:
+
+```bash
+pip install -r requirements.txt
+export ANTHROPIC_API_KEY=...
+python3 examples/seed-debate/run.py --out submissions/<your-handle>/ --name <your-handle>/my-entry --repo <link to your code>
+```
+
+## Any method, any language
+
+You are not limited to agents, to LLMs or to Python. A gradient-boosted model in R, a Monte Carlo simulation in Java, a regression in a spreadsheet exported by a script: all fine. The signal pack is plain JSON Lines, and the only contract is the output file, `prediction.json`. CI validates it on your pull request, so you do not need Python on your machine.
 
 ## What you submit
 
-1. **Output.** `submissions/<your-github-handle>/prediction.json`, produced by your code, plus `ENTRY.md` copied from [`submissions/_template/`](submissions/_template/ENTRY.md).
-2. **Repo link.** `repo_url` in the prediction file points at the code that produced it. A fork of this repo is fine.
+1. **Output.** `submissions/<your-github-handle>/prediction.json`, produced by your code, plus `ENTRY.md` copied from [`submissions/_template/`](submissions/_template/ENTRY.md). Every prediction also carries a `thesis`, three to five `key_risks`, an overall `confidence`, a one-line `method` and a `repo_url`.
+2. **Repo link.** `repo_url` points at the code that produced it, including your `weights.json` and any signals you added. A fork of this repo is fine.
 3. **Access.** The judges must be able to read and rerun it. Make the repo public, or keep it private and give the judges read access (see [RULES.md](RULES.md)).
 
-Then run `python scripts/validate.py submissions/<your-github-handle>/prediction.json` and open a pull request. CI must pass. Full rules: [RULES.md](RULES.md).
+Then run `python3 scripts/validate.py submissions/<your-github-handle>/prediction.json` and open a pull request. CI must pass. Full rules: [RULES.md](RULES.md).
 
 ## Scoring
 
@@ -62,29 +82,30 @@ Then run `python scripts/validate.py submissions/<your-github-handle>/prediction
 |---|---|---|
 | **Prediction** | 50 | Mean of the four price scores. Each is `1 - percentage error` of your median, floored at zero. If the real price is outside your own 80% range, the error is doubled |
 | **Harness, thesis, docs** | 30 | Judged. Does the entry rerun from your repo, is the thesis argued from evidence, can someone else follow the docs |
-| **Innovative idea** | 20 | Judged. A new angle, data source or method, not a copy of an example |
+| **Innovative idea** | 20 | Judged. A new angle, data source or method, not a copy of an example. New signals and a reasoned set of weights count |
 
 The leaderboard updates as each price settles, so there is a provisional board on 18 and 19 Nov and a final one on 25 Nov. Entrants also earn [badges](BADGES.md).
-
-## Data
-
-`context/` is the starting kit. It is refreshed daily until submissions close, and AlphaStreet's own signals feed is in `context/ocn/`. Every source, with links and what you may redistribute, is in [`context/README.md`](context/README.md). You may use any other public data.
-
-```bash
-python scripts/fetch_context.py   # refresh macro series, headlines and filings yourself; no keys needed
-```
 
 ## What is in the repo
 
 ```
-context/        filings and key tables, AlphaStreet signals, macro, Nvidia, comparable IPOs, market odds, news
-examples/       three starting points: baseline (base rates, no LLM), seed-simple (one LLM call), seed-debate (bull vs bear, then a judge)
-submissions/    one folder per entrant, plus _template/
-schema/         prediction.schema.json
-scripts/        validate.py (run by CI on every pull request), fetch_context.py
-scoring/        score.py, which also builds the leaderboard
-explorer/       two pages for browsing the OCN signal pack: signals.html and impacts.html (internal; see context/ocn/README.md)
+signals/          the signal pack: start here
+  pack/           signals.v1.jsonl (each event once) and signal_impacts.v1.jsonl (each company it reaches)
+  weights.json    every number you can tune
+  custom/         your own signals, merged into the pack
+  companies.csv   the companies linked to Anthropic, and how
+  explorer/       two pages for browsing the pack
+  signal.v1.schema.json
+context/          background: the S-1 and offering terms, comparable IPOs, macro series, market tickers, headlines, calendar
+examples/         baseline (base rates, no LLM), seed-simple (one LLM call), seed-debate (bull vs bear, then a judge)
+submissions/      one folder per entrant, plus _template/
+schema/           prediction.schema.json
+scripts/          apply_weights.py, validate.py (run by CI on every pull request), fetch_context.py
+scoring/          score.py, which also builds the leaderboard
+organisers/       how AlphaStreet builds the pack; entrants do not need it
 ```
+
+The pack and `context/` are refreshed daily until submissions close. Every source, with links and what you may redistribute, is in [`context/README.md`](context/README.md). You may use any other public data.
 
 ## Disclaimer
 

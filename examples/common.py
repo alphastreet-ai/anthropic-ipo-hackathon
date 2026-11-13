@@ -16,7 +16,7 @@ client = anthropic.Anthropic()  # reads ANTHROPIC_API_KEY (or an `ant auth login
 
 
 def load_context() -> str:
-    files = [p for p in sorted((ROOT / "context").rglob("*")) if p.is_file() and p.suffix in TEXT and p.name != "README.md" and "raw" not in p.parts]  # raw OCN pulls are too big for a prompt
+    files = [p for p in sorted((ROOT / "context").rglob("*")) if p.is_file() and p.suffix in TEXT and p.name != "README.md" and "raw" not in p.parts]  # raw pulls are too big for a prompt
     if not files:
         sys.exit("context/ has no data files yet. See context/README.md.")
     return "\n\n".join(f'<file path="{p.relative_to(ROOT)}">\n{p.read_text()}\n</file>' for p in files)
