@@ -185,7 +185,11 @@ def signal(r: dict) -> dict:
     reliability = 0.5 if long_form else next((p for p, rx in RELIABILITY if re.search(rx, hay)), 0.6)
     linked = [l["issuer_id"] for l in r["_links"]]
     ant = bool(r["_match"])
-    subject = "ANT" if ant else (linked[0] if len(linked) == 1 else None)
+    # the headline decides the subject: Anthropic named only in the body of a Microsoft story makes it a Microsoft story
+    in_title = [l["issuer_id"] for l in r["_links"] if l.get("via") == "title"]
+    ant_in_title = any(t in r["title"].lower() for t in r["_match"])
+    named = in_title or linked
+    subject = "ANT" if ant and (ant_in_title or not in_title) else (named[0] if len(named) == 1 else None)
     domain = r["domain"]
     half_life = 25 if long_form else 15 if domain in ("geopolitical_news", "middle_east_market_signal") else 4
     summary = r.get("summary") if r.get("summary") not in (None, "None", "") else None
@@ -281,6 +285,12 @@ def selftest() -> None:
     imp = {i["issuer_id"]: i for i in impacts(r, s)}
     assert imp["ANT"]["link_type"] == "competitor" and imp["ANT"]["link_hops"] == 1 and imp["ANT"]["link_confidence"] == 0.6
     assert imp["NVDA"]["direction"] == 1 and imp["OPENAI"]["direction"] is None
+    # Anthropic only in the body of a Microsoft headline: subject MSFT, ANT still gets a direct impact
+    r2 = {**r, "id": 8, "title": "Microsoft president says UK should lead AI rules", "_match": ["anthropic"],
+          "_links": [{"issuer_id": "MSFT", "link_type": "supplier", "via": "title"}]}
+    s2 = signal(r2)
+    assert s2["subject_issuer_id"] == "MSFT" and {i["issuer_id"]: i["link_type"] for i in impacts(r2, s2)}["ANT"] == "direct"
+    assert signal({**r2, "title": "Anthropic and Microsoft sign deal"})["subject_issuer_id"] == "ANT"
     print("selftest ok")
 
 
