@@ -24,6 +24,34 @@ OCN does not track Anthropic as a company yet, so rows are found by text. An art
 
 Samsung counts only when the headline is also about chips, memory or AI, so phone news stays out. Ambiguous names (Cursor, Notion, Zoom, Arm) need a qualifier next to them.
 
+## OCN's graded signals (regional, geopolitical, macro)
+
+With `OCN_API_KEY` set, `pull_ocn.py` also pulls OCN's own graded signal families into `raw/signals/<family>.jsonl.gz`, one event per row. Only rows that can move the Anthropic IPO are kept, and only rows OCN labelled `signal` or `weak_signal`. A `weak_signal` must name Anthropic or a linked company in its headline (geopolitical: or have a chip, export-control or AI headline); a full `signal` may also qualify through OCN's tickers, read-through, categories and assets:
+
+| Family | Detector | Kept when |
+|---|---|---|
+| Taiwan (MOPS filings, revenue, press) | `taiwan` | It names Anthropic or a linked company, by name, ticker or local code (TSMC 2330) |
+| Korea (DART filings, exports, press) | `korea` | Same; SK Hynix 000660, Samsung 005930 |
+| Japan (TDnet filings, press) | `japan` | Same |
+| China (CNINFO/HKEX filings, policy, press) | `china` | Same, including the US tickers in OCN's read-through (Alibaba 09988) |
+| Middle East | `middle_east` | Same, including the affected companies OCN lists |
+| Geopolitical | `geo` | It names a linked company, has a chip, export-control or AI headline, or (full signals) falls in OCN's chip, compute, cloud, networking, AI-capital or sovereign-AI categories or touches semiconductor or equity assets. Fuel, grid and local data-centre permitting stories are left out |
+| Macro (FRED and agency releases) | `macro` | It moves the discount rate or risk appetite: the policy-path, discount-rate, credit, liquidity and risk-appetite channels, and level extremes in rate, credit and volatility series. Energy, housing and consumer data are left out. Suppressed audit rows are left out |
+
+Each family maps into the same `signal.v1.1` row. OCN's own grades fill what the article rules cannot:
+
+| v1.1 field | From OCN |
+|---|---|
+| `signal_detection`, `evidence` | OCN's label and reason |
+| `strength`, `confidence`, `materiality`, `novelty` | `signal_score`; high/medium/low as 0.9/0.6/0.3; novelty step_change 1 … repeated 0 |
+| `event_direction` | Taiwan: sign of the revenue deviation. Japan: sign of the profit or revenue revision. Middle East: good +1, bad −1, mixed 0. Others: `null` |
+| `event_at` | The filing's fact date, the press event date, the Middle East event date, the geopolitical event date, or the macro observation date |
+| `published_at`, `detected_at` | OCN's `published` (for macro, when the number was released) and `stored_at` |
+| `title`, `title_original` | OCN's English translation, and the original |
+| `details` | Typed per detector, as in the v1 spec: taiwan `local_code, source_category, revenue_deviation_pct, clause_label`; korea `stock_code, report_type`; japan `local_code, source_category, typical_direction`; china `local_code, signal_type, link_direction`; middle_east `affected_companies, effect`; geo `channel, assets`; macro `series_id, channel, transmission, z_score, move_bp` |
+
+Impacts: ANT gets a `direct` row when Anthropic is named; otherwise one row per link type of each named company. Macro, geopolitical and Middle East signals also reach ANT as `macro` at confidence 0.3, a flat prior until ANT has a price history to measure. Named companies get `direct` rows, with direction from OCN where it has one (Middle East share-price effects, China read-through relationships). When OCN graded an article that the article pull also kept, the graded row replaces it.
+
 ## Dedup (the same rules OCN uses)
 
 1. **URL.** One row per canonical URL. The same story filed under two OCN domains becomes one signal, listing both domains.
@@ -55,7 +83,7 @@ v1.1 adds four things to `signal.v1`, all additive (a v1 reader still works):
 
 | Addition | Why |
 |---|---|
-| `signal_detection`: `signal`, `weak_signal` or `noise` | v1 had nowhere to say a row is noise, so it had to be deleted or mixed in. Noise rows are kept and labelled |
+| `signal_detection`: `signal`, `weak_signal` or `noise` | v1 had nowhere to record relevance. This pack holds only data that can move the Anthropic IPO, so `noise` rows are left out and counted in `stats.json`; the label separates strong from weak |
 | `category`: a list of topics | The plan sets half-life priors by category, but v1 had no category field. `half_life_days` is now the longest prior among a signal's categories |
 | `details.matched_in_title` | Which companies the headline names, as against the body only. A body-only mention is weaker |
 | Impact key `(signal_id, issuer_id, link_type)` | One company can be linked more than one way: a Google story reaches ANT as both `supplier` and `competitor` |

@@ -361,6 +361,172 @@ def impacts(r: dict, s: dict) -> list[dict]:
     return out
 
 
+# ---- OCN's graded families (context/ocn/raw/signals/<source_type>.jsonl.gz) -> signal.v1.1 ----
+SIGNALS_RAW = ROOT / "context/ocn/raw/signals"
+DETECTOR = {"taiwan_market_signal": "taiwan", "korea_market_signal": "korea", "japan_market_signal": "japan",
+            "china_market_signal": "china", "middle_east_market_signal": "middle_east", "geopolitical_signal": "geo",
+            "macro_signal": "macro"}
+EXCHANGE = {"taiwan": ("TWSE", "TW"), "korea": ("KRX", "KR"), "japan": ("TSE", "JP"), "china": ("CN", "CN")}
+LOCAL = {c: l["issuer_id"] for l in LINKS for c in l.get("local_codes", "").split()}
+TICKER_TO_ID = {l["ticker"]: l["issuer_id"] for l in LINKS if l["ticker"]} | {"GOOG": "GOOGL"}
+ANT_MATCH = re.compile(r"\banthropic\b|\bamodei\b|\bclaude[ -](?:code|cowork|opus|sonnet|haiku|fable|mythos|\d)|\bclaude\.ai\b", re.I)
+LEVEL = {"high": 0.9, "medium": 0.6, "low": 0.3, "none": 0.0}
+NOVELTY = {"step_change": 1.0, "meaningful_update": 0.66, "incremental_update": 0.33, "repeated_coverage": 0.0}
+RELATIONSHIP = {"competitor": "competitor", "supplier": "supplier", "customer": "customer"}
+MACRO_PRIOR, GEO_PRIOR, REGIONAL_PRIOR = 4, 15, 4
+KR_FILINGS = {"supply_contract", "capacity_commitment", "preliminary_earnings", "guidance_disclosure", "rumour_adjudication",
+              "voluntary_clarification", "rumour_confirmation"}
+
+
+def sign(x) -> int | None:
+    try:
+        v = float(x)
+    except (TypeError, ValueError):
+        return None
+    return (v > 0) - (v < 0)
+
+
+def graded_kind(det: str, cat: str | None) -> str:
+    if det == "macro":
+        return "data_release"
+    if det == "taiwan":
+        return "exchange_disclosure" if (cat or "").startswith("mops") else "news_article"
+    if det == "korea":
+        return "exchange_disclosure" if cat in KR_FILINGS else "data_release" if cat == "export_surprise" else "news_article"
+    if det == "japan":
+        return "news_article" if cat == "jp_press" else "exchange_disclosure"
+    if det == "china":
+        return {"cn_disclosure": "exchange_disclosure", "cn_policy": "government_document", "cn_trade": "data_release"}.get(cat, "news_article")
+    return "news_article"
+
+
+def graded(st: str, row: dict) -> tuple[dict, list[dict]]:
+    det, m = DETECTOR[st], row.get("metadata") or {}
+    cat = m.get("source_category")
+    rid = f"ocn:{st}:{row['id']}"
+    original = " ".join((row.get("title") or "").split())
+    if det == "macro":
+        series = m.get("member_series") or [m.get("series_id")]
+        name = m.get("series_name") or m.get("release_name") or ", ".join(s for s in series if s)
+        title = f"{name}: {row.get('signal_reason') or m.get('event') or m.get('signal_type')}"[:300]
+    else:
+        title = display_title(m.get("translated_title") or original, cat) or display_title(original, cat)
+    lang = language(original, m.get("language"))
+    text = " ".join(str(x or "") for x in (original, m.get("translated_title"), row.get("signal_reason"), m.get("summary")))
+    # companies that link this row to Anthropic
+    named = {l["issuer_id"] for l in LINKS if l["re"].search(text)}
+    code = str(m.get("ticker") or m.get("code") or m.get("stock_code") or "")
+    if code in LOCAL:
+        named.add(LOCAL[code])
+    me_dir = {}
+    for e in row.get("entities") or []:
+        if isinstance(e, dict) and e.get("ticker") in TICKER_TO_ID:
+            named.add(TICKER_TO_ID[e["ticker"]])
+            me_dir[TICKER_TO_ID[e["ticker"]]] = {"rise": 1, "fall": -1}.get(e.get("share_price"))
+    read_through = [(TICKER_TO_ID[t], rt) for rt in m.get("read_through") or [] for t in rt.get("tickers") or [] if t in TICKER_TO_ID]
+    named |= {i for i, _ in read_through}
+    ant = bool(ANT_MATCH.search(text))
+    # subject: the regional company itself
+    subject, ticker = None, None
+    if det in EXCHANGE and code:
+        subject, ticker = LOCAL.get(code) or f"{EXCHANGE[det][0]}:{code}", code
+    scope = ("macro" if det == "macro" else "geopolitical" if det in ("geo", "middle_east")
+             else "policy" if cat == "cn_policy" else "company" if subject else "sector")
+    direction = None
+    if det == "taiwan":
+        direction = sign(m.get("revenue_deviation"))
+    elif det == "japan":
+        direction = sign(m.get("operating_profit_pct_change") if m.get("operating_profit_pct_change") is not None else m.get("revenue_pct_change"))
+    elif det == "middle_east":
+        direction = {"good": 1, "bad": -1, "mixed": 0}.get(m.get("news_effect"))
+    ev = m.get("event") if isinstance(m.get("event"), dict) else {}
+    event_at = ts(str(m.get("fact_occurred_date") or m.get("statement_date") or (m.get("press_event") or {}).get("date")
+                      or ev.get("date") or m.get("event_date") or m.get("observation_date") or ""))
+    pub, seen = ts(row.get("published") or ""), ts(row.get("stored_at") or "")
+    kind = graded_kind(det, cat)
+    src = m.get("source") if isinstance(m.get("source"), dict) else {}
+    publisher = (m.get("outlet") or src.get("name") or (m.get("release_agency") and f"{m['release_agency']} {m.get('release_name') or ''}".strip())
+                 or outlet(row.get("url") or "") or {"taiwan": "MOPS", "korea": "DART", "japan": "TDnet", "china": "CNINFO/HKEX"}.get(det, "OCN"))
+    hay = f"{publisher} {outlet(row.get('url') or '')}".lower()
+    reliability = (0.9 if kind in ("exchange_disclosure", "government_document", "data_release")
+                   else next((p for p, rx in RELIABILITY if re.search(rx, hay)), 0.6))
+    cats = sorted(set(row.get("category") or []) | set(categories({"_title": title, "summary": m.get("summary")})))
+    hl = max((h for n, h, _ in CATEGORIES if n in cats), default=None) or (
+        MACRO_PRIOR if det == "macro" else GEO_PRIOR if det in ("geo", "middle_east") else REGIONAL_PRIOR)
+    summary = m.get("translated_summary") or m.get("summary") or (row.get("signal_reason") if det in ("macro", "geo") else None)
+    region = EXCHANGE.get(det, ("", "US" if det == "macro" else "ME" if det == "middle_east" else "global"))[1]
+    affected = [{"name": e.get("name"), "ticker": e.get("ticker"), "share_price": e.get("share_price"), "relationship": e.get("relationship")}
+                for e in row.get("entities") or [] if isinstance(e, dict) and e.get("role") == "affected"]
+    typed = {
+        "taiwan": {"local_code": code or None, "source_category": cat, "revenue_deviation_pct": m.get("revenue_deviation"), "clause_label": m.get("clause_label")},
+        "korea": {"stock_code": code or None, "report_type": cat},
+        "japan": {"local_code": code or None, "source_category": cat, "typical_direction": m.get("habit_typical_direction")},
+        "china": {"local_code": code or None, "signal_type": m.get("signal_type"), "link_direction": m.get("direction")},
+        "middle_east": {"affected_companies": affected, "effect": m.get("news_effect")},
+        "geo": {"channel": m.get("channel"), "assets": m.get("assets") or []},
+        "macro": {"series_id": [s for s in (m.get("member_series") or [m.get("series_id")]) if s], "channel": m.get("channel"),
+                  "transmission": m.get("transmission"), "z_score": m.get("z_scores") or m.get("z_score"), "move_bp": m.get("move_bp")},
+    }[det]
+    extracted = m.get("extracted_by") if isinstance(m.get("extracted_by"), dict) else {}
+    s = {
+        "signal_id": rid, "schema_version": SCHEMA_VERSION,
+        "source_kind": kind, "source_name": publisher, "source_url": row.get("url") or src.get("url") or m.get("filing_url") or m.get("pdf_url")
+        or (f"https://fred.stlouisfed.org/series/{typed['series_id'][0]}" if det == "macro" and typed["series_id"] else ""),
+        "author": None, "author_id": None, "source_reliability": reliability, "engagement": None,
+        "parent_id": None, "thread_position": None,
+        "scope": scope, "detector": det, "subtype": cat or m.get("signal_type") or m.get("channel") or st,
+        "signal_detection": row["signal_detection"], "category": cats,
+        "title": title, "title_original": original if (original and original != title) else None, "language": lang if det != "macro" else "en",
+        "summary": (summary or "")[:600] or None,
+        "region": region, "country": region if region in ("TW", "KR", "JP", "CN", "US") else None,
+        "subject_issuer_id": subject, "ticker": ticker,
+        "event_direction": direction, "strength": float(row["signal_score"]) if row.get("signal_score") is not None else None,
+        "confidence": LEVEL.get(row.get("confidence")), "materiality": LEVEL.get(row.get("materiality")),
+        "novelty": NOVELTY.get(row.get("novelty")),
+        "horizon_days": hl * 2, "half_life_days": hl,
+        "event_at": event_at.isoformat() if event_at else None,
+        "published_at": pub.isoformat() if pub else None, "detected_at": seen.isoformat() if seen else None, "valid_until": None,
+        "cluster_id": rid, "evidence": row.get("signal_reason"),
+        "details": {"publisher": publisher, "entities": row.get("entities") or None,
+                    "matched_issuers": (["ANT"] if ant else []) + sorted(named), "matched_in_title": [], **typed},
+        "producer": "ocn/signal-detection-agent", "model": extracted.get("model"), "prompt_version": extracted.get("prompt"),
+        "signal_type": "state" if m.get("signal_type") == "level" else "event", "superseded_by": None, "superseded_at": None,
+        "backfilled": bool(pub and seen and seen - pub > timedelta(days=7)),
+        "_ocn": {"result_id": row["id"], "source_type": st, "article_id": row.get("article_id"), "source_id": row.get("source_id"),
+                 "corroboration": (m.get("corroboration") or {}).get("count"), "also_reported_by": m.get("also_reported_by") or []},
+    }
+    row_ = lambda issuer, lt, hops, d, src_, conf: {"signal_id": rid, "issuer_id": issuer, "link_type": lt, "link_hops": hops,
+                                                   "direction": d, "exposure": None, "exposure_source": src_, "link_confidence": conf}
+    imps = []
+    if ant:
+        imps.append(row_("ANT", "direct", 0, None, "not measured", 1.0))
+    else:
+        for lt in sorted({t for i in named for t in LINK_BY_ID[i]["types"]}):
+            imps.append(row_("ANT", lt, 1, None, "not measured", LINK_CONFIDENCE[lt]))
+        if det in ("macro", "geo", "middle_east"):
+            # ponytail: a flat prior until ANT has a price history to measure its rate and risk beta
+            imps.append(row_("ANT", "macro", 1, None, "prior: growth IPO rate and risk sensitivity", 0.3))
+    rt_dir = {i: rt.get("relationship") for i, rt in read_through}
+    for i in sorted(named):
+        d = me_dir.get(i) if i in me_dir else (direction if i == subject else None)
+        imps.append(row_(i, "direct", 0, d, "OCN share_price effect" if i in me_dir and d is not None else "not measured", 1.0))
+    if subject and subject not in named and subject not in LINK_BY_ID:
+        imps.append(row_(subject, "direct", 0, direction, "not measured", 1.0))
+    for i, rel in rt_dir.items():
+        if rel in RELATIONSHIP and not any(x["issuer_id"] == i and x["link_type"] == RELATIONSHIP[rel] for x in imps):
+            imps.append(row_(i, RELATIONSHIP[rel], 1, None, "OCN read_through", 0.6))
+    return s, imps
+
+
+def load_graded(raw: Path = SIGNALS_RAW) -> list[tuple[dict, list[dict]]]:
+    out = []
+    for st in DETECTOR:
+        f = raw / f"{st}.jsonl.gz"
+        if f.exists():
+            out += [graded(st, json.loads(l)) for l in gzip.open(f, "rt", encoding="utf-8")]
+    return out
+
+
 def supersede(sigs: list[dict], periods: dict[str, str | None]) -> None:
     """State signals hold until the next one replaces them: each company's quarterly results are
     superseded by its next quarter's, at the time that next one was detected."""
@@ -374,24 +540,37 @@ def supersede(sigs: list[dict], periods: dict[str, str | None]) -> None:
             old["superseded_by"], old["superseded_at"] = new["signal_id"], new["detected_at"]
 
 
-def build(raw: Path = RAW) -> tuple[list[dict], list[dict], dict]:
+def build(raw: Path = RAW, signals_raw: Path = SIGNALS_RAW) -> tuple[list[dict], list[dict], dict]:
     rows = load(raw)
     n = len(rows)
     rows = dedup_url(rows)
     n_url = len(rows)
     rows, dropped = dedup_titles(rows)
     cluster(rows)
-    sigs, imps = [], []
+    grades = load_graded(signals_raw)
+    graded_articles = {str(s["_ocn"]["article_id"]) for s, _ in grades if s["_ocn"]["article_id"]}
+    sigs, imps, noise, replaced = [], [], Counter(), 0
     for r in sorted(rows, key=lambda r: r["_t"], reverse=True):
+        if str(r["id"]) in graded_articles:
+            replaced += 1  # OCN graded this article itself; its graded row below wins
+            continue
         s = signal(r)
+        if s["signal_detection"] == "noise":
+            noise[s["evidence"]] += 1  # only what can move the IPO stays in the pack
+            continue
         sigs.append(s)
         imps += impacts(r, s)
     supersede(sigs, {f"ocn:{r['id']}": r["metadata"].get("period") for r in rows})
+    for s, i in grades:
+        sigs.append(s)
+        imps += i
+    sigs.sort(key=lambda s: s["published_at"] or s["detected_at"] or "", reverse=True)
     ant = [i for i in imps if i["issuer_id"] == "ANT"]
-    stats = {"articles_in": n, "after_url_dedup": n_url, "title_duplicates_merged": dropped, "signals": len(sigs),
-             "clusters": len({s["cluster_id"] for s in sigs}), "impacts": len(imps),
+    stats = {"articles_in": n, "after_url_dedup": n_url, "title_duplicates_merged": dropped,
+             "articles_replaced_by_ocn_grade": replaced, "noise_left_out": dict(noise.most_common()),
+             "signals": len(sigs), "clusters": len({s["cluster_id"] for s in sigs}), "impacts": len(imps),
+             "by_detector": dict(Counter(s["detector"] for s in sigs).most_common()),
              "signal_detection": dict(Counter(s["signal_detection"] for s in sigs)),
-             "noise_rules": dict(Counter(s["evidence"] for s in sigs if s["signal_detection"] == "noise").most_common()),
              "category": dict(Counter(c for s in sigs for c in s["category"]).most_common()),
              "uncategorised": sum(1 for s in sigs if not s["category"]),
              "about_anthropic": sum(1 for s in sigs if s["subject_issuer_id"] == "ANT"),
@@ -450,6 +629,30 @@ def selftest() -> None:
                       meta={"source_category": "kr_quarterly_results", "period": f"2026-Q{i}"}), "_cluster": "x"}) for i in (2, 1)]
     supersede(q, {q[0]["signal_id"]: "2026-Q2", q[1]["signal_id"]: "2026-Q1"})
     assert q[1]["superseded_by"] == q[0]["signal_id"] and q[0]["superseded_by"] is None and q[0]["signal_type"] == "state"
+
+    # OCN graded families
+    base = {"id": 1, "signal_detection": "signal", "signal_score": None, "published": "2026-11-10T00:00:00Z",
+            "stored_at": "2026-11-11T14:00:00Z", "url": None, "entities": []}
+    s, imp = graded("taiwan_market_signal", {**base, "title": "台積電 (2330): 代子公司TSMC Partners公告擬投資OpenAI Group PBC",
+                                             "metadata": {"ticker": "2330", "source_category": "mops_material", "fact_occurred_date": "2026-11-10",
+                                                          "translated_title": "Subsidiary TSMC Partners to invest in OpenAI Group PBC"}})
+    links_ = {(i["issuer_id"], i["link_type"]) for i in imp}
+    assert s["detector"] == "taiwan" and s["subject_issuer_id"] == "TSM" and s["source_kind"] == "exchange_disclosure"
+    assert s["title"].startswith("Subsidiary TSMC") and s["title_original"].startswith("台積電") and s["language"] == "zh"
+    assert {("ANT", "supplier"), ("ANT", "competitor"), ("TSM", "direct"), ("OPENAI", "direct")} <= links_ and s["event_at"].startswith("2026-11-10")
+    s, imp = graded("middle_east_market_signal", {**base, "title": "Houthis claim attack on Yanbu", "metadata": {"news_effect": "bad", "event": {"date": "2026-11-12"}},
+                                                  "entities": [{"name": "Nvidia", "ticker": "NVDA", "role": "affected", "share_price": "fall"}]})
+    d = {(i["issuer_id"], i["link_type"]): i for i in imp}
+    assert s["scope"] == "geopolitical" and s["event_direction"] == -1 and d[("NVDA", "direct")]["direction"] == -1
+    assert ("ANT", "supplier") in d and ("ANT", "macro") in d and s["details"]["effect"] == "bad"
+    s, imp = graded("macro_signal", {**base, "title": None, "signal_reason": "Entered the top 1% of its 20-year range at 2.78",
+                                     "metadata": {"signal_type": "level", "series_id": "DFII10", "series_name": "10-Year TIPS Yield", "release_agency": "FOMC",
+                                                  "release_name": "H.15", "observation_date": "2026-11-10"}})
+    assert s["detector"] == "macro" and s["scope"] == "macro" and s["source_kind"] == "data_release" and s["signal_type"] == "state"
+    assert s["title"].startswith("10-Year TIPS Yield: ") and [i["link_type"] for i in imp] == ["macro"] and s["details"]["series_id"] == ["DFII10"]
+    s, imp = graded("china_market_signal", {**base, "title": "SMEE wins lithography order", "metadata": {"code": "688012", "source_category": "cn_press",
+                                            "read_through": [{"tickers": ["AMD"], "direction": "opposite", "relationship": "competitor"}]}})
+    assert ("AMD", "competitor") in {(i["issuer_id"], i["link_type"]) for i in imp} and s["subject_issuer_id"] == "CN:688012"
     # regional rows: prefix dropped from the title, Hana Micron is not Micron, DART filings are disclosures
     assert mk(13, "Hana Micron (067310) [20261112900988]: 타인에대한채무보증결정", 0, match=()) is None
     s, _ = sig(mk(14, "SK Hynix (000660) [20251215801345]: 주주명부폐쇄기간또는기준일설정", 0, dom="korea_market_signal", match=(),

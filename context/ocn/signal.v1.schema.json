@@ -123,7 +123,18 @@
       ]
     },
     "detector": {
-      "type": "string"
+      "enum": [
+        "news",
+        "taiwan",
+        "korea",
+        "japan",
+        "china",
+        "middle_east",
+        "geo",
+        "macro",
+        "sec",
+        "social"
+      ]
     },
     "subtype": {
       "type": "string"
@@ -139,25 +150,10 @@
     "category": {
       "type": "array",
       "items": {
-        "enum": [
-          "ipo",
-          "funding",
-          "earnings",
-          "pricing",
-          "product",
-          "demand",
-          "supply",
-          "competition",
-          "talent",
-          "legal",
-          "regulation",
-          "export_controls",
-          "geopolitics",
-          "momentum"
-        ]
+        "type": "string"
       },
       "uniqueItems": true,
-      "description": "Topics. The longest half-life prior among them sets half_life_days"
+      "description": "Topics: this pack's keyword topics (ipo, funding, earnings, pricing, product, demand, supply, competition, talent, legal, regulation, export_controls, geopolitics, momentum) plus OCN's own impacted categories. The longest half-life prior among them sets half_life_days"
     },
     "title": {
       "type": "string",
@@ -291,7 +287,7 @@
     },
     "details": {
       "type": "object",
-      "description": "Typed per detector. news: publisher, entities, matched_issuers, matched_in_title.",
+      "description": "Typed per detector: every detector has publisher, entities, matched_issuers, matched_in_title, plus its own keys (see allOf).",
       "required": [
         "publisher",
         "entities",
@@ -321,6 +317,59 @@
             "type": "string"
           },
           "description": "The issuers named in the headline, a subset of matched_issuers"
+        },
+        "local_code": {},
+        "source_category": {},
+        "revenue_deviation_pct": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "clause_label": {},
+        "stock_code": {},
+        "report_type": {},
+        "typical_direction": {},
+        "signal_type": {},
+        "link_direction": {},
+        "affected_companies": {
+          "type": "array"
+        },
+        "effect": {
+          "enum": [
+            "good",
+            "bad",
+            "mixed",
+            null
+          ]
+        },
+        "channel": {},
+        "assets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "series_id": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "transmission": {},
+        "z_score": {
+          "type": [
+            "number",
+            "object",
+            "null"
+          ]
+        },
+        "move_bp": {
+          "type": [
+            "number",
+            "object",
+            "null"
+          ]
         }
       }
     },
@@ -430,5 +479,281 @@
         }
       }
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "detector": {
+            "const": "news"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "details": {
+            "required": [
+              "publisher",
+              "entities",
+              "matched_issuers",
+              "matched_in_title"
+            ],
+            "propertyNames": {
+              "enum": [
+                "publisher",
+                "entities",
+                "matched_issuers",
+                "matched_in_title"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "detector": {
+            "const": "taiwan"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "details": {
+            "required": [
+              "publisher",
+              "entities",
+              "matched_issuers",
+              "matched_in_title",
+              "local_code",
+              "source_category",
+              "revenue_deviation_pct",
+              "clause_label"
+            ],
+            "propertyNames": {
+              "enum": [
+                "publisher",
+                "entities",
+                "matched_issuers",
+                "matched_in_title",
+                "local_code",
+                "source_category",
+                "revenue_deviation_pct",
+                "clause_label"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "detector": {
+            "const": "korea"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "details": {
+            "required": [
+              "publisher",
+              "entities",
+              "matched_issuers",
+              "matched_in_title",
+              "stock_code",
+              "report_type"
+            ],
+            "propertyNames": {
+              "enum": [
+                "publisher",
+                "entities",
+                "matched_issuers",
+                "matched_in_title",
+                "stock_code",
+                "report_type"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "detector": {
+            "const": "japan"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "details": {
+            "required": [
+              "publisher",
+              "entities",
+              "matched_issuers",
+              "matched_in_title",
+              "local_code",
+              "source_category",
+              "typical_direction"
+            ],
+            "propertyNames": {
+              "enum": [
+                "publisher",
+                "entities",
+                "matched_issuers",
+                "matched_in_title",
+                "local_code",
+                "source_category",
+                "typical_direction"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "detector": {
+            "const": "china"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "details": {
+            "required": [
+              "publisher",
+              "entities",
+              "matched_issuers",
+              "matched_in_title",
+              "local_code",
+              "signal_type",
+              "link_direction"
+            ],
+            "propertyNames": {
+              "enum": [
+                "publisher",
+                "entities",
+                "matched_issuers",
+                "matched_in_title",
+                "local_code",
+                "signal_type",
+                "link_direction"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "detector": {
+            "const": "middle_east"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "details": {
+            "required": [
+              "publisher",
+              "entities",
+              "matched_issuers",
+              "matched_in_title",
+              "affected_companies",
+              "effect"
+            ],
+            "propertyNames": {
+              "enum": [
+                "publisher",
+                "entities",
+                "matched_issuers",
+                "matched_in_title",
+                "affected_companies",
+                "effect"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "detector": {
+            "const": "geo"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "details": {
+            "required": [
+              "publisher",
+              "entities",
+              "matched_issuers",
+              "matched_in_title",
+              "channel",
+              "assets"
+            ],
+            "propertyNames": {
+              "enum": [
+                "publisher",
+                "entities",
+                "matched_issuers",
+                "matched_in_title",
+                "channel",
+                "assets"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "detector": {
+            "const": "macro"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "details": {
+            "required": [
+              "publisher",
+              "entities",
+              "matched_issuers",
+              "matched_in_title",
+              "series_id",
+              "channel",
+              "transmission",
+              "z_score",
+              "move_bp"
+            ],
+            "propertyNames": {
+              "enum": [
+                "publisher",
+                "entities",
+                "matched_issuers",
+                "matched_in_title",
+                "series_id",
+                "channel",
+                "transmission",
+                "z_score",
+                "move_bp"
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
 }

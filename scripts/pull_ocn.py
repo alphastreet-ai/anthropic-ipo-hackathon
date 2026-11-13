@@ -2,7 +2,7 @@
 """Pull Anthropic-related data from OCN into context/ocn/raw/, as-is. Standard library only.
 
   python scripts/pull_ocn.py                                   # every OCN article that mentions Anthropic
-  OCN_API_KEY=... python scripts/pull_ocn.py                   # + OCN signals about Anthropic, market data for ANT and its partners
+  OCN_API_KEY=... python scripts/pull_ocn.py                   # + OCN's graded regional, geopolitical and macro signals, market data
   SEC_USER_AGENT="Name email" python scripts/pull_ocn.py       # + Anthropic's own company data from SEC EDGAR
   python scripts/pull_ocn.py --since 2026-10-01                # only articles published on or after a date
 
@@ -39,7 +39,7 @@ def get(url: str, headers: dict | None = None):
         except urllib.error.HTTPError as e:
             if e.code < 500 or attempt == 4:
                 raise
-        except (urllib.error.URLError, TimeoutError):
+        except (urllib.error.URLError, TimeoutError, ConnectionError):
             if attempt == 4:
                 raise
         time.sleep(2 ** attempt)
@@ -72,31 +72,6 @@ def matches(row: dict) -> dict | None:
 def save_json(name: str, data) -> None:
     (OUT / name).parent.mkdir(parents=True, exist_ok=True)
     (OUT / name).write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
-
-
-def save_matching(name: str, path: str, key: str, **params) -> tuple[int, int] | None:
-    """Walk a cursor-paginated endpoint, keep only Anthropic matches. Writes .part, renames when complete."""
-    final = OUT / name
-    if final.exists():
-        print(f"  {name}: already pulled, skipping")
-        return None
-    final.parent.mkdir(parents=True, exist_ok=True)
-    part, seen, kept, cursor = final.with_name(final.name + ".part"), 0, 0, None
-    with gzip.open(part, "wt", encoding="utf-8") as f:
-        while True:
-            page = ocn(path, cursor=cursor, **params)
-            for row in page[key]:
-                if hit := matches(row):
-                    f.write(json.dumps({**row, **hit}, ensure_ascii=False) + "\n")
-                    kept += 1
-            seen += len(page[key])
-            cursor = page.get("next_cursor")
-            print(f"\r  {name}: {kept} kept of {seen}", end="", flush=True)
-            if not cursor or not page[key]:
-                break
-    part.rename(final)
-    print()
-    return kept, seen
 
 
 CHUNK, WORKERS = 10_000, 8  # ponytail: 8 parallel walks keeps the shared staging API comfortable; raise if it stays fast
@@ -153,9 +128,94 @@ def articles(since: str | None, counts: dict) -> None:
     shutil.rmtree(OUT / "articles/.chunks", ignore_errors=True)
 
 
+# OCN's graded signal families, one event per row (view=events drops rows folded into a story).
+# Only rows that can move the Anthropic IPO are kept (see relevant()); build_signals.py maps them into signal.v1.1.
+FAMILIES = ["taiwan_market_signal", "korea_market_signal", "japan_market_signal", "china_market_signal",
+            "middle_east_market_signal", "geopolitical_signal", "macro_signal"]
+LOCAL_CODES = {c for l in LINKS for c in l["local_codes"].split()}
+TICKERS = {l["ticker"] for l in LINKS if l["ticker"]} | {"GOOG"}
+# Geopolitics reaches ANT through AI supply, demand and capital: OCN's AI-universe categories, or an AI/chip headline
+# Energy & Grid and Data Centers are left out on their own: they are mostly fuel and local permitting stories
+GEO_CATEGORIES = {"Semiconductor Manufacturing", "Financial Infrastructure & AI Capital", "Compute Hardware & Edge Systems",
+                  "Cloud & Compute Platforms", "Networking, Optical & Interconnect", "Defense, Aerospace & Sovereign AI"}
+GEO_ASSETS = {"semiconductors", "broad_equities"}
+# "data center" alone is left out: local zoning and permitting stories do not move the IPO
+AI_HEADLINE = re.compile(r"\b(?:ai|a\.i\.|artificial intelligence|chips?|chipmakers?|semiconductors?|gpus?|export controls?|"
+                         r"entity list|hyperscalers?|llms?|hbm)\b", re.I)
+# Macro reaches a growth IPO through the discount rate and risk appetite, not through energy, housing or consumer data
+MACRO_CHANNELS = {"policy_path", "discount_rate", "credit", "liquidity", "risk_appetite"}
+MACRO_SERIES = re.compile(r"^(?:DGS|DFII|T10Y|T5Y|BAML|VIX|NASDAQ|SP500|DFF|SOFR|WALCL|RRP)")
+
+
+def text_of(row: dict) -> str:
+    m = row.get("metadata") or {}
+    return " ".join(str(x or "") for x in (row.get("title"), m.get("translated_title"), row.get("signal_reason"), m.get("summary")))
+
+
+def names_linked(row: dict) -> bool:
+    m, text = row.get("metadata") or {}, text_of(row)
+    if MATCH.search(text) or any(l["re"].search(text) for l in LINKS):
+        return True
+    if str(m.get("ticker") or m.get("code") or m.get("stock_code") or "") in LOCAL_CODES:
+        return True
+    tickers = {e.get("ticker") for e in row.get("entities") or [] if isinstance(e, dict)}
+    tickers |= {t for rt in m.get("read_through") or [] for t in rt.get("tickers") or []}
+    return bool(tickers & TICKERS)
+
+
+def headline_names_linked(row: dict) -> bool:
+    m = row.get("metadata") or {}
+    head = f"{row.get('title') or ''} {m.get('translated_title') or ''}"
+    return bool(MATCH.search(head)) or any(l["re"].search(head) for l in LINKS)
+
+
+def relevant(st: str, row: dict) -> bool:
+    """Can this graded OCN row move the Anthropic IPO, directly or through a linked company, AI geopolitics or rates?
+    A weak_signal must name Anthropic or a linked company in its headline (geo: or a chip, export-control or AI headline);
+    a full signal may also qualify through OCN's tickers, read-through, categories and assets."""
+    m = row.get("metadata") or {}
+    label = row.get("signal_detection")
+    if label not in ("signal", "weak_signal") or m.get("suppressed_by"):
+        return False  # OCN judged it noise, or it is a macro audit row
+    if st == "macro_signal":
+        if m.get("signal_type") == "change":
+            return m.get("channel") in MACRO_CHANNELS
+        return bool(MACRO_SERIES.match(m.get("series_id") or ""))
+    if headline_names_linked(row):
+        return True
+    if st == "geopolitical_signal":
+        head = f"{row.get('title') or ''} {m.get('translated_title') or ''}"
+        if AI_HEADLINE.search(head):
+            return True
+        return label == "signal" and (bool(set(row.get("category") or []) & GEO_CATEGORIES) or bool(set(m.get("assets") or []) & GEO_ASSETS))
+    return label == "signal" and names_linked(row)
+
+
+def ocn_results(counts: dict) -> None:
+    for st in FAMILIES:
+        final = OUT / f"signals/{st}.jsonl.gz"
+        final.parent.mkdir(parents=True, exist_ok=True)
+        part, seen, kept, cursor = final.with_name(final.name + ".part"), 0, 0, None
+        with gzip.open(part, "wt", encoding="utf-8") as f:
+            while True:
+                page = ocn("/agent/results", source_type=st, view="events", limit=500, cursor=cursor)
+                for r in page["results"]:
+                    if relevant(st, r):
+                        (r.get("metadata") or {}).pop("body", None)  # geo rows carry the full article; not needed
+                        f.write(json.dumps(r, ensure_ascii=False) + "\n")
+                        kept += 1
+                seen += len(page["results"])
+                cursor = page.get("next_cursor")
+                print(f"\r  signals/{st}: {kept} kept of {seen}", end="", flush=True)
+                if not cursor or not page["results"]:
+                    break
+        part.replace(final)  # graded labels change as OCN regroups stories, so this is refreshed every run
+        print()
+        counts[f"signals/{st}"] = {"kept": kept, "scanned": seen}
+
+
 def ocn_keyed(counts: dict) -> None:
-    if r := save_matching("signals/results.jsonl.gz", "/agent/results", "results", limit=500, view="rows"):
-        counts["signals/results"] = {"kept": r[0], "scanned": r[1]}
+    ocn_results(counts)
     tickers = ["ANT"] + sorted({t for row in csv.DictReader(open(ROOT / "context/markets/tickers.csv")) for t in row["tickers"].split()})
     out = {}
     for t in tickers:

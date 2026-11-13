@@ -1,49 +1,49 @@
-issuer_id,ticker,link_type,title_pattern,why
-OPENAI,,competitor,(?i)\bopenai\b|\bchatgpt\b|\bsam altman\b|\bgpt-[45]|\bcodex\b,Closest rival; its pricing and revenue set the comparison for Anthropic
-SPCX,SPCX,competitor,(?i)\bxai\b|\bgrok\b|\bspacex\b,xAI sits inside the listed SpaceX; the nearest listed rival
-GOOGL,GOOGL,supplier competitor,(?i)\bgoogle\b|\balphabet\b|\bgemini\b|\bdeepmind\b|\btpus?\b,TPU and cloud supplier and an investor; Gemini competes
-AMZN,AMZN,supplier customer,(?i)\bamazon\b|\bAWS\b|\btrainium\b|\bbedrock\b,Main cloud and chip supplier and an investor; resells Claude on Bedrock
-MSFT,MSFT,supplier customer,(?i)\bmicrosoft\b|\bazure\b|\bcopilot\b,Azure compute deal and an investor; sells Claude in Foundry and Copilot
-NVDA,NVDA,supplier,(?i)\bnvidia\b|\bjensen huang\b,GPU supplier and an investor
-AMD,AMD,supplier,\bAMD\b|(?i:advanced micro devices),Chip supplier and placement partner
-AVGO,AVGO,supplier,(?i)\bbroadcom\b,Custom accelerator supplier
-MU,MU,supplier,(?i)(?<!hana )\bmicron\b,Memory supplier and placement partner
-TSM,TSM,supplier,(?i)\btsmc\b|\btaiwan semiconductor\b,Makes the chips every supplier sells
-WULF,WULF,supplier,(?i)\bterawulf\b,Data-centre host
-HUT,HUT,supplier,(?i)\bhut 8\b,Data-centre host
-META,META,competitor,(?i)\bmeta platforms\b|\bllama\b|\bzuckerberg\b|\bmeta(?=['’]s\b| ai\b| superintelligence),Open-weight rival and big AI spender
-MISTRAL,,competitor,(?i)\bmistral\b,Private rival
-DEEPSEEK,,competitor,(?i)\bdeepseek\b,Low-cost rival; moved AI stocks in Jan 2025
-COHERE,,competitor,(?i)\bcohere\b,Private rival in enterprise models
-BABA,BABA,competitor,(?i)\balibaba\b|\bqwen\b,Qwen open-weight models; the only listed Chinese model maker
-MOONSHOT,,competitor,(?i)\bmoonshot ai\b|\bkimi\b,Private Chinese rival
-PERPLEXITY,,competitor,(?i)\bperplexity\b,Private rival in AI search
-SKHYNIX,000660.KS,supplier,(?i)\bsk hynix\b|\bhynix\b,HBM memory for every AI accelerator
-SAMSUNG,005930.KS,supplier,(?i)\bsamsung electronics\b|^(?=.*\bsamsung\b)(?=.*\b(?:hbm|chips?|memory|foundry|semiconductors?|ai|nvidia|dram)\b),HBM memory and foundry; headline must also be about chips or AI
-ASML,ASML,supplier,(?i)\basml\b,Lithography behind every chip; also Mistral's largest listed backer
-EQIX,EQIX,supplier,(?i)\bequinix\b,Data-centre space
-DLR,DLR,supplier,(?i)\bdigital realty\b,Data-centre space
-CEG,CEG,supplier,(?i)\bconstellation energy\b,Power for data centres
-VST,VST,supplier,(?i)\bvistra\b,Power for data centres
-CRWV,CRWV,peer,(?i)\bcoreweave\b,Same AI-capex trade
-ORCL,ORCL,peer,(?i)\boracle\b,Same AI-capex trade
-NBIS,NBIS,peer,(?i)\bnebius\b,Same AI-capex trade
-SMCI,SMCI,peer,(?i)\bsuper ?micro\b|\bSMCI\b,AI servers; same AI-capex trade
-DELL,DELL,peer,(?i)\bdell\b,AI servers; same AI-capex trade
-ARM,ARM,sector,\bArm (?:Holdings|chips?|CPUs?|Neoverse)\b|\bArm['’]s\b|(?i:\barm holdings\b),CPU designs in AI servers
-MRVL,MRVL,sector,(?i)\bmarvell\b,Custom AI chips and networking
-AKAM,AKAM,sector,(?i)\bakamai\b,AI infrastructure
-ANET,ANET,sector,(?i)\barista networks\b,AI networking
-VRT,VRT,sector,(?i)\bvertiv\b,Data-centre power and cooling
-PLTR,PLTR,customer,(?i)\bpalantir\b,Enterprise AI demand; resells Claude
-NOW,NOW,customer,(?i)\bservicenow\b,Enterprise AI demand
-CRM,CRM,customer,(?i)\bsalesforce\b,Enterprise AI demand; uses Claude
-SNOW,SNOW,customer,(?i)\bsnowflake\b,Enterprise AI demand; resells Claude
-DDOG,DDOG,customer,(?i)\bdatadog\b,Enterprise AI demand
-NET,NET,customer,(?i)\bcloudflare\b,Enterprise AI demand
-ACN,ACN,customer,(?i)\baccenture\b,Large Claude reseller to enterprises
-DELOITTE,,customer,(?i)\bdeloitte\b,Large Claude deployment
-ANYSPHERE,,customer,(?i:\banysphere\b)|\bCursor (?:AI|IDE|editor)\b|\bCursor['’]s\b|\bCursor\b(?= (?:raises|valued|valuation|launches|hits|reaches|CEO)),Cursor; one of the biggest buyers of Claude tokens
-GTLB,GTLB,customer,(?i)\bgitlab\b,Claude inside its developer platform
-NOTION,,customer,\bNotion (?:AI|Labs)\b|\bNotion['’]s\b|\bNotion\b(?= (?:raises|valued|launches|CEO)),Claude inside its product
-ZM,ZM,customer,(?i:\bzoom video\b)|\bZoom\b(?= (?:Communications|AI|Workplace|earnings|stock|shares|CEO))|\bZM\b,Claude inside its product
+issuer_id,ticker,local_codes,link_type,title_pattern,why
+OPENAI,,,competitor,(?i)\bopenai\b|\bchatgpt\b|\bsam altman\b|\bgpt-[45]|\bcodex\b,Closest rival; its pricing and revenue set the comparison for Anthropic
+SPCX,SPCX,,competitor,(?i)\bxai\b|\bgrok\b|\bspacex\b,xAI sits inside the listed SpaceX; the nearest listed rival
+GOOGL,GOOGL,,supplier competitor,(?i)\bgoogle\b|\balphabet\b|\bgemini\b|\bdeepmind\b|\btpus?\b,TPU and cloud supplier and an investor; Gemini competes
+AMZN,AMZN,,supplier customer,(?i)\bamazon\b|\bAWS\b|\btrainium\b|\bbedrock\b,Main cloud and chip supplier and an investor; resells Claude on Bedrock
+MSFT,MSFT,,supplier customer,(?i)\bmicrosoft\b|\bazure\b|\bcopilot\b,Azure compute deal and an investor; sells Claude in Foundry and Copilot
+NVDA,NVDA,,supplier,(?i)\bnvidia\b|\bjensen huang\b,GPU supplier and an investor
+AMD,AMD,,supplier,\bAMD\b|(?i:advanced micro devices),Chip supplier and placement partner
+AVGO,AVGO,,supplier,(?i)\bbroadcom\b,Custom accelerator supplier
+MU,MU,,supplier,(?i)(?<!hana )\bmicron\b,Memory supplier and placement partner
+TSM,TSM,2330,supplier,(?i)\btsmc\b|\btaiwan semiconductor\b,Makes the chips every supplier sells
+WULF,WULF,,supplier,(?i)\bterawulf\b,Data-centre host
+HUT,HUT,,supplier,(?i)\bhut 8\b,Data-centre host
+META,META,,competitor,(?i)\bmeta platforms\b|\bllama\b|\bzuckerberg\b|\bmeta(?=['’]s\b| ai\b| superintelligence),Open-weight rival and big AI spender
+MISTRAL,,,competitor,(?i)\bmistral\b,Private rival
+DEEPSEEK,,,competitor,(?i)\bdeepseek\b,Low-cost rival; moved AI stocks in Jan 2025
+COHERE,,,competitor,(?i)\bcohere\b,Private rival in enterprise models
+BABA,BABA,09988 9988,competitor,(?i)\balibaba\b|\bqwen\b,Qwen open-weight models; the only listed Chinese model maker
+MOONSHOT,,,competitor,(?i)\bmoonshot ai\b|\bkimi\b,Private Chinese rival
+PERPLEXITY,,,competitor,(?i)\bperplexity\b,Private rival in AI search
+SKHYNIX,000660.KS,000660,supplier,(?i)\bsk hynix\b|\bhynix\b,HBM memory for every AI accelerator
+SAMSUNG,005930.KS,005930,supplier,(?i)\bsamsung electronics\b|^(?=.*\bsamsung\b)(?=.*\b(?:hbm|chips?|memory|foundry|semiconductors?|ai|nvidia|dram)\b),HBM memory and foundry; headline must also be about chips or AI
+ASML,ASML,,supplier,(?i)\basml\b,Lithography behind every chip; also Mistral's largest listed backer
+EQIX,EQIX,,supplier,(?i)\bequinix\b,Data-centre space
+DLR,DLR,,supplier,(?i)\bdigital realty\b,Data-centre space
+CEG,CEG,,supplier,(?i)\bconstellation energy\b,Power for data centres
+VST,VST,,supplier,(?i)\bvistra\b,Power for data centres
+CRWV,CRWV,,peer,(?i)\bcoreweave\b,Same AI-capex trade
+ORCL,ORCL,,peer,(?i)\boracle\b,Same AI-capex trade
+NBIS,NBIS,,peer,(?i)\bnebius\b,Same AI-capex trade
+SMCI,SMCI,,peer,(?i)\bsuper ?micro\b|\bSMCI\b,AI servers; same AI-capex trade
+DELL,DELL,,peer,(?i)\bdell\b,AI servers; same AI-capex trade
+ARM,ARM,,sector,\bArm (?:Holdings|chips?|CPUs?|Neoverse)\b|\bArm['’]s\b|(?i:\barm holdings\b),CPU designs in AI servers
+MRVL,MRVL,,sector,(?i)\bmarvell\b,Custom AI chips and networking
+AKAM,AKAM,,sector,(?i)\bakamai\b,AI infrastructure
+ANET,ANET,,sector,(?i)\barista networks\b,AI networking
+VRT,VRT,,sector,(?i)\bvertiv\b,Data-centre power and cooling
+PLTR,PLTR,,customer,(?i)\bpalantir\b,Enterprise AI demand; resells Claude
+NOW,NOW,,customer,(?i)\bservicenow\b,Enterprise AI demand
+CRM,CRM,,customer,(?i)\bsalesforce\b,Enterprise AI demand; uses Claude
+SNOW,SNOW,,customer,(?i)\bsnowflake\b,Enterprise AI demand; resells Claude
+DDOG,DDOG,,customer,(?i)\bdatadog\b,Enterprise AI demand
+NET,NET,,customer,(?i)\bcloudflare\b,Enterprise AI demand
+ACN,ACN,,customer,(?i)\baccenture\b,Large Claude reseller to enterprises
+DELOITTE,,,customer,(?i)\bdeloitte\b,Large Claude deployment
+ANYSPHERE,,,customer,(?i:\banysphere\b)|\bCursor (?:AI|IDE|editor)\b|\bCursor['’]s\b|\bCursor\b(?= (?:raises|valued|valuation|launches|hits|reaches|CEO)),Cursor; one of the biggest buyers of Claude tokens
+GTLB,GTLB,,customer,(?i)\bgitlab\b,Claude inside its developer platform
+NOTION,,,customer,\bNotion (?:AI|Labs)\b|\bNotion['’]s\b|\bNotion\b(?= (?:raises|valued|launches|CEO)),Claude inside its product
+ZM,ZM,,customer,(?i:\bzoom video\b)|\bZoom\b(?= (?:Communications|AI|Workplace|earnings|stock|shares|CEO))|\bZM\b,Claude inside its product
