@@ -16,10 +16,13 @@ OCN does not track Anthropic as a company yet, so rows are found by text. An art
 
 | Link to Anthropic | Companies | What it tells you |
 |---|---|---|
-| `competitor` | OpenAI, xAI (SpaceX), Meta, Mistral, DeepSeek | Rival launches, pricing and funding |
-| `supplier` | Amazon, Google, Microsoft, Nvidia, AMD, Broadcom, Micron, TSMC, TeraWulf, Hut 8 | Supply: compute, chips and capex. Several are also investors |
-| `customer` | Palantir, ServiceNow, Salesforce, Snowflake, Datadog, Cloudflare | Demand: enterprise AI spending |
-| `peer`, `sector` | CoreWeave, Oracle, Nebius, Akamai, Arista, Vertiv | The AI-capex trade ANT will trade with |
+| `competitor` | OpenAI, xAI (SpaceX), Meta, Mistral, DeepSeek, Cohere, Alibaba (Qwen), Moonshot (Kimi), Perplexity | Rival launches, pricing and funding |
+| `supplier` | Amazon, Google, Microsoft, Nvidia, AMD, Broadcom, Micron, TSMC, SK Hynix, Samsung, ASML, TeraWulf, Hut 8, Equinix, Digital Realty, Constellation Energy, Vistra | Supply: compute, chips, memory, data centres and power. Several are also investors |
+| `customer` | Palantir, ServiceNow, Salesforce, Snowflake, Datadog, Cloudflare, Accenture, Deloitte, Cursor (Anysphere), GitLab, Notion, Zoom | Demand: enterprise AI spending |
+| `peer` | CoreWeave, Oracle, Nebius, Super Micro, Dell | The AI-capex trade ANT will trade with |
+| `sector` | Akamai, Arista, Vertiv, Arm, Marvell | AI infrastructure |
+
+Samsung counts only when the headline is also about chips, memory or AI, so phone news stays out. Ambiguous names (Cursor, Notion, Zoom, Arm) need a qualifier next to them.
 
 ## Dedup (the same rules OCN uses)
 
