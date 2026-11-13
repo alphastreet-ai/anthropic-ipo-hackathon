@@ -286,6 +286,68 @@ def categories(r: dict) -> list[str]:
     return [name for name, _, rx in CATEGORIES if rx.search(text)]
 
 
+RULES_VERSION = "build_signals-rules-2026-11-13"  # bump when NOISE, CATEGORIES or detect() change
+NEWS_GRADES: dict[str, dict] = {}  # OCN article id -> OCN's AI-news grade, filled by build()
+
+
+def load_news_grades(raw: Path) -> dict[str, dict]:
+    """OCN's graded AI-news rows for our articles; the latest grade wins when OCN re-graded an article."""
+    f, out = raw / "news.jsonl.gz", {}
+    if f.exists():
+        for line in gzip.open(f, "rt", encoding="utf-8"):
+            g = json.loads(line)
+            k = str(g.get("article_id"))
+            if k not in out or (g.get("stored_at") or "") > (out[k].get("stored_at") or ""):
+                out[k] = g
+    return out
+
+
+def apply_news_grade(s: dict, r: dict) -> None:
+    """OCN's own classifier graded this article: its label, score, confidence, materiality and novelty replace the rules."""
+    g = NEWS_GRADES.get(str(r["id"]))
+    if not g:
+        s["model"], s["prompt_version"] = "rules", RULES_VERSION
+        return
+    label = g["signal_detection"]
+    if label == "noise" and r["_ant_in_title"]:
+        label = "weak_signal"  # Anthropic in the headline always bears on the IPO
+    s["signal_detection"], s["evidence"] = label, g.get("signal_reason") or s["evidence"]
+    s["strength"] = float(g["signal_score"]) if g.get("signal_score") is not None else None
+    s["confidence"], s["materiality"] = LEVEL.get(g.get("confidence")), LEVEL.get(g.get("materiality"))
+    if g.get("novelty") in NOVELTY:
+        s["novelty"] = NOVELTY[g["novelty"]]
+    s["category"] = sorted(set(s["category"]) | set(g.get("category") or []))
+    s["producer"] = "ocn/signal-detection-agent"
+    s["_ocn"]["graded_result_id"] = g.get("id")
+
+
+# ponytail: linear scales to 0-1 with a cap; the divisors are judgement until calibration measures each family
+def family_strength(det: str, m: dict) -> float | None:
+    def cap(x, d):
+        try:
+            return round(min(1.0, abs(float(x)) / d), 3)
+        except (TypeError, ValueError):
+            return None
+    if det == "macro":
+        z = m.get("z_scores") or m.get("z_score")
+        if isinstance(z, dict):
+            z = max((abs(v) for v in z.values() if isinstance(v, (int, float))), default=None)
+        if z is not None:
+            return cap(z, 4)  # |z| of 4 or more is full strength
+        if m.get("percentile") is not None:
+            return cap(float(m["percentile"]) - 50, 50)  # distance from the median of its 20-year range
+        return None
+    if det == "china":
+        return cap(m.get("deviation_mads"), 10) if m.get("deviation_mads") is not None else cap(m.get("capex_change_pct"), 100)
+    if det == "taiwan":
+        return cap(m.get("revenue_deviation"), 3)
+    if det == "korea":
+        return cap(m.get("pct_of_revenue"), 30)
+    if det == "japan":
+        return cap(m.get("operating_profit_pct_change") if m.get("operating_profit_pct_change") is not None else m.get("revenue_pct_change"), 50)
+    return None
+
+
 def signal(r: dict) -> dict:
     url, m = r["_url"], r["metadata"]
     cat = m.get("source_category")
@@ -478,7 +540,8 @@ def graded(st: str, row: dict) -> tuple[dict, list[dict]]:
         "summary": (summary or "")[:600] or None,
         "region": region, "country": region if region in ("TW", "KR", "JP", "CN", "US") else None,
         "subject_issuer_id": subject, "ticker": ticker,
-        "event_direction": direction, "strength": float(row["signal_score"]) if row.get("signal_score") is not None else None,
+        "event_direction": direction,
+        "strength": float(row["signal_score"]) if row.get("signal_score") is not None else family_strength(det, m),
         "confidence": LEVEL.get(row.get("confidence")), "materiality": LEVEL.get(row.get("materiality")),
         "novelty": NOVELTY.get(row.get("novelty")),
         "horizon_days": hl * 2, "half_life_days": hl,
@@ -545,27 +608,40 @@ def build(raw: Path = RAW, signals_raw: Path = SIGNALS_RAW) -> tuple[list[dict],
     n_url = len(rows)
     rows, dropped = dedup_titles(rows)
     cluster(rows)
+    NEWS_GRADES.clear()
+    NEWS_GRADES.update(load_news_grades(signals_raw))
     grades = load_graded(signals_raw)
     graded_articles = {str(s["_ocn"]["article_id"]) for s, _ in grades if s["_ocn"]["article_id"]}
-    sigs, imps, noise, replaced = [], [], Counter(), 0
+    # an article's place in its story, so a graded family row that replaces it inherits the cluster and novelty
+    story = {str(r["id"]): (r["_cluster"], 1.0 if r["_cluster"] == f"ocn:{r['id']}" else 0.0) for r in rows}
+    sigs, imps, noise, replaced, ocn_graded = [], [], Counter(), 0, 0
     for r in sorted(rows, key=lambda r: r["_t"], reverse=True):
         if str(r["id"]) in graded_articles:
             replaced += 1  # OCN graded this article itself; its graded row below wins
             continue
         s = signal(r)
+        apply_news_grade(s, r)
+        ocn_graded += s["producer"].startswith("ocn")
         if s["signal_detection"] == "noise":
-            noise[s["evidence"]] += 1  # only what can move the IPO stays in the pack
+            noise["ocn: noise" if s["producer"].startswith("ocn") else s["evidence"]] += 1  # only what can move the IPO stays
             continue
         sigs.append(s)
         imps += impacts(r, s)
     supersede(sigs, {f"ocn:{r['id']}": r["metadata"].get("period") for r in rows})
     for s, i in grades:
+        a = str(s["_ocn"]["article_id"])
+        if a in story:
+            s["cluster_id"] = story[a][0]
+        if s["novelty"] is None:
+            s["novelty"] = story[a][1] if a in story else 1.0  # one row per OCN event, so it is the first report
         sigs.append(s)
         imps += i
+    kept = {s["signal_id"] for s in sigs}
+    imps = [i for i in imps if i["signal_id"] in kept]
     sigs.sort(key=lambda s: s["published_at"] or s["detected_at"] or "", reverse=True)
     ant = [i for i in imps if i["issuer_id"] == "ANT"]
     stats = {"articles_in": n, "after_url_dedup": n_url, "title_duplicates_merged": dropped,
-             "articles_replaced_by_ocn_grade": replaced, "noise_left_out": dict(noise.most_common()),
+             "articles_replaced_by_ocn_grade": replaced, "news_graded_by_ocn": ocn_graded, "noise_left_out": dict(noise.most_common()),
              "signals": len(sigs), "clusters": len({s["cluster_id"] for s in sigs}), "impacts": len(imps),
              "by_detector": dict(Counter(s["detector"] for s in sigs).most_common()),
              "signal_detection": dict(Counter(s["signal_detection"] for s in sigs)),
@@ -651,6 +727,27 @@ def selftest() -> None:
     s, imp = graded("china_market_signal", {**base, "title": "SMEE wins lithography order", "metadata": {"code": "688012", "source_category": "cn_press",
                                             "read_through": [{"tickers": ["AMD"], "direction": "opposite", "relationship": "competitor"}]}})
     assert ("AMD", "competitor") in {(i["issuer_id"], i["link_type"]) for i in imp} and s["subject_issuer_id"] == "CN:688012"
+    # strength from each family's own size measure
+    assert family_strength("macro", {"z_scores": {"DGS2": 2.0, "DGS10": -3.0}}) == 0.75
+    assert family_strength("macro", {"percentile": 99.12}) == 0.982 and family_strength("china", {"deviation_mads": 19.6}) == 1.0
+    assert family_strength("geo", {}) is None
+    # OCN's AI-news grade replaces the rules; a noise grade keeps Anthropic headlines as weak
+    r = mk(30, "AWS launches Chile cloud region", 0, match=())
+    s = signal({**r, "_cluster": "ocn:30"})
+    NEWS_GRADES.clear()
+    NEWS_GRADES["30"] = {"id": 9, "signal_detection": "signal", "signal_score": "0.76", "confidence": "high", "materiality": "medium",
+                         "novelty": "step_change", "category": ["Cloud & Compute Platforms"], "signal_reason": "AWS opened a region"}
+    apply_news_grade(s, r)
+    assert (s["strength"], s["confidence"], s["materiality"], s["novelty"]) == (0.76, 0.9, 0.6, 1.0) and s["producer"] == "ocn/signal-detection-agent"
+    r = mk(31, "Anthropic CEO interview", 0)
+    s = signal({**r, "_cluster": "ocn:31"})
+    NEWS_GRADES["31"] = {"signal_detection": "noise", "signal_score": "0.2", "confidence": None, "materiality": "none", "novelty": None}
+    apply_news_grade(s, r)
+    assert s["signal_detection"] == "weak_signal" and s["materiality"] == 0.0
+    s = signal({**mk(32, "Nvidia unveils chip", 0, match=()), "_cluster": "ocn:32"})
+    apply_news_grade(s, mk(32, "Nvidia unveils chip", 0, match=()))
+    assert s["model"] == "rules" and s["prompt_version"] == RULES_VERSION
+    NEWS_GRADES.clear()
     # regional rows: prefix dropped from the title, Hana Micron is not Micron, DART filings are disclosures
     assert mk(13, "Hana Micron (067310) [20261112900988]: 타인에대한채무보증결정", 0, match=()) is None
     s, _ = sig(mk(14, "SK Hynix (000660) [20251215801345]: 주주명부폐쇄기간또는기준일설정", 0, dom="korea_market_signal", match=(),

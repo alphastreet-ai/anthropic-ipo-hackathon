@@ -191,8 +191,15 @@ def relevant(st: str, row: dict) -> bool:
     return label == "signal" and names_linked(row)
 
 
+def article_ids() -> set[str]:
+    """OCN article ids already in the article pull; OCN's AI-news grades are kept only for these."""
+    return {str(json.loads(l)["id"]) for f in (OUT / "articles").glob("*.jsonl.gz") for l in gzip.open(f, "rt", encoding="utf-8")}
+
+
 def ocn_results(counts: dict) -> None:
-    for st in FAMILIES:
+    ours = article_ids()
+    keep = {"news": lambda r: str(r.get("article_id")) in ours}  # OCN's own grades (score, confidence, materiality, novelty)
+    for st in ["news"] + FAMILIES:
         final = OUT / f"signals/{st}.jsonl.gz"
         final.parent.mkdir(parents=True, exist_ok=True)
         part, seen, kept, cursor = final.with_name(final.name + ".part"), 0, 0, None
@@ -200,7 +207,7 @@ def ocn_results(counts: dict) -> None:
             while True:
                 page = ocn("/agent/results", source_type=st, view="events", limit=500, cursor=cursor)
                 for r in page["results"]:
-                    if relevant(st, r):
+                    if keep[st](r) if st in keep else relevant(st, r):
                         (r.get("metadata") or {}).pop("body", None)  # geo rows carry the full article; not needed
                         f.write(json.dumps(r, ensure_ascii=False) + "\n")
                         kept += 1
@@ -250,9 +257,9 @@ def main() -> int:
     print(f"OCN at {BASE}; OCN key {'set' if KEY else 'not set'}; SEC user agent {'set' if SEC_UA else 'not set'}")
     if SEC_UA:
         sec(counts)
-    if KEY:
-        ocn_keyed(counts)
     articles(a.since, counts)
+    if KEY:
+        ocn_keyed(counts)  # after articles: OCN's AI-news grades are matched to the pulled articles
     manifest = OUT / "manifest.json"
     prior = json.loads(manifest.read_text()) if manifest.exists() else {}
     prior.update({"source": BASE, "match": MATCH.pattern, "last_pulled_at": started, "since": a.since,

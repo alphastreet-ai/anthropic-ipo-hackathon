@@ -43,7 +43,7 @@ Each family maps into the same `signal.v1.1` row. OCN's own grades fill what the
 | v1.1 field | From OCN |
 |---|---|
 | `signal_detection`, `evidence` | OCN's label and reason |
-| `strength`, `confidence`, `materiality`, `novelty` | `signal_score`; high/medium/low as 0.9/0.6/0.3; novelty step_change 1 … repeated 0 |
+| `strength`, `confidence`, `materiality`, `novelty` | `signal_score` when OCN has one; otherwise strength from the family's own size measure, capped at 1: macro \|z\|/4 (or distance from the median percentile for level extremes), China deviation in MADs/10 or capex change/100%, Taiwan revenue deviation/3, Korea % of revenue/30, Japan profit revision/50%. Confidence and materiality high/medium/low as 0.9/0.6/0.3 where OCN has them. Novelty: the replaced article's place in its story, else 1 (one row per OCN event) |
 | `event_direction` | Taiwan: sign of the revenue deviation. Japan: sign of the profit or revenue revision. Middle East: good +1, bad −1, mixed 0. Others: `null` |
 | `event_at` | The filing's fact date, the press event date, the Middle East event date, the geopolitical event date, or the macro observation date |
 | `published_at`, `detected_at` | OCN's `published` (for macro, when the number was released) and `stored_at` |
@@ -108,14 +108,15 @@ How the labels are set here (headline rules, until OCN's classifier grades these
 | `title`, `title_original`, `language`, `summary` | Headline without OCN's regional prefix ("SK Hynix (000660) [English coverage check]: …"); the same text for non-English titles, which are not translated yet; ISO 639-1 from the script; OCN's summary (at most 600 characters) |
 | `region`, `country` | Region from the OCN domain (`TW`, `KR`, `JP`, `CN`, `ME`, else `global`); the country for the four single-country regions |
 | `subject_issuer_id`, `ticker` | `ANT` when Anthropic is mentioned, otherwise the one linked company |
-| `event_direction`, `strength`, `confidence`, `materiality` | `null` until OCN's classifier grades these rows |
+| `strength`, `confidence`, `materiality` | From OCN's AI-news classifier where it graded the article (score; high/medium/low as 0.9/0.6/0.3). Its `noise` grade removes the article from the pack, unless Anthropic is in the headline (then `weak_signal`). Otherwise `null` |
+| `event_direction` | `null` until a classifier judges good or bad for the subject |
 | `evidence` | The rule that set `signal_detection` |
-| `novelty` | 1 for the first report in a cluster, 0 for later ones |
+| `novelty` | OCN's novelty where it graded the article (step_change 1, meaningful 0.66, incremental 0.33, repeated 0); otherwise 1 for the first report in a cluster, 0 for later ones |
 | `horizon_days`, `half_life_days` | Twice the half-life, and the longest category prior; with no category, 4 for news, 15 for geopolitical, 25 for newsletters |
 | `event_at`, `published_at`, `detected_at`, `valid_until` | `null`, publisher's time, when OCN stored it, `null`. Use `detected_at <= as_of` to stay point-in-time |
 | `cluster_id` | One event, one cluster |
 | `details` | `{publisher, entities, matched_issuers, matched_in_title}` |
-| `producer`, `model`, `prompt_version` | This script; `null`; `null` |
+| `producer`, `model`, `prompt_version` | `ocn/signal-detection-agent` when OCN graded the article, with `model`/`prompt_version` `null` (OCN does not record them yet); otherwise this script, `rules` and the rule-set version |
 | `signal_type`, `superseded_by`, `superseded_at` | `state` for quarterly results, each superseded by the next quarter's; `event` for the rest |
 | `backfilled` | `true` when OCN found the row more than 7 days after it was published. `detected_at` stays OCN's real time, so point-in-time filtering is still correct |
 | `_ocn` | Provenance, not part of the contract: OCN article id, domains, matched words, `also_reported_by`, Alpha Vantage sentiment |
