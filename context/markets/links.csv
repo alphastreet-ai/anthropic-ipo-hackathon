@@ -1,13 +1,13 @@
 issuer_id,ticker,link_type,title_pattern,why
 OPENAI,,competitor,(?i)\bopenai\b|\bchatgpt\b|\bsam altman\b|\bgpt-[45]|\bcodex\b,Closest rival; its pricing and revenue set the comparison for Anthropic
 SPCX,SPCX,competitor,(?i)\bxai\b|\bgrok\b|\bspacex\b,xAI sits inside the listed SpaceX; the nearest listed rival
-GOOGL,GOOGL,supplier,(?i)\bgoogle\b|\balphabet\b|\bgemini\b|\bdeepmind\b|\btpus?\b,TPU and cloud supplier and an investor; Gemini also competes
-AMZN,AMZN,supplier,(?i)\bamazon\b|\bAWS\b|\btrainium\b|\bbedrock\b,Main cloud and chip supplier and an investor
-MSFT,MSFT,supplier,(?i)\bmicrosoft\b|\bazure\b|\bcopilot\b,Azure compute deal and an investor; also sells Claude
+GOOGL,GOOGL,supplier competitor,(?i)\bgoogle\b|\balphabet\b|\bgemini\b|\bdeepmind\b|\btpus?\b,TPU and cloud supplier and an investor; Gemini competes
+AMZN,AMZN,supplier customer,(?i)\bamazon\b|\bAWS\b|\btrainium\b|\bbedrock\b,Main cloud and chip supplier and an investor; resells Claude on Bedrock
+MSFT,MSFT,supplier customer,(?i)\bmicrosoft\b|\bazure\b|\bcopilot\b,Azure compute deal and an investor; sells Claude in Foundry and Copilot
 NVDA,NVDA,supplier,(?i)\bnvidia\b|\bjensen huang\b,GPU supplier and an investor
 AMD,AMD,supplier,\bAMD\b|(?i:advanced micro devices),Chip supplier and placement partner
 AVGO,AVGO,supplier,(?i)\bbroadcom\b,Custom accelerator supplier
-MU,MU,supplier,(?i)\bmicron\b,Memory supplier and placement partner
+MU,MU,supplier,(?i)(?<!hana )\bmicron\b,Memory supplier and placement partner
 TSM,TSM,supplier,(?i)\btsmc\b|\btaiwan semiconductor\b,Makes the chips every supplier sells
 WULF,WULF,supplier,(?i)\bterawulf\b,Data-centre host
 HUT,HUT,supplier,(?i)\bhut 8\b,Data-centre host
@@ -19,7 +19,7 @@ BABA,BABA,competitor,(?i)\balibaba\b|\bqwen\b,Qwen open-weight models; the only 
 MOONSHOT,,competitor,(?i)\bmoonshot ai\b|\bkimi\b,Private Chinese rival
 PERPLEXITY,,competitor,(?i)\bperplexity\b,Private rival in AI search
 SKHYNIX,000660.KS,supplier,(?i)\bsk hynix\b|\bhynix\b,HBM memory for every AI accelerator
-SAMSUNG,005930.KS,supplier,(?i)^(?=.*\bsamsung\b)(?=.*\b(?:hbm|chips?|memory|foundry|semiconductors?|ai|nvidia|dram)\b),HBM memory and foundry; headline must also be about chips or AI
+SAMSUNG,005930.KS,supplier,(?i)\bsamsung electronics\b|^(?=.*\bsamsung\b)(?=.*\b(?:hbm|chips?|memory|foundry|semiconductors?|ai|nvidia|dram)\b),HBM memory and foundry; headline must also be about chips or AI
 ASML,ASML,supplier,(?i)\basml\b,Lithography behind every chip; also Mistral's largest listed backer
 EQIX,EQIX,supplier,(?i)\bequinix\b,Data-centre space
 DLR,DLR,supplier,(?i)\bdigital realty\b,Data-centre space
