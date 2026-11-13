@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "signal.v1.1",
   "title": "AlphaStreet signal, version 1.1",
-  "description": "One row of signals.v1.jsonl (the event, once). Fields this pack cannot fill yet are null, never missing. v1.1 adds signal_detection, category and details.matched_in_title, and widens the impact key to include link_type; all additive to v1.",
+  "description": "One row of signals.v1.jsonl (the event, once). Fields this pack cannot fill yet are null, never missing. v1.1 adds signal_detection, category and details.matched_in_title, and widens the impact key to include link_type; all additive to v1. Social-post fields (author, author_id, engagement, parent_id, thread_position) are removed until the pack has social sources.",
   "type": "object",
   "required": [
     "signal_id",
@@ -10,12 +10,7 @@
     "source_kind",
     "source_name",
     "source_url",
-    "author",
-    "author_id",
     "source_reliability",
-    "engagement",
-    "parent_id",
-    "thread_position",
     "scope",
     "detector",
     "subtype",
@@ -76,40 +71,10 @@
     "source_url": {
       "type": "string"
     },
-    "author": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-    "author_id": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
     "source_reliability": {
       "type": "number",
       "minimum": 0,
       "maximum": 1
-    },
-    "engagement": {
-      "type": [
-        "object",
-        "null"
-      ]
-    },
-    "parent_id": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-    "thread_position": {
-      "type": [
-        "integer",
-        "null"
-      ]
     },
     "scope": {
       "enum": [

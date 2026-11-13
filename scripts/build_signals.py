@@ -309,8 +309,7 @@ def signal(r: dict) -> dict:
     return {
         "signal_id": f"ocn:{r['id']}", "schema_version": SCHEMA_VERSION,
         "source_kind": kind, "source_name": source, "source_url": url,
-        "author": None, "author_id": None, "source_reliability": reliability, "engagement": None,
-        "parent_id": None, "thread_position": None,
+        "source_reliability": reliability,
         "scope": "company" if subject else "sector",
         "detector": "news", "subtype": r["domain"],
         "signal_detection": label, "category": cats,
@@ -472,8 +471,7 @@ def graded(st: str, row: dict) -> tuple[dict, list[dict]]:
         "signal_id": rid, "schema_version": SCHEMA_VERSION,
         "source_kind": kind, "source_name": publisher, "source_url": row.get("url") or src.get("url") or m.get("filing_url") or m.get("pdf_url")
         or (f"https://fred.stlouisfed.org/series/{typed['series_id'][0]}" if det == "macro" and typed["series_id"] else ""),
-        "author": None, "author_id": None, "source_reliability": reliability, "engagement": None,
-        "parent_id": None, "thread_position": None,
+        "source_reliability": reliability,
         "scope": scope, "detector": det, "subtype": cat or m.get("signal_type") or m.get("channel") or st,
         "signal_detection": row["signal_detection"], "category": cats,
         "title": title, "title_original": original if (original and original != title) else None, "language": lang if det != "macro" else "en",

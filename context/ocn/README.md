@@ -79,7 +79,7 @@ Impacts: ANT gets a `direct` row when Anthropic is named; otherwise one row per 
 
 ## `signal.v1.1`
 
-v1.1 adds four things to `signal.v1`, all additive (a v1 reader still works):
+v1.1 drops the five social-post fields (`author`, `author_id`, `engagement`, `parent_id`, `thread_position`) until the pack has social sources, and adds four things to `signal.v1`:
 
 | Addition | Why |
 |---|---|
@@ -102,7 +102,6 @@ How the labels are set here (headline rules, until OCN's classifier grades these
 | `signal_id`, `schema_version` | `ocn:<article id>`, `1` |
 | `source_kind` | `news_article`; `long_form` for Substack and newsletters; `exchange_disclosure` for Korean DART filings and quarterly results, HKEX and TSE disclosures |
 | `source_name`, `source_url` | The outlet and the article link |
-| `author`, `author_id`, `engagement`, `parent_id`, `thread_position` | `null` (news has none) |
 | `source_reliability` | Starting prior: 0.9 exchange filings, 0.8 wire services and state wires, 0.7 major outlets, 0.6 other news, 0.5 newsletters |
 | `scope` | `company` when the story is about one company, `sector` when it names several linked companies |
 | `detector`, `subtype` | `news`, and the OCN domain it came from |
