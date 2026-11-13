@@ -83,7 +83,7 @@ submissions/    one folder per entrant, plus _template/
 schema/         prediction.schema.json
 scripts/        validate.py (run by CI on every pull request), fetch_context.py
 scoring/        score.py, which also builds the leaderboard
-site/           the hackathon website
+explorer/       two pages for browsing the OCN signal pack: signals.html and impacts.html (internal; see context/ocn/README.md)
 ```
 
 ## Disclaimer

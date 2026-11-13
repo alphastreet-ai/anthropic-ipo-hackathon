@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>IPO Arena Impact Explorer</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@500;600&display=swap">
+<style>
+/* Layout: who-gets-hit summary on top, sticky filter rail, then the impact ledger; a row opens the signal behind it. */
+:root {
+  --bg: #f6f7f5; --panel: #ffffff; --fg: #1b1f1d; --muted: #5d6762; --line: #dfe3df; --soft: #eef1ee;
+  --accent: #1f6f5c; --accent-soft: #dcefe8;
+  --up: #1f7a3d; --down: #b3261e; --flat: #6b6f6d; --macro: #3d5aa8; --weak: #9a6a00;
+  --display: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #121614; --panel: #1a1f1c; --fg: #e6ebe8; --muted: #9aa5a0; --line: #2c3430; --soft: #222925;
+  --accent: #5cc3a4; --accent-soft: #1d3a31; --up: #6ccf8c; --down: #f08a80; --flat: #a3aaa6; --macro: #9db1ef; --weak: #e0b54a; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #121614; --panel: #1a1f1c; --fg: #e6ebe8; --muted: #9aa5a0; --line: #2c3430; --soft: #222925;
+  --accent: #5cc3a4; --accent-soft: #1d3a31; --up: #6ccf8c; --down: #f08a80; --flat: #a3aaa6; --macro: #9db1ef; --weak: #e0b54a; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 14px; line-height: 1.45; }
+.wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 20px 40px; max-width: 1280px; margin: 0 auto; display: grid; gap: 16px; }
+header h1 { font-family: var(--display); font-size: 26px; font-weight: 600; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
+header p { margin: 4px 0 0; color: var(--muted); max-width: 72ch; }
+.summary { display: flex; flex-wrap: wrap; gap: 8px 20px; font-family: var(--mono); font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.summary b { color: var(--fg); font-weight: 500; }
+h2 { font: 600 13px var(--display); text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 0 0 8px; }
+.board { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; }
+.boardbox { overflow-x: auto; }
+.hit { width: 100%; border-collapse: collapse; min-width: 640px; }
+.hit th { text-align: left; font: 500 11px var(--body); text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); padding: 4px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.hit td { padding: 5px 8px; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 12px; font-variant-numeric: tabular-nums; }
+.hit tr.pick { cursor: pointer; }
+.hit tr.pick:hover td { background: var(--soft); }
+.hit tr.on td { background: var(--accent-soft); }
+.bar { display: flex; height: 8px; width: 160px; border-radius: 2px; overflow: hidden; background: var(--soft); }
+.bar span { display: block; height: 100%; }
+.b-up { background: var(--up); } .b-down { background: var(--down); } .b-flat { background: var(--flat); } .b-none { background: var(--line); }
+.filters { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); padding-block: 10px; border-bottom: 1px solid var(--line); display: grid; gap: 10px; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); min-width: 74px; }
+.chip { font: 500 12px var(--body); border: 1px solid var(--line); background: var(--panel); color: var(--fg); border-radius: 999px; padding: 4px 10px; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
+.chip .n { color: var(--muted); font-family: var(--mono); font-size: 11px; margin-left: 4px; }
+.chip:focus-visible, select:focus-visible, input:focus-visible, button:focus-visible, tr:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+input[type=search], select { font: 14px var(--body); background: var(--panel); color: var(--fg); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; }
+input[type=search] { flex: 1 1 260px; min-width: 0; }
+.reset { font: 500 12px var(--body); background: none; border: none; color: var(--accent); cursor: pointer; padding: 4px; }
+.count { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.tablebox { overflow-x: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }
+table.ledger { border-collapse: collapse; width: 100%; min-width: 980px; }
+.ledger th { text-align: left; font: 500 11px var(--body); text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); padding: 8px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.ledger td { padding: 7px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr.imp { cursor: pointer; }
+tr.imp:hover td { background: var(--soft); }
+tr.imp.open td { background: var(--accent-soft); }
+.mono { font-family: var(--mono); font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.issuer { font: 500 13px var(--mono); white-space: nowrap; }
+.lk { font: 11px var(--mono); padding: 1px 6px; border-radius: 4px; background: var(--soft); white-space: nowrap; }
+.lk.direct { color: var(--up); } .lk.macro { color: var(--macro); }
+.priv { font: 500 10px var(--body); text-transform: uppercase; letter-spacing: 0.05em; color: var(--weak); border: 1px solid currentColor; border-radius: 3px; padding: 0 4px; margin-left: 6px; vertical-align: 1px; white-space: nowrap; }
+.dir { font: 600 12px var(--mono); }
+.dir.up { color: var(--up); } .dir.down { color: var(--down); } .dir.flat { color: var(--flat); } .dir.none { color: var(--muted); font-weight: 400; }
+.conf { display: inline-flex; align-items: center; gap: 6px; font: 12px var(--mono); }
+.conf i { display: block; width: 40px; height: 6px; background: var(--soft); border-radius: 2px; overflow: hidden; }
+.conf i b { display: block; height: 100%; background: var(--accent); }
+.pill { display: inline-block; font: 500 11px var(--mono); padding: 1px 7px; border-radius: 4px; border: 1px solid currentColor; white-space: nowrap; }
+.pill.signal { color: var(--up); } .pill.weak_signal { color: var(--weak); }
+.title { max-width: 440px; }
+.det { font: 500 11px var(--mono); color: var(--accent); }
+.sheet td { background: var(--bg); padding: 0; }
+.sheetin { padding: 14px 16px 18px; display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.group h3 { font: 600 12px var(--display); text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 6px; color: var(--muted); }
+dl { margin: 0; display: grid; grid-template-columns: minmax(120px, max-content) minmax(0, 1fr); gap: 3px 12px; }
+dt { font: 12px var(--mono); color: var(--muted); }
+dd { margin: 0; font-size: 13px; overflow-wrap: anywhere; min-width: 0; }
+dd.null { color: var(--muted); font-family: var(--mono); font-size: 12px; }
+.full { grid-column: 1 / -1; }
+.sib { width: 100%; border-collapse: collapse; }
+.sib th, .sib td { padding: 4px 8px; font-size: 12px; text-align: left; border-bottom: 1px solid var(--line); }
+.sib td { font-family: var(--mono); }
+.sib tr.me td { background: var(--accent-soft); }
+.more { text-align: center; padding: 12px; }
+.more button { font: 500 13px var(--body); border: 1px solid var(--line); background: var(--panel); color: var(--fg); border-radius: 6px; padding: 6px 14px; cursor: pointer; }
+a { color: var(--accent); }
+.note { color: var(--muted); font-size: 12px; max-width: 80ch; }
+.legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--muted); margin-top: 8px; }
+.legend span { display: inline-flex; align-items: center; gap: 5px; }
+.legend i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+.pages { display: flex; gap: 14px; font: 500 13px var(--body); } .pages a { text-decoration: none; color: var(--muted); } .pages a[aria-current] { color: var(--fg); border-bottom: 2px solid var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <p class="note" id="loadmsg">Loading the signal pack…</p>
+  <header>
+    <nav class="pages" aria-label="Explorer pages"><a href="signals.html">Signals</a><a href="impacts.html" aria-current="page">Impacts</a></nav>
+    <h1>IPO Arena Impact Explorer</h1>
+    <p>Every company a signal touches, and how: <code>signal_impacts</code> rows from AlphaStreet's <code>signal.v1.1</code> pack. Each row is one signal reaching one company through one link. Click a row to see the signal behind it and every other company it reaches.</p>
+  </header>
+  <div class="summary" id="summary"></div>
+
+  <section class="board" aria-label="Most affected companies">
+    <h2>Who gets hit, for the current filters</h2>
+    <div class="boardbox"><table class="hit"><thead><tr><th>Company</th><th>Impacts</th><th>Signals</th><th>Direction mix</th><th>+1</th><th>−1</th><th>0</th><th>none</th><th>Top link</th></tr></thead><tbody id="board"></tbody></table></div>
+    <div class="legend"><span><i class="b-up"></i>rises (+1)</span><span><i class="b-down"></i>falls (−1)</span><span><i class="b-flat"></i>neutral (0)</span><span><i class="b-none"></i>no direction yet</span><span><span class="priv">private</span> no listed shares</span><span><span class="priv">pre-IPO</span> lists 19 Nov</span><span>Click a company to filter the ledger to it.</span></div>
+  </section>
+
+  <section class="filters" aria-label="Filters">
+    <div class="row"><input type="search" id="q" placeholder="Search companies, signal titles, sources" aria-label="Search"><span class="count" id="count"></span><button class="reset" id="reset" type="button">Clear filters</button></div>
+    <div class="row" id="f-link"><span class="label">Link</span></div>
+    <div class="row" id="f-dir"><span class="label">Direction</span></div>
+    <div class="row" id="f-det"><span class="label">Detector</span></div>
+    <div class="row">
+      <span class="label">More</span>
+      <select id="f-issuer" aria-label="Company"><option value="">Any company</option></select>
+      <select id="f-hops" aria-label="Hops"><option value="">Any hops</option><option value="0">0 hops (named)</option><option value="1">1 hop (through a link)</option></select>
+      <select id="f-label" aria-label="Signal label"><option value="">Any label</option><option value="signal">signal</option><option value="weak_signal">weak_signal</option></select>
+      <select id="f-src" aria-label="Exposure source"><option value="">Any exposure source</option></select>
+      <select id="f-conf" aria-label="Minimum link confidence"><option value="0">Any confidence</option><option value="0.5">≥ 0.5</option><option value="0.8">≥ 0.8</option><option value="1">1.0 only</option></select>
+      <select id="f-sort" aria-label="Sort"><option value="new">Newest first</option><option value="conf">Highest confidence</option><option value="old">Oldest first</option></select>
+    </div>
+  </section>
+
+  <div class="tablebox">
+    <table class="ledger">
+      <thead><tr><th>Company</th><th>Link</th><th>Hops</th><th>Direction</th><th>Link confidence</th><th>Exposure</th><th>Signal</th><th>Detector</th><th>Label</th><th>Published</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div class="more" id="more" hidden><button type="button" id="morebtn">Show 100 more</button></div>
+  </div>
+  <p class="note" id="note"></p>
+</div>
+
+<script>
+function failed(e) {
+  document.getElementById("loadmsg").innerHTML = "Could not load the signal pack (" + String(e).replace(/[<>&]/g, "") + "). Build it with <code>python3 scripts/build_signals.py</code>, then serve the repo root with <code>python3 -m http.server 8000</code> and open this page from <code>http://localhost:8000/explorer/</code>.";
+}
+const lines = (t) => t.split("\n").filter(Boolean).map((l) => JSON.parse(l));
+async function get(p, kind) { const r = await fetch(p); if (!r.ok) throw new Error(p + " " + r.status); return kind === "json" ? r.json() : r.text(); }
+
+function start(D) {
+  document.getElementById("loadmsg").hidden = true;
+const SF = D.sig_fields, SIG = D.signals.map((a) => Object.fromEntries(SF.map((k, i) => [k, a[i]])));
+const SRC = D.exposure_sources;
+const IMP = D.impacts.map(([si, issuer, link, hops, dir, conf, src], n) => ({ n, s: SIG[si], si, issuer, link, hops, dir, conf, exposure: null, exposure_source: SRC[src] }));
+const BYSIG = new Map(); IMP.forEach((i) => { if (!BYSIG.has(i.si)) BYSIG.set(i.si, []); BYSIG.get(i.si).push(i); });
+IMP.forEach((i) => i._text = `${i.issuer} ${i.link} ${i.s.title} ${i.s.source} ${i.s.signal_id}`.toLowerCase());
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const PRIV = new Set(D.private);
+const tag = (k) => PRIV.has(k) ? `<span class="priv" title="Private company: no listed shares">private</span>` : k === "ANT" ? `<span class="priv" title="Private until it lists on 19 Nov">pre-IPO</span>` : "";
+const tagTxt = (k) => PRIV.has(k) ? " · private" : k === "ANT" ? " · pre-IPO" : "";
+const dirKey = (d) => d === 1 ? "up" : d === -1 ? "down" : d === 0 ? "flat" : "none";
+const dirTxt = (d) => d === 1 ? "+1" : d === -1 ? "−1" : d === 0 ? "0" : "null";
+
+const state = { q: "", link: new Set(), dir: new Set(), det: new Set(), issuer: "", hops: "", label: "", src: "", conf: 0, sort: "new", shown: 100, open: null };
+const tally = (fn) => { const m = new Map(); IMP.forEach((i) => { const v = fn(i); m.set(v, (m.get(v) || 0) + 1); }); return [...m.entries()].sort((a, b) => b[1] - a[1]); };
+function chips(box, key, fn, fmt = (v) => v) {
+  tally(fn).forEach(([v, n]) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "chip"; b.setAttribute("aria-pressed", "false");
+    b.innerHTML = `${esc(fmt(v))}<span class="n">${n.toLocaleString()}</span>`;
+    b.onclick = () => { state[key].has(v) ? state[key].delete(v) : state[key].add(v); b.setAttribute("aria-pressed", state[key].has(v)); state.shown = 100; render(); };
+    $(box).appendChild(b);
+  });
+}
+chips("f-link", "link", (i) => i.link);
+chips("f-dir", "dir", (i) => dirKey(i.dir), (v) => ({ up: "+1 rises", down: "−1 falls", flat: "0 neutral", none: "no direction" })[v]);
+chips("f-det", "det", (i) => i.s.detector);
+tally((i) => i.issuer).forEach(([v, n]) => { const o = document.createElement("option"); o.value = v; o.textContent = `${v}${tagTxt(v)} (${n})`; $("f-issuer").appendChild(o); });
+tally((i) => i.exposure_source).forEach(([v, n]) => { const o = document.createElement("option"); o.value = v; o.textContent = `${v} (${n})`; $("f-src").appendChild(o); });
+
+$("q").oninput = (e) => { state.q = e.target.value.trim().toLowerCase(); state.shown = 100; render(); };
+[["f-issuer", "issuer"], ["f-hops", "hops"], ["f-label", "label"], ["f-src", "src"], ["f-sort", "sort"]].forEach(([id, k]) => $(id).onchange = (e) => { state[k] = e.target.value; state.shown = 100; render(); });
+$("f-conf").onchange = (e) => { state.conf = +e.target.value; state.shown = 100; render(); };
+$("reset").onclick = () => {
+  Object.assign(state, { q: "", issuer: "", hops: "", label: "", src: "", conf: 0, sort: "new", shown: 100, open: null });
+  ["link", "dir", "det"].forEach((k) => state[k].clear());
+  document.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", "false"));
+  ["q", "f-issuer", "f-hops", "f-label", "f-src"].forEach((id) => $(id).value = ""); $("f-conf").value = "0"; $("f-sort").value = "new"; render();
+};
+$("morebtn").onclick = () => { state.shown += 100; render(); };
+
+function filtered(ignoreIssuer) {
+  let xs = IMP.filter((i) =>
+    (!state.q || i._text.includes(state.q)) &&
+    (!state.link.size || state.link.has(i.link)) && (!state.dir.size || state.dir.has(dirKey(i.dir))) &&
+    (!state.det.size || state.det.has(i.s.detector)) && (ignoreIssuer || !state.issuer || i.issuer === state.issuer) &&
+    (state.hops === "" || i.hops === +state.hops) && (!state.label || i.s.label === state.label) &&
+    (!state.src || i.exposure_source === state.src) && i.conf >= state.conf);
+  const t = (i) => i.s.published || "";
+  if (state.sort === "new") xs.sort((a, b) => t(b).localeCompare(t(a)));
+  if (state.sort === "old") xs.sort((a, b) => t(a).localeCompare(t(b)));
+  if (state.sort === "conf") xs.sort((a, b) => b.conf - a.conf || t(b).localeCompare(t(a)));
+  return xs;
+}
+
+function board() {
+  const m = new Map();
+  filtered(true).forEach((i) => {
+    if (!m.has(i.issuer)) m.set(i.issuer, { n: 0, sig: new Set(), up: 0, down: 0, flat: 0, none: 0, links: new Map() });
+    const r = m.get(i.issuer); r.n++; r.sig.add(i.si); r[dirKey(i.dir)]++; r.links.set(i.link, (r.links.get(i.link) || 0) + 1);
+  });
+  const top = [...m.entries()].sort((a, b) => b[1].n - a[1].n).slice(0, 15);
+  $("board").innerHTML = top.map(([k, r]) => {
+    const w = (x) => (100 * x / r.n).toFixed(1) + "%";
+    const link = [...r.links.entries()].sort((a, b) => b[1] - a[1])[0];
+    return `<tr class="pick${state.issuer === k ? " on" : ""}" tabindex="0" data-issuer="${esc(k)}"><td><b>${esc(k)}</b>${tag(k)}</td><td>${r.n.toLocaleString()}</td><td>${r.sig.size.toLocaleString()}</td>
+      <td><div class="bar" aria-label="${r.up} up, ${r.down} down, ${r.flat} neutral, ${r.none} none"><span class="b-up" style="width:${w(r.up)}"></span><span class="b-down" style="width:${w(r.down)}"></span><span class="b-flat" style="width:${w(r.flat)}"></span><span class="b-none" style="width:${w(r.none)}"></span></div></td>
+      <td>${r.up}</td><td>${r.down}</td><td>${r.flat}</td><td>${r.none}</td><td>${esc(link[0])} · ${link[1]}</td></tr>`;
+  }).join("") || `<tr><td colspan="9">No impacts match these filters.</td></tr>`;
+}
+$("board").addEventListener("click", (e) => { const tr = e.target.closest("tr.pick"); if (!tr) return; state.issuer = state.issuer === tr.dataset.issuer ? "" : tr.dataset.issuer; $("f-issuer").value = state.issuer; state.shown = 100; render(); });
+$("board").addEventListener("keydown", (e) => { if ((e.key === "Enter" || e.key === " ") && e.target.matches("tr.pick")) { e.preventDefault(); e.target.click(); } });
+
+const dd = (v) => v === null || v === undefined || v === "" ? `<dd class="null">null</dd>` : String(v).startsWith("http") ? `<dd><a href="${esc(v)}" target="_blank" rel="noopener">${esc(v)}</a></dd>` : `<dd>${esc(v)}</dd>`;
+function sheet(i) {
+  const s = i.s;
+  const impact = `<div class="group"><h3>This impact row</h3><dl>${[["signal_id", s.signal_id], ["issuer_id", i.issuer], ["link_type", i.link], ["link_hops", i.hops], ["direction", i.dir], ["exposure", i.exposure], ["exposure_source", i.exposure_source], ["link_confidence", i.conf]].map(([k, v]) => `<dt>${k}</dt>${dd(v)}`).join("")}</dl></div>`;
+  const sig = `<div class="group"><h3>The signal behind it</h3><dl>${[["title", s.title], ["detector", s.detector], ["subtype", s.subtype], ["signal_detection", s.label], ["scope", s.scope], ["subject_issuer_id", s.subject], ["event_direction", s.event_direction], ["source_name", s.source], ["source_reliability", s.reliability], ["source_url", s.url], ["published_at", s.published], ["half_life_days", s.half_life], ["category", (s.category || []).join(", ")], ["evidence", s.evidence]].map(([k, v]) => `<dt>${k}</dt>${dd(v)}`).join("")}</dl></div>`;
+  const sibs = BYSIG.get(i.si) || [];
+  const sib = `<div class="group full"><h3>All companies this signal reaches (${sibs.length})</h3><div style="overflow-x:auto"><table class="sib"><thead><tr><th>issuer_id</th><th>link_type</th><th>link_hops</th><th>direction</th><th>link_confidence</th><th>exposure_source</th></tr></thead><tbody>${
+    sibs.map((x) => `<tr class="${x.n === i.n ? "me" : ""}"><td>${esc(x.issuer)}${tag(x.issuer)}</td><td>${esc(x.link)}</td><td>${x.hops}</td><td>${dirTxt(x.dir)}</td><td>${x.conf}</td><td>${esc(x.exposure_source)}</td></tr>`).join("")}</tbody></table></div></div>`;
+  return `<tr class="sheet"><td colspan="10"><div class="sheetin">${impact}${sig}${sib}</div></td></tr>`;
+}
+
+function render() {
+  const xs = filtered(false);
+  $("count").textContent = `${xs.length.toLocaleString()} of ${IMP.length.toLocaleString()} impacts`;
+  $("rows").innerHTML = xs.slice(0, state.shown).map((i) => {
+    const open = state.open === i.n;
+    return `<tr class="imp${open ? " open" : ""}" tabindex="0" data-n="${i.n}" aria-expanded="${open}">
+      <td class="issuer">${esc(i.issuer)}${tag(i.issuer)}</td>
+      <td><span class="lk ${esc(i.link)}">${esc(i.link)}</span></td>
+      <td class="mono">${i.hops}</td>
+      <td><span class="dir ${dirKey(i.dir)}">${dirTxt(i.dir)}</span></td>
+      <td><span class="conf"><i><b style="width:${i.conf * 100}%"></b></i>${i.conf.toFixed(1)}</span></td>
+      <td class="mono">${i.exposure ?? "null"}</td>
+      <td class="title">${esc(i.s.title)}</td>
+      <td><span class="det">${esc(i.s.detector)}</span></td>
+      <td><span class="pill ${i.s.label}">${i.s.label === "weak_signal" ? "weak" : "signal"}</span></td>
+      <td class="mono">${esc((i.s.published || "").slice(0, 10))}</td></tr>${open ? sheet(i) : ""}`;
+  }).join("") || `<tr><td colspan="10" class="note">No impacts match these filters. Clear a filter to see more.</td></tr>`;
+  $("more").hidden = xs.length <= state.shown;
+  board();
+}
+$("rows").addEventListener("click", (e) => { const tr = e.target.closest("tr.imp"); if (!tr || e.target.closest("a")) return; const n = +tr.dataset.n; state.open = state.open === n ? null : n; render(); });
+$("rows").addEventListener("keydown", (e) => { if ((e.key === "Enter" || e.key === " ") && e.target.matches("tr.imp")) { e.preventDefault(); e.target.click(); } });
+
+const ant = IMP.filter((i) => i.issuer === "ANT").length;
+$("summary").innerHTML = `<span>Impacts <b>${IMP.length.toLocaleString()}</b></span><span>Signals <b>${SIG.length.toLocaleString()}</b></span><span>Reaching ANT <b>${ant.toLocaleString()}</b></span><span>Companies <b>${new Set(IMP.map((i) => i.issuer)).size}</b></span><span>Built <b>${esc(D.built_at)}</b></span>`;
+$("note").textContent = "Exposure is null in every row: nothing measures yet how much of a company a signal touches. Direction comes from Alpha Vantage per-ticker sentiment and OCN's Middle East share-price effects; elsewhere it is null. Headlines come from licensed sources and are for internal review.";
+render();
+}
+
+const F = ["signal_id","title","detector","subtype","label","scope","subject","event_direction","source","reliability","url","published","half_life","category","evidence"];
+Promise.all([get("../context/ocn/signals/signals.v1.jsonl"), get("../context/ocn/signals/signal_impacts.v1.jsonl"), get("../context/ocn/signals/stats.json", "json"), get("../context/markets/links.csv")]).then(([s, i, stats, links]) => {
+  const S = lines(s), idx = new Map(S.map((x, n) => [x.signal_id, n])), src = [];
+  const signals = S.map((x) => [x.signal_id, x.title, x.detector, x.subtype, x.signal_detection, x.scope, x.subject_issuer_id, x.event_direction, x.source_name,
+    x.source_reliability, x.source_url, (x.published_at || x.detected_at || "").slice(0, 19), x.half_life_days, x.category, x.evidence]);
+  const impacts = lines(i).map((x) => { if (!src.includes(x.exposure_source)) src.push(x.exposure_source);
+    return [idx.get(x.signal_id), x.issuer_id, x.link_type, x.link_hops, x.direction, x.link_confidence, src.indexOf(x.exposure_source)]; });
+  const rows = links.trim().split("\n").slice(1).map((l) => l.split(","));
+  const priv = rows.filter((r) => !r[1]).map((r) => r[0]);  // no ticker = private company
+  start({ sig_fields: F, signals, impacts, exposure_sources: src, private: priv, built_at: stats.built_at.slice(0, 16).replace("T", " ") + " UTC" });
+}).catch(failed);
+</script>
+</body>
+</html>

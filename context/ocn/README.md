@@ -7,6 +7,17 @@ python scripts/pull_ocn.py        # 1. copy matching OCN rows into raw/ (about 4
 python scripts/build_signals.py   # 2. dedup and structure them into signals/ (seconds)
 ```
 
+## Browse it
+
+Two pages in `explorer/` read the pack straight from `signals/`, so they hold no data of their own:
+
+```bash
+python3 -m http.server 8000      # from the repo root
+```
+
+- `http://localhost:8000/explorer/signals.html`: every signal, filterable by detector, label, link to ANT, scope, source kind, category and subject; a row opens every field and its impact rows.
+- `http://localhost:8000/explorer/impacts.html`: every signal-to-company impact, with the most-affected companies, filters by link, direction, detector, hops, confidence and exposure source, and private companies marked.
+
 ## What is pulled
 
 OCN does not track Anthropic as a company yet, so rows are found by text. An article is kept when either:

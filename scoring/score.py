@@ -93,7 +93,6 @@ def main():
     rows = build(outcomes, judged)
     settled = [k for k in PRICE if outcomes.get(k)]
     board = {"settled": settled, "final": len(settled) == len(PRICE), "outcomes": outcomes, "entries": rows}
-    (ROOT / "site/leaderboard.json").write_text(json.dumps(board, indent=2) + "\n")
     usd = lambda r, k: f"${r[k]['median']:g}"
     md = ["# Leaderboard", "", "Final." if board["final"] else f"Provisional. Settled so far: {', '.join(settled) or 'nothing yet'}.", "",
           "| # | Entry | Method | IPO price | Day-1 open | Day-1 close | Day-5 close | Prediction /50 | Harness /30 | Idea /20 | Total | Badges |",
