@@ -1,5 +1,5 @@
 {
- "run_at": "2026-11-17T16:11:38Z",
+ "run_at": "2026-11-17T16:12:44Z",
  "seed": 20261118,
  "sims": 150000,
  "deal": {
@@ -32,6 +32,12 @@
      "source": "Bloomberg.com",
      "tier": 1,
      "published": "Tue, 17 Nov 2026 14:45:22 GMT"
+    },
+    {
+     "title": "Anthropic is guiding its IPO price to the top of its range \u2014 or higher - Quartz",
+     "source": "Quartz",
+     "tier": 2,
+     "published": "Tue, 17 Nov 2026 15:56:15 GMT"
     },
     {
      "title": "Anthropic Said to Guide IPO Price to $78 or Higher - The Defiant",
@@ -77,12 +83,6 @@
     }
    ],
    "top_only": [
-    {
-     "title": "Anthropic is guiding its IPO price to the top of its range \u2014 or higher - Quartz",
-     "source": "Quartz",
-     "tier": 2,
-     "published": "Tue, 17 Nov 2026 15:56:15 GMT"
-    },
     {
      "title": "Watch Anthropic Is Said to Guide IPO Price to Top of Range - Bloomberg.com",
      "source": "Bloomberg.com",

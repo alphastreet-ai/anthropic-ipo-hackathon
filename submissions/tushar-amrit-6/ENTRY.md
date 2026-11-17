@@ -20,17 +20,14 @@
 - **Run log:** the output of the run that produced `prediction.json` is below; the full feature dump (every weight, every headline hit, every market bucket) is in [`run_log.json`](run_log.json).
 
 ```
-WARNING: polymarket refresh failed (<urlopen error [Errno 54] Connection reset by peer>); using the committed snapshot
-WARNING: fred refresh failed (The read operation timed out); using the committed snapshot
 ok   /Users/tamrit/Desktop/anthropic/anthropic-ipo-hackathon/submissions/tushar-amrit-6/prediction.json
 1/1 valid
-refreshed submissions/tushar-amrit-6/data/hyperliquid.json
-refreshed submissions/tushar-amrit-6/data/headlines.json
 
 == inputs ==
 book coverage (headline median): 6.0x from 27 mentions
   headline[above, tier 1] Anthropic likely to price IPO above the current range of $70 to $78, sources tell CNBC - C (CNBC)
   headline[top_or_above, tier 1] Anthropic Said to Guide IPO Price to Top of Range or Above - Bloomberg.com (Bloomberg.com)
+  headline[top_or_above, tier 2] Anthropic is guiding its IPO price to the top of its range — or higher - Quartz (Quartz)
   headline[top_or_above, tier 2] Anthropic Said to Guide IPO Price to $78 or Higher - The Defiant (The Defiant)
   headline[top_or_above, tier 2] Anthropic Is Said To Guide IPO Price To Top Of Range Or Above - Bloomberg - Investing.com (Investing.com)
   headline[top_or_above, tier 2] Anthropic Is Said To Guide IPO Price To Top Of Range Or Above - Bloomberg - Investing.com  (Investing.com Nigeria)
@@ -38,7 +35,6 @@ book coverage (headline median): 6.0x from 27 mentions
   headline[top_or_above, tier 2] Anthropic Is Said To Guide IPO Price To Top Of Range Or Above - Bloomberg - Investing.com  (Investing.com Canada)
   headline[top_or_above, tier 2] Anthropic is said to guide IPO price to top of range or above - Moneycontrol.com (Moneycontrol.com)
   headline[top_or_above, tier 2] Anthropic Is Said To Guide IPO Price To Top Of Range Or Above - Bloomberg By Investing.com (Investing.com India)
-  headline[top_only, tier 2] Anthropic is guiding its IPO price to the top of its range — or higher - Quartz (Quartz)
   headline[top_only, tier 1] Watch Anthropic Is Said to Guide IPO Price to Top of Range - Bloomberg.com (Bloomberg.com)
   headline[top_only, tier 2] Anthropic Said to Guide IPO Price to High End of Range, Bloomberg Reports - www.marketscre (www.marketscreener.com)
   headline[raise_range, tier 2] Anthropic may raise its IPO price range - Traders Union (Traders Union)

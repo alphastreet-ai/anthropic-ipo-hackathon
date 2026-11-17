@@ -315,7 +315,7 @@ COVER = re.compile(r"(\d+(?:\.\d+)?|" + "|".join(WORDS) + r")(?:\s*(?:-|–|to)\
 PATTERNS = {
     "above": re.compile(r"(?:pric\w*|ipo|shares?|deal)\s+(?:its\s+ipo\s+)?above\s+(?:the\s+)?(?:current\s+|marketed\s+|proposed\s+)?(?:price\s+)?range"
                         r"|above\s+(?:the\s+)?(?:current\s+|marketed\s+)?(?:price\s+)?range|above\s+(?:its\s+)?(?:target(?:ed)?|marketed)\s+range", re.I),
-    "top_or_above": re.compile(r"top\s+of\s+(?:the\s+|its\s+)?(?:price\s+)?range\s+or\s+(?:above|higher|more)|\$?78\s+or\s+(?:more|above|higher)", re.I),
+    "top_or_above": re.compile(r"top\s+of\s+(?:the\s+|its\s+)?(?:price\s+)?range\s*(?:[-\u2013\u2014,:]\s*)?or\s+(?:above|higher|more)|\$?78\s+or\s+(?:more|above|higher)", re.I),
     "top_only": re.compile(r"top\s+(?:end\s+)?of\s+(?:the\s+|its\s+)?(?:price\s+)?range|high\s+end\s+of\s+(?:the\s+|its\s+)?range", re.I),
     "hold_range": re.compile(r"(?:stick\w*|hold\w*|maintain\w*|keep\w*|reaffirm\w*)\s+(?:to\s+|with\s+)?(?:its\s+)?(?:proposed\s+|current\s+)?(?:ipo\s+)?(?:price\s+)?range", re.I),
     "raise_range": re.compile(r"(?:rais\w*|boost\w*|lift\w*|hik\w*|increas\w*)\s+(?:its\s+)?(?:ipo\s+)?(?:price\s+)?range|range\s+(?:raised|lifted|increased)", re.I),
