@@ -8,21 +8,21 @@
     "p90": 86.75
   },
   "day1_open": {
-    "median": 98.23,
-    "p10": 75.39,
-    "p90": 140.32
+    "median": 98.4,
+    "p10": 75.59,
+    "p90": 140.36
   },
   "day1_close": {
-    "median": 99.92,
-    "p10": 78.01,
-    "p90": 136.92
+    "median": 100.11,
+    "p10": 78.17,
+    "p90": 136.94
   },
   "day5_close": {
-    "median": 99.04,
-    "p10": 77.16,
-    "p90": 140.47
+    "median": 99.49,
+    "p10": 77.44,
+    "p90": 140.71
   },
-  "thesis": "Pricing: the book is reported at about 6x the $64B on offer (33 headline mentions), and Bloomberg.com, CNBC report guidance to the top of the $70-78 range or above. Pooling a 60% base rate of above-range pricing from 15 hot IPOs with those headlines (likelihood ratio 3.0) and Polymarket's proceeds market (P(>=$65B) = 66%, i.e. a price above $79) gives P(above $78) = 72%. The premium above the top is drawn from what hot deals achieved (3-16% of the range top), shrunk by 20% because the four largest comparables (Facebook, Alibaba, Arm, SpaceX) all stopped at the top and the $26B placement partners pay the IPO price, and capped at the 20% Rule 430A limit: median $81.75, 80% range $78.00-$86.75. Trading: we read where ANT trades from money-backed markets rather than from the pops of small deals. Hyperliquid's per-share pre-IPO perpetual xyz:ANT marks $96.86 (+24% vs $78) on $130M of open interest; Polymarket's $9.7M day-one market-cap market implies a median close of $104 on 13.09B shares (median cap $1.36T); and a paired bootstrap of 17 IPOs weighted by deal size, book coverage and recency (SpaceX, Rivian, Arm, Alibaba, Klarna, Cerebras carry most weight), with each deal's first-day move scaled to a $64B deal along the fitted size slope (-0.09 per log-unit of size), puts the close at 1.25x the IPO price ($102). The three agree within a few dollars, so the mixture gives open $98.23 and close $99.92. The perp is bias-corrected by half of its only precedent (it sat 17% above SpaceX's open and 9% above its first close). Day five carries the close through the comparables' day-5/day-1 ratio (weighted median 0.95x) and blends it with the perp as the post-pop anchor: $99.04. Ranges are mixture quantiles with a diffuse component for model error, and they are deliberately wide: Nvidia reports between this run and pricing, and a 20% retail slice plus up to 316M shares released from lockup on day one make the supply picture unlike past hot IPOs.",
+  "thesis": "Pricing: the book is reported at about 6x the $64B on offer (27 headline mentions), and Bloomberg.com, CNBC report guidance to the top of the $70-78 range or above. Pooling a 60% base rate of above-range pricing from 15 hot IPOs with those headlines (likelihood ratio 3.0) and Polymarket's proceeds market (P(>=$65B) = 66%, i.e. a price above $79) gives P(above $78) = 72%. The premium above the top is drawn from what hot deals achieved (3-16% of the range top), shrunk by 20% because the four largest comparables (Facebook, Alibaba, Arm, SpaceX) all stopped at the top and the $26B placement partners pay the IPO price, and capped at the 20% Rule 430A limit: median $81.75, 80% range $78.00-$86.75. Trading: we read where ANT trades from money-backed markets rather than from the pops of small deals. Hyperliquid's per-share pre-IPO perpetual xyz:ANT marks $97.42 (+25% vs $78) on $131M of open interest; Polymarket's $9.7M day-one market-cap market implies a median close of $104 on 13.09B shares (median cap $1.36T); and a paired bootstrap of 17 IPOs weighted by deal size, book coverage and recency (SpaceX, Rivian, Arm, Alibaba, Klarna, Cerebras carry most weight), with each deal's first-day move scaled to a $64B deal along the fitted size slope (-0.09 per log-unit of size), puts the close at 1.25x the IPO price ($102). The three agree within a few dollars, so the mixture gives open $98.40 and close $100.11. The perp is bias-corrected by half of its only precedent (it sat 17% above SpaceX's open and 9% above its first close). Day five carries the close through the comparables' day-5/day-1 ratio (weighted median 0.95x) and blends it with the perp as the post-pop anchor: $99.49. Ranges are mixture quantiles with a diffuse component for model error, and they are deliberately wide: Nvidia reports between this run and pricing, and a 20% retail slice plus up to 316M shares released from lockup on day one make the supply picture unlike past hot IPOs.",
   "key_risks": [
     "Nvidia reports after the close on 17 Nov, hours before pricing. The last AI selloff (5-6 Nov) took the xyz:ANT perp down about 20% in two days; a repeat would drag the IPO price toward $78 and day-one trading below our medians.",
     "Supply on day one is unusual: up to 20% of the deal goes to retail and up to 316M shares are released from lockup on the first day, so the open may not clear as far above the IPO price as past hot deals with tiny floats.",

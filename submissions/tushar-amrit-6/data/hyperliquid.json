@@ -1,20 +1,20 @@
 {
  "source": "Hyperliquid info API, dex xyz, coin xyz:ANT (one Class A share, USD); https://api.hyperliquid.xyz/info",
- "fetched_at": "2026-11-17T15:46:24Z",
+ "fetched_at": "2026-11-17T16:10:32Z",
  "ctx": {
-  "funding": "0.0000011081",
-  "openInterest": "1341899.3600000006",
-  "prevDayPx": "99.239",
-  "dayNtlVlm": "58836719.7583299652",
-  "premium": "-0.0176104432",
-  "oraclePx": "98.399",
-  "markPx": "96.855",
-  "midPx": "96.684",
+  "funding": "-0.0000031328",
+  "openInterest": "1343498.3399999999",
+  "prevDayPx": "98.921",
+  "dayNtlVlm": "59809006.3229399994",
+  "premium": "-0.0032925894",
+  "oraclePx": "97.765",
+  "markPx": "97.424",
+  "midPx": "97.438",
   "impactPxs": [
-   "96.6269",
-   "96.7054"
+   "97.427",
+   "97.4592"
   ],
-  "dayBaseVlm": "604742.8199999997"
+  "dayBaseVlm": "615033.7899999999"
  },
  "candles_1d": [
   {
@@ -287,11 +287,11 @@
    "s": "xyz:ANT",
    "i": "1d",
    "o": "96.972",
-   "c": "96.707",
+   "c": "97.448",
    "h": "100.16",
    "l": "95.0",
-   "v": "461842.93",
-   "n": 103622
+   "v": "484090.57",
+   "n": 107286
   }
  ]
 }

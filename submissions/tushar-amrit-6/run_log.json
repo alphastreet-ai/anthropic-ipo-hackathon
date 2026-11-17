@@ -1,5 +1,5 @@
 {
- "run_at": "2026-11-17T15:52:27Z",
+ "run_at": "2026-11-17T16:11:38Z",
  "seed": 20261118,
  "sims": 150000,
  "deal": {
@@ -14,8 +14,8 @@
  "vix": 18.7,
  "vix_scale": 0.935,
  "news": {
-  "fetched_at": "2026-11-17T15:45:28Z",
-  "headlines": 268,
+  "fetched_at": "2026-11-17T16:10:37Z",
+  "headlines": 217,
   "coverage_x": 6,
   "pricing_hits": {
    "above": [
@@ -38,12 +38,6 @@
      "source": "The Defiant",
      "tier": 2,
      "published": "Tue, 17 Nov 2026 14:27:36 GMT"
-    },
-    {
-     "title": "Anthropic is guiding its IPO price to the top of its range or higher - Quartz",
-     "source": "Quartz",
-     "tier": 2,
-     "published": "Tue, 17 Nov 2026 14:31:32 GMT"
     },
     {
      "title": "Anthropic Is Said To Guide IPO Price To Top Of Range Or Above - Bloomberg - Investing.com",
@@ -83,6 +77,12 @@
     }
    ],
    "top_only": [
+    {
+     "title": "Anthropic is guiding its IPO price to the top of its range \u2014 or higher - Quartz",
+     "source": "Quartz",
+     "tier": 2,
+     "published": "Tue, 17 Nov 2026 15:56:15 GMT"
+    },
     {
      "title": "Watch Anthropic Is Said to Guide IPO Price to Top of Range - Bloomberg.com",
      "source": "Bloomberg.com",
@@ -271,42 +271,6 @@
    "title": "Anthropic IPO: Can ANT Price Above $78 After Orders Reach Six Times the Shares? - TradingKey",
    "source": "TradingKey",
    "published": "Sun, 15 Nov 2026 12:05:11 GMT"
-  },
-  {
-   "x": 6,
-   "title": "Anthropic\u2019s IPO Is About Six Times Oversubscribed - Bloomberg.com",
-   "source": "Bloomberg.com",
-   "published": "Thu, 12 Nov 2026 21:00:14 GMT"
-  },
-  {
-   "x": 6.0,
-   "title": "Anthropic IPO Draws 6x Demand as Founders Plan $1.75B Sale - Channel Insider",
-   "source": "Channel Insider",
-   "published": "Fri, 13 Nov 2026 14:08:16 GMT"
-  },
-  {
-   "x": 6,
-   "title": "Anthropic IPO attracts six times demand as valuation reaches US$1.4 trillion - Yahoo Finance",
-   "source": "Yahoo Finance",
-   "published": "Fri, 13 Nov 2026 14:57:00 GMT"
-  },
-  {
-   "x": 6,
-   "title": "Anthropic IPO demand jumps to six times available shares - Investing.com",
-   "source": "Investing.com",
-   "published": "Thu, 12 Nov 2026 21:20:07 GMT"
-  },
-  {
-   "x": 6.0,
-   "title": "Jensen Resigns, Sequoia Pulls Back to the Bay, and Anthropic\u2019s IPO Draws 6x Demand: The Top Takeaways from 20VC x SaaStr - saastr.com",
-   "source": "saastr.com",
-   "published": "Thu, 12 Nov 2026 08:00:00 GMT"
-  },
-  {
-   "x": 7.0,
-   "title": "Anthropic IPO: Can Claude maker beat SpaceX's $86.2 billion record? Amid 7x demand, 5 factors to watch - Moneycontrol.com",
-   "source": "Moneycontrol.com",
-   "published": "Mon, 16 Nov 2026 10:43:06 GMT"
   }
  ],
  "polymarket": {
@@ -331,14 +295,14 @@
   "implied_median_market_cap_usd_tn": 1.361
  },
  "perp": {
-  "fetched_at": "2026-11-17T15:46:24Z",
-  "mark": 96.855,
-  "mid": 96.684,
-  "oracle": 98.399,
-  "prev_day": 99.239,
-  "open_interest_contracts": 1341899,
-  "day_notional_volume_usd": 58836720,
-  "funding_hourly": 1.1081e-06,
+  "fetched_at": "2026-11-17T16:10:32Z",
+  "mark": 97.424,
+  "mid": 97.438,
+  "oracle": 97.765,
+  "prev_day": 98.921,
+  "open_interest_contracts": 1343498,
+  "day_notional_volume_usd": 59809006,
+  "funding_hourly": -3.1328e-06,
   "daily_closes": [
    98.032,
    102.36,
@@ -349,10 +313,10 @@
    102.11,
    102.07,
    96.987,
-   96.707
+   97.448
   ],
-  "realized_daily_vol": 0.0259,
-  "open_interest_usd": 129969663
+  "realized_daily_vol": 0.026,
+  "open_interest_usd": 130888982
  },
  "comps": [
   {
@@ -685,19 +649,19 @@
    "p90": 86.75
   },
   "day1_open": {
-   "median": 98.23,
-   "p10": 75.39,
-   "p90": 140.32
+   "median": 98.4,
+   "p10": 75.59,
+   "p90": 140.36
   },
   "day1_close": {
-   "median": 99.92,
-   "p10": 78.01,
-   "p90": 136.92
+   "median": 100.11,
+   "p10": 78.17,
+   "p90": 136.94
   },
   "day5_close": {
-   "median": 99.04,
-   "p10": 77.16,
-   "p90": 140.47
+   "median": 99.49,
+   "p10": 77.44,
+   "p90": 140.71
   }
  },
  "confidence": 0.5,
