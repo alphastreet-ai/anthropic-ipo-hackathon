@@ -17,7 +17,7 @@ Four prices come out of one simulation:
                  as the anchor for where the stock settles once the first-day pop has passed.
 Every number that can be tuned sits in params.json. Every input sits in data/ with its source.
 """
-import argparse, bisect, csv, json, math, random, re, statistics, subprocess, sys, time, urllib.parse, urllib.request
+import argparse, bisect, csv, importlib.util, json, math, random, re, statistics, subprocess, sys, time, urllib.parse, urllib.request
 import xml.etree.ElementTree as ET
 from datetime import date, datetime, timezone
 from pathlib import Path
@@ -637,7 +637,10 @@ def main():
     print("confidence %.2f" % confidence)
     print("wrote %s and run_log.json" % (out / "prediction.json"))
     if not args.no_validate and (ROOT / "scripts/validate.py").exists():
-        sys.exit(subprocess.run([sys.executable, str(ROOT / "scripts/validate.py"), str(out / "prediction.json")]).returncode)
+        if importlib.util.find_spec("jsonschema") is None:
+            print("jsonschema is not installed, so scripts/validate.py was skipped here (CI runs it; `pip install jsonschema` to run it locally)")
+        else:
+            sys.exit(subprocess.run([sys.executable, str(ROOT / "scripts/validate.py"), str(out / "prediction.json")]).returncode)
 
 
 if __name__ == "__main__":
