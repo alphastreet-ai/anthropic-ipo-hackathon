@@ -1,0 +1,10 @@
+{
+  "coin": "xyz:ANT",
+  "read_at": "2026-11-17T21:42:06Z",
+  "mark": 96.968,
+  "oracle": 96.543,
+  "open_interest_contracts": 1466642.3799999994,
+  "funding_per_hour": 8.423e-07,
+  "usd_per_day": 23446390,
+  "source": "https://api.hyperliquid.xyz/info (metaAndAssetCtxs, candleSnapshot)"
+}

@@ -1,0 +1,17 @@
+as of 2026-11-17 (1 trading days to pricing)
+refresh data: used the files committed in data/
+first close by clock      p10   median      p90   weight
+  perp                   78.22    92.44   106.89    0.333
+  history                77.61   104.83   149.84    0.333
+  market                 80.78   101.57   128.00    0.333
+perpetual: mark 96.968, daily vol 0.047, 2 days to listing, capture by earlier listing {"CBRS": 1.17, "QNT": 0.01, "SPCX": 0.83}
+comparable IPOs: 66; kernel bandwidths {"price_first": 0.12, "price_last": 0.18, "open": 0.5, "day5": 0.5}
+range basis: 0% first filed range, rest last filed range
+IPO price odds: below_range 1.9%, inside_range_below_top 12.0%, at_top 31.3%, above_range 54.8%
+first-day gain: median +22.9%, chance under 5% 22.6%; day five vs day one: median +2.2%
+target         p10   median      p90   expected score
+  ipo_price    75.00    81.00    87.00      0.938
+  day1_open    77.83   100.28   135.62      0.757
+  day1_close   78.24    98.03   128.38      0.785
+  day5_close   74.58   100.15   144.53      0.720
+custom signals written: 3
