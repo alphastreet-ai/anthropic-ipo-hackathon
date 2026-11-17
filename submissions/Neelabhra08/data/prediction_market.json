@@ -1,0 +1,12 @@
+{
+  "market": "Polymarket: Anthropic IPO Closing Market Cap (first trading day)",
+  "read_at": "2026-11-17T02:38:00Z",
+  "basis": "Market value on the 13.087 billion shares outstanding after the offering, so 1.25 trillion USD is about 95.5 USD a share and 1.5 trillion USD about 114.6 USD.",
+  "brackets": [
+    {"label": "under 1.25 trillion USD", "upper_usd_trn": 1.25, "prob": 0.365},
+    {"label": "1.25 to 1.5 trillion USD", "upper_usd_trn": 1.5, "prob": 0.382},
+    {"label": "1.5 trillion USD or more", "upper_usd_trn": null, "prob": 0.253}
+  ],
+  "source_url": "https://www.tokenpost.com/news/investing/59007",
+  "note": "Recorded from a public report of the odds, because the Polymarket API was not reachable from the build network. The report gives the first two brackets; the third is the remainder. To update: replace the probabilities and read_at with the current odds, keep the brackets in ascending order with the open-ended one last."
+}

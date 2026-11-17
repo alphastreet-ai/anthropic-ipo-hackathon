@@ -1,0 +1,56 @@
+{
+  "name": "Neelabhra08/three-clocks",
+  "method": "Pre-IPO perpetual checked against earlier listings, prediction-market odds and IPO-history kernel model, drawn jointly; Python standard library",
+  "repo_url": "https://github.com/Neelabhra08/anthropic-ipo-hackathon/tree/main/submissions/Neelabhra08",
+  "ipo_price": {
+    "p10": 75.0,
+    "median": 81.0,
+    "p90": 87.0
+  },
+  "day1_open": {
+    "p10": 77.83,
+    "median": 100.28,
+    "p90": 135.62
+  },
+  "day1_close": {
+    "p10": 78.24,
+    "median": 98.03,
+    "p90": 128.38
+  },
+  "day5_close": {
+    "p10": 74.58,
+    "median": 100.15,
+    "p90": 144.53
+  },
+  "thesis": "Anthropic filed a $70 to $78 range for 825 million shares (S-1/A Amendment No. 3). Three clocks, weighted equally, say where the stock closes on day one. (1) The pre-IPO perpetual marks $96.97. Earlier listings with such a perpetual show how much of the gain it expected over the IPO price had arrived by the first close: CBRS (1.17), SPCX (0.83) landed near it, QNT (0.01) closed at the IPO price. The model lets ANT land between its IPO price and the perpetual in those proportions (median $92.44). (2) Prediction-market odds on the first-day closing value centre on $101.57. (3) The 15 largest past IPOs gained a median 29% on day one, though 4 of them gained under 5%; applied to the IPO price that gives $104.83. Together the clocks put the first close at $98.03, with a 23% chance that the first-day gain is under 5%. Banks do not price to the expected trading level. Across 66 past IPOs the offer price moved only part of the way from the filed range toward where the stock then traded, so the model calls the IPO price at $81: 55% above the range, 31% exactly at the top, 14% lower. The book is reported about 7 times covered and press reports point to a price above $80; without a new range filing, SEC Rule 430A caps the price near $93. The first trade is called at $100.28, because IPOs have opened slightly above their first close on average. Day five is centred +2% from day one with a wide range: SpaceX, the only deal of this size, rose 15% from its first close to its fifth and fell 16% the next session. Two terms of this deal make that week harder to call: up to 315 million employee shares may be sold from the first trading day, and up to 20% of the offering goes to retail accounts.",
+  "key_risks": [
+    "Nvidia beat forecasts on 17 Nov, the evening before pricing and days after its CEO resigned, and its shares rose after hours. Nvidia is also buying $10 billion of the concurrent placement, so a reversal on pricing day pulls the perpetual, the IPO price and day one down together.",
+    "The pre-IPO perpetual can be froth: Quantinuum's sat near $95 before a stock that closed day one at its $60 IPO price. The model gives that outcome one chance in three inside the perpetual clock; if it is likelier, the trading calls are too high.",
+    "A formal range increase before pricing, as Facebook, Alibaba and Rivian did, would lift the IPO price above this call. Without one the price cannot exceed about $93.",
+    "Up to 315 million employee shares are free to sell from the first trading day, 38% on top of the 825 million offered, so first-week supply is unusually elastic.",
+    "Day five is 25 Nov, the session before Thanksgiving. SpaceX gained 15% between its first and fifth close and gave it all back a day later, so the fifth close can sit far from fair value in either direction."
+  ],
+  "confidence": 0.8,
+  "extra_predictions": [
+    {
+      "statement": "ANT prices above the top of its filed range ($78)",
+      "by_date": "2026-11-18",
+      "probability": 0.55
+    },
+    {
+      "statement": "ANT closes its first trading day above its IPO price",
+      "by_date": "2026-11-19",
+      "probability": 0.93
+    },
+    {
+      "statement": "ANT's first-day gain over its IPO price is under 5%",
+      "by_date": "2026-11-19",
+      "probability": 0.23
+    },
+    {
+      "statement": "ANT's fifth-day close is above its first-day close",
+      "by_date": "2026-11-25",
+      "probability": 0.55
+    }
+  ]
+}

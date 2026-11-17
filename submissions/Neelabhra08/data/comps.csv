@@ -1,0 +1,70 @@
+ticker,company,first_trade_date,first_range_low,first_range_high,last_range_low,last_range_high,ipo_price,raised_usd_bn,oversubscribed_x,source_url
+V,Visa,2008-03-19,37,42,37,42,44,17.864,,https://www.cnbc.com/2008/03/18/visa-priced-at-44-a-share-for-record-179-billion.html
+GM,General Motors,2010-11-18,26,29,32,33,33,15.774,,https://www.renaissancecapital.com/IPO-Center/News/8697/General-Motors-prices-IPO-at-$33;-High-end-of-revised-range
+GRPN,Groupon,2011-11-04,16,18,16,18,20,0.700,10,https://allthingsd.com/20111103/breaking-groupon-prices-at-20-a-share-more-than-10x-oversubscribed-so-it-adds-5m-more-shares
+META,Facebook,2012-05-18,28,35,34,38,38,16.007,,https://money.cnn.com/2012/05/17/technology/facebook-ipo-final-price/
+PANW,Palo Alto Networks,2012-07-20,34,37,38,40,42,0.260,,https://www.renaissancecapital.com/IPO-Center/News/12119/Palo-Alto-Networks-prices-IPO-at-$42-well-above-upwardly-revised-range
+WDAY,Workday,2012-10-12,21,24,24,26,28,0.637,,https://www.cnbc.com/2012/10/11/workdays-ipo-prices-at-28-vs-2426-range-underwriter.html
+BABA,Alibaba,2014-09-19,60,66,66,68,68,21.767,,https://finance.yahoo.com/news/alibaba-ipo-prices-top-range-214009219.html
+SNAP,Snap,2017-03-02,14,16,14,16,17,3.400,10,https://finance.yahoo.com/news/snap-prices-ipo-at-17-per-share-valuing-company-at-24-billion-101031648.html
+DBX,Dropbox,2018-03-23,16,18,18,20,21,0.756,25,https://www.bloomberg.com/news/articles/2018-03-22/dropbox-said-to-raise-756-million-after-pricing-ipo-above-range
+DOCU,DocuSign,2018-04-27,24,26,26,28,29,0.629,,https://techcrunch.com/2018/04/26/docusign-raises-629-million-after-pricing-ipo/
+LYFT,Lyft,2019-03-29,62,68,70,72,72,2.340,20,https://techcrunch.com/2019/03/28/lyft-prices-ipo-at-top-of-range
+PINS,Pinterest,2019-04-18,15,17,15,17,19,1.425,,https://www.renaissancecapital.com/IPO-Center/News/62745/a-big-win-for-pins-pinterest-prices-1.4-billion-ipo-above-the-range-at-19
+ZM,Zoom,2019-04-18,28,32,33,35,36,0.751,,https://www.cnbc.com/2019/04/17/zoom-prices-ipo-at-36-per-share-source.html
+UBER,Uber,2019-05-10,44,50,44,50,45,8.100,3,https://www.cnbc.com/2019/05/09/uber-ipo-pricing.html
+CRWD,CrowdStrike,2019-06-12,19,23,28,30,34,0.612,,https://www.cnbc.com/2019/06/12/cybersecurity-firm-crowdstrike-prices-ipo.html
+WMG,Warner Music Group,2020-06-03,23,26,23,26,25,1.925,,https://www.renaissancecapital.com/IPO-Center/News/68634/Record-label-giant-Warner-Music-prices-upsized-IPO-at-$25-within-the-range
+RPRX,Royalty Pharma,2020-06-16,25,28,25,28,28,2.175,,https://www.spglobal.com/marketintelligence/en/news-insights/latest-news-headlines/royalty-pharma-prices-2-18b-ipo-at-higher-end-of-range-59058422
+RKT,Rocket Companies,2020-08-06,20,22,20,22,18,1.800,,https://www.nasdaq.com/articles/quicken-loans-parent-shares-jump-on-debut-after-ipo-size-slashed-2020-08-06
+SNOW,Snowflake,2020-09-16,75,85,100,110,120,3.360,,https://www.cnbc.com/2020/09/15/snowflake-prices-ipo-above-increased-range-implying-initi.html
+U,Unity Software,2020-09-18,34,42,44,48,52,1.300,,https://www.cnbc.com/2020/09/17/unity-prices-ipo-above-range-at-52-valuing-company-at-13point7-billion.html
+AI,C3.ai,2020-12-09,31,34,36,38,42,0.651,,https://www.nasdaq.com/articles/c3.ai-sells-shares-above-expected-ipo-range-raising-$651-million-2020-12-09
+DASH,DoorDash,2020-12-09,75,85,90,95,102,3.366,,https://www.renaissancecapital.com/IPO-Center/News/73879/doordash-prices-ipo-at-102-well-above-the-upwardly-revised-range
+ABNB,Airbnb,2020-12-10,44,50,56,60,68,3.490,,https://www.cnbc.com/2020/12/09/airbnb-sells-shares-at-68-in-ipo-pricing-above-range.html
+AFRM,Affirm,2021-01-13,33,38,41,44,49,1.205,,https://www.cnbc.com/2021/01/13/affirm-holdings-prices-its-us-ipo-above-target-range-raises-1point2-billion.html
+BMBL,Bumble,2021-02-11,28,30,37,39,43,2.150,,https://www.nasdaq.com/articles/dating-app-bumble-prices-further-upsized-ipo-at-$43-above-the-upwardly-revised-range-2021
+CPNG,Coupang,2021-03-11,27,30,32,34,35,4.550,,https://www.renaissancecapital.com/IPO-Center/News/79210/korean-e-commerce-giant-coupang-prices-upsized-us-ipo-at-35-above
+APP,AppLovin,2021-04-15,75,85,75,85,80,2.000,,https://www.renaissancecapital.com/IPO-Center/News/80800/App-marketing-and-monetization-company-AppLovin-prices-IPO-at-$80-midpoint
+PATH,UiPath,2021-04-21,43,50,52,54,56,1.338,,https://www.nasdaq.com/articles/uipath-raises-$1.34-billion-in-ipo-source-2021-04-20
+HOOD,Robinhood,2021-07-29,38,42,38,42,38,2.090,,https://www.cnbc.com/2021/07/28/robinhood-valued-at-32-billion-after-selling-shares-in-ipo-at-38-per-share-source-says.html
+TOST,Toast,2021-09-22,30,33,34,36,40,0.870,,https://www.renaissancecapital.com/IPO-Center/News/86351/Restaurant-payment-processor-Toast-prices-IPO-at-$40-above-the-upwardly-rev
+GFS,GlobalFoundries,2021-10-28,42,47,42,47,47,2.585,,https://www.bloomberg.com/news/articles/2021-10-27/globalfoundries-mubadala-raise-2-6-billion-in-top-of-range-ipo
+RIVN,Rivian,2021-11-10,57,62,72,74,78,11.934,,https://www.renaissancecapital.com/IPO-Center/News/88446/rivian-automotive-prices-upsized-ipo-at-78-well-above-the-upwardly-revised
+NU,Nu Holdings,2021-12-09,10,11,8,9,9,2.602,,https://www.cnbc.com/2021/12/09/buffett-backed-nubank-rises-in-trading-on-the-nyse-in-blockbuster-ipo.html
+KVUE,Kenvue,2023-05-04,20,23,20,23,22,3.802,,https://www.renaissancecapital.com/IPO-Center/News/98911/jandjs-consumer-health-unit-kenvue-prices-upsized-ipo-just-above-midpoint
+ARM,Arm Holdings,2023-09-14,47,51,47,51,51,4.871,10,https://www.cnbc.com/2023/09/13/arm-prices-ipo-at-51-per-share.html
+CART,Instacart,2023-09-19,26,28,28,30,30,0.660,,https://www.grocerydive.com/news/instacart-public-market-debut-ipo/693578/
+KVYO,Klaviyo,2023-09-20,25,27,27,29,30,0.576,,https://www.renaissancecapital.com/IPO-Center/News/100979/Digital-marketing-software-platform-Klaviyo-prices-IPO-at-$30-above-the-upw
+BIRK,Birkenstock,2023-10-11,44,49,44,49,46,1.484,,https://www.cnbc.com/2023/10/10/birkenstock-expects-to-price-ipo-at-46-per-share.html
+ALAB,Astera Labs,2024-03-20,27,30,32,34,36,0.713,,https://www.renaissancecapital.com/IPO-Center/News/103800/chip-connectivity-firm-astera-labs-prices-ipo-at-36-above-the-upwardly
+RDDT,Reddit,2024-03-21,31,34,31,34,34,0.748,4.5,https://finance.yahoo.com/news/reddit-prices-ipo-top-indicated-213333827.html
+RBRK,Rubrik,2024-04-25,28,31,28,31,32,0.752,20,https://www.cnbc.com/2024/04/24/rubrik-prices-ipo-at-32-per-share-above-expected-range.html
+LINE,Lineage,2024-07-25,70,82,70,82,78,4.440,,https://www.cnbc.com/2024/07/25/lineage-goes-public-largest-ipo-2024.html
+VG,Venture Global,2025-01-24,40,46,23,27,25,1.750,,https://www.cnbc.com/2025/01/24/venture-global-vg-initial-public-offering-ipo.html
+CRWV,CoreWeave,2025-03-28,47,55,47,55,40,1.500,,https://www.cnbc.com/2025/03/27/coreweave-prices-ipo-at-40-a-share-below-expected-range.html
+ETOR,eToro,2025-05-14,46,50,46,50,52,0.620,10,https://www.renaissancecapital.com/IPO-Center/News/110913/global-trading-platform-etoro-prices-upsized-us-ipo-at-52-above-the-range
+HNGE,Hinge Health,2025-05-22,28,32,28,32,32,0.437,,https://www.cnbc.com/2025/05/21/hinge-health-prices-ipo-at-32-the-top-end-of-expected-range.html
+CRCL,Circle,2025-06-05,24,26,27,28,31,1.054,25,https://www.cnbc.com/2025/06/04/stablecoin-issuer-circle-prices-ipo-at-31-above-expected-range-ahead-of-nyse-debut.html
+CHYM,Chime,2025-06-12,24,26,24,26,27,0.864,10,https://www.renaissancecapital.com/IPO-Center/News/111499/mobile-banking-platform-chime-prices-ipo-above-the-range-at-27-per-share
+FIG,Figma,2025-07-31,25,28,30,32,33,1.219,40,https://www.cnbc.com/2025/07/30/figma-prices-ipo-at-33-above-expected-range.html
+BLSH,Bullish,2025-08-13,28,31,32,33,37,1.110,20,https://www.renaissancecapital.com/IPO-Center/News/112746/Cryptocurrency-exchange-Bullish-prices-IPO-at-$37-above-the-upwardly-revise
+KLAR,Klarna,2025-09-10,35,37,35,37,40,1.372,25,https://finance.yahoo.com/news/klarna-set-price-much-awaited-134120088.html
+FIGR,Figure Technology,2025-09-11,18,20,20,22,25,0.788,,https://www.renaissancecapital.com/IPO-Center/News/113403/Blockchain-powered-lending-platform-Figure-Technology-prices-IPO-at-$25-abo
+GEMI,Gemini Space Station,2025-09-12,17,19,24,26,28,0.425,20,https://www.bloomberg.com/news/articles/2025-09-11/winklevosses-crypto-exchange-gemini-raises-425-million-in-ipo
+STUB,StubHub,2025-09-17,22,25,22,25,23.50,0.800,20,https://finance.yahoo.com/news/ticket-reseller-stubhub-raises-800-000435614.html
+NTSK,Netskope,2025-09-18,15,17,17,19,19,0.908,20,https://www.renaissancecapital.com/IPO-Center/News/113567/Cybersecurity-firm-Netskope-prices-IPO-at-$19-the-high-end-of-the-upwardly-
+NAVN,Navan,2025-10-30,24,26,24,26,25,0.923,10,https://money.usnews.com/investing/news/articles/2025-10-30/travel-tech-firm-navans-ipo-raises-about-923-million
+MDLN,Medline,2025-12-17,26,30,26,30,29,6.265,10,https://www.cnbc.com/2025/12/17/medline-debuts-nasdaq-biggest-ipo-2025.html
+FPS,Forgent Power Solutions,2026-02-05,25,29,25,29,27,1.512,,https://www.renaissancecapital.com/IPO-Center/News/116759/electrical-equipment-maker-forgent-power-solutions-prices-us-ipo-at-27
+ARXS,Arxis,2026-04-16,25,28,25,28,28,1.134,,https://www.iposcoop.com/the-ipo-buzz-arxis-arxs-upsizes-ipo-prices-deal-at-28-top-of-range/
+MAIR,Madison Air Solutions,2026-04-16,25,27,25,27,27,2.233,,https://www.investing.com/news/stock-market-news/madison-air-raises-22-billion-in-us-ipo-4616702
+XE,X-energy,2026-04-24,16,19,16,19,23,1.018,15,https://finance.yahoo.com/markets/stocks/articles/x-energy-stock-pops-27-201054076.html
+FRVO,Fervo Energy,2026-05-13,21,24,25,26,27,1.890,,https://www.investing.com/news/stock-market-news/fervo-energy-raises-189-billion-in-us-ipo-4683025
+CBRS,Cerebras Systems,2026-05-14,115,125,150,160,185,5.550,20,https://www.cnbc.com/2026/05/13/cerebras-prices-ipo-above-expected-range-wall-street-expects-ai-flood.html
+INIO,INNIO Holding,2026-06-04,24,27,24,27,27,2.430,,https://www.iposcoop.com/the-ipo-buzz-innio-inio-jumps-in-nasdaq-debut-after-big-upsizing/
+QNT,Quantinuum,2026-06-04,45,50,53,55,60,1.680,20,https://www.iposcoop.com/the-ipo-buzz-quantinuum-priced-upsized-ipo-at-60-5-above-range/
+SPCX,SpaceX,2026-06-12,,,,,135,75.000,4,https://ir.spacex.com/updates/releases-details/2026/Space-Exploration-Technologies-Corp--Announces-Pricing-of-Initial-Public-Offering/default.aspx
+BSP,Bending Spoons,2026-07-01,26,28,26,28,29,1.681,,https://qz.com/bending-spoons-ipo-priced-above-range-18-billion-070126
+CSQR,Csquare,2026-07-16,23,27,23,27,21,1.050,,https://www.iposcoop.com/the-ipo-buzz-csquare-csqr-prices-ipo-at-21-2-below-range/
+JMKE,Jersey Mike's,2026-07-30,21,25,21,25,23,1.000,,https://www.iposcoop.com/the-ipo-buzz-jersey-mikes-subs-jmke-prices-ipo-at-23-mid-point/
