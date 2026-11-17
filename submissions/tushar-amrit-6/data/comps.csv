@@ -1,0 +1,18 @@
+company,ticker,ipo_date,range_low,range_high,ipo_price,day1_open,day1_close,day5_close,coverage_x,raised_usd_bn,notes,source
+Facebook,META,2012-05-18,34,38,38,42.05,38.23,33.03,,16.0,Range raised from 28-35 to 34-38 then priced at the top; Nasdaq opening glitch,Yahoo Finance history (Close column); SEC 424B4
+Alibaba,BABA,2014-09-19,66,68,68,92.70,93.89,88.92,,21.8,Range raised from 60-66 to 66-68 then priced at the top,Yahoo Finance history; SEC 424B4
+Uber,UBER,2019-05-10,44,50,45,42.00,41.57,43.00,,8.1,Priced in the lower half of the range; broke issue,Yahoo Finance history; SEC 424B4
+Snowflake,SNOW,2020-09-16,100,110,120,245.00,253.93,235.16,,3.4,Range raised from 75-85 to 100-110 then priced above,Yahoo Finance history; SEC 424B4
+DoorDash,DASH,2020-12-09,90,95,102,182.00,189.51,158.89,,3.4,Range raised from 75-85 to 90-95 then priced above,Yahoo Finance history; SEC 424B4
+Airbnb,ABNB,2020-12-10,56,60,68,146.00,144.71,137.99,,3.5,Range raised from 44-50 to 56-60 then priced above,Yahoo Finance history; SEC 424B4
+Rivian,RIVN,2021-11-10,72,74,78,106.75,100.73,172.01,,11.9,Range raised from 57-62 to 72-74 then priced above,Yahoo Finance history; SEC 424B4
+Arm,ARM,2023-09-14,47,51,51,56.10,63.59,52.91,10,4.9,Priced at the top; book reported about 10x covered (Reuters),Yahoo Finance history; Reuters
+Instacart,CART,2023-09-19,28,30,30,42.00,33.70,30.39,,0.66,Range raised from 26-28 to 28-30 then priced at the top,Yahoo Finance history; SEC 424B4
+Reddit,RDDT,2024-03-21,31,34,34,47.00,50.44,57.75,5,0.75,Priced at the top; book reported 4-5x covered (Reuters),Yahoo Finance history; Reuters
+CoreWeave,CRWV,2025-03-28,47,55,40,39.00,40.00,53.80,,1.5,Priced below a cut range and downsized; weak book,Yahoo Finance history; SEC 424B4
+Circle,CRCL,2025-06-05,27,28,31,69.00,83.23,117.20,25,1.05,Range raised from 24-26 to 27-28 then priced above; book reported 25x covered (Bloomberg),Yahoo Finance history; Bloomberg
+Chime,CHYM,2025-06-12,24,26,27,43.00,37.11,31.65,,0.86,Priced above the range,Yahoo Finance history; SEC 424B4
+Figma,FIG,2025-07-31,30,32,33,85.00,115.50,90.32,40,1.2,Range raised from 25-28 to 30-32 then priced above; book reported 40x covered (Reuters),Yahoo Finance history; Reuters
+Klarna,KLAR,2025-09-10,35,37,40,52.00,45.82,45.42,,1.37,Priced above the range; day-1 open and close from Reuters because Yahoo's table starts on day 2,Yahoo Finance history (days 2-5); Reuters (day 1)
+Cerebras,CBRS,2026-05-14,150,160,185,350.00,311.07,290.69,20,5.55,Range raised from 115-125 to 150-160 then priced $25 above the top; book reported more than 20x covered,Yahoo Finance history; CNBC; TipRanks
+SpaceX,SPCX,2026-06-12,135,135,135,150.00,160.95,185.00,4,75,Fixed $135 price with no range; about 4x covered (press); largest IPO before Anthropic,Yahoo Finance history; context/comps/large_ipos.csv

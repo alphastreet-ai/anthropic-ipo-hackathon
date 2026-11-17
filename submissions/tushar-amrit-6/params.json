@@ -1,0 +1,49 @@
+{
+  "_about": "Every tunable number in the entry. Values are priors chosen before the run and explained in ENTRY.md; change one and rerun run.py to see what moves.",
+  "seed": 20261118,
+  "sims": 150000,
+  "deal": {
+    "_about": "Offering terms, read from context/anthropic-s1/offering.csv when present; these are the fallbacks and the share count used to turn Polymarket market-cap buckets into a per-share price.",
+    "range_low": 70.0,
+    "range_high": 78.0,
+    "shares_offered": 825000000,
+    "shares_outstanding_after_ipo": 13086672593,
+    "rule_430a_max_premium": 0.20
+  },
+  "ipo_price": {
+    "_about": "How the probability of pricing above the range is pooled, and how the premium above the top is drawn.",
+    "pool_weights": {"comps_prior_x_news": 1.0, "polymarket_proceeds": 1.0, "polymarket_price_buckets": 0.3},
+    "news_lr": {
+      "_about": "Likelihood ratios for 'prices above the range' versus not, per distinct headline, by source tier; the product is capped.",
+      "above_tier1": 2.0, "above_tier2": 1.25,
+      "top_or_above_tier1": 1.5, "top_or_above_tier2": 1.15,
+      "top_only_tier1": 0.9, "top_only_tier2": 0.95,
+      "hold_range_tier1": 0.8, "hold_range_tier2": 0.9,
+      "raise_range_tier1": 1.3, "raise_range_tier2": 1.1,
+      "below_or_cut_tier1": 0.4, "below_or_cut_tier2": 0.6,
+      "cap": 6.0
+    },
+    "p_below_range": 0.04,
+    "p_within_below_top": 0.03,
+    "premium_shrink": 0.8,
+    "premium_kernel_sigma": 0.02,
+    "grid_step": 0.25
+  },
+  "trading": {
+    "_about": "Mixture weights for where ANT trades, and the perp bias corrections (half of the one observed case: SpaceX's perp was 17% above the open and 9% above the first close).",
+    "mixture": {"polymarket": 0.40, "perp": 0.25, "comps": 0.35},
+    "perp_bias": {"open": -0.08, "close": -0.04, "day5": 0.0},
+    "perp_basis_sigma": 0.12,
+    "day5_perp_weight": 0.5,
+    "comps_jitter_sigma": 0.08,
+    "similarity": {"size_bandwidth": 2.0, "coverage_bandwidth": 1.0, "recency_half_life_years": 6.0, "unknown_coverage_factor": 0.7, "not_hot_factor": 0.3, "max_weight": 0.2, "size_slope_min": -0.35},
+    "diffuse": {"weight": 0.05, "sigma": 0.35},
+    "price_floor": 20.0,
+    "price_cap": 400.0
+  },
+  "news": {
+    "_about": "Which outlets count as tier 1 when reading headlines, and the default book coverage if no headline states one.",
+    "tier1": ["bloomberg", "reuters", "cnbc", "wall street journal", "wsj", "financial times", "ft.com", "the information", "dow jones", "barron"],
+    "default_coverage_x": 5.0
+  }
+}
