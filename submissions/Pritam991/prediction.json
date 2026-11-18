@@ -1,0 +1,34 @@
+{
+  "name": "Pritam991/perp-anchor",
+  "method": "Perp-anchored blend with SpaceX comp pop; stdlib Python, no LLM",
+  "repo_url": "https://github.com/Pritam991/anthropic-ipo-hackathon",
+  "ipo_price": {
+    "median": 79.72,
+    "p10": 73.0,
+    "p90": 90.0
+  },
+  "day1_open": {
+    "median": 95.97,
+    "p10": 76.78,
+    "p90": 121.89
+  },
+  "day1_close": {
+    "median": 99.74,
+    "p10": 75.8,
+    "p90": 132.65
+  },
+  "day5_close": {
+    "median": 95.75,
+    "p10": 65.11,
+    "p90": 138.83
+  },
+  "thesis": "Demand is the story: ~6x oversubscribed (Bloomberg), a $115B+ book and FT reports that bankers weigh pricing above the $70-$78 range, so I put the IPO price just above the top (79.72). The pre-IPO perp is the best market-implied price: $98.0 on 10 Nov and $103.93 on 12 Nov, 30%+ above the range. SpaceX's perp converged to the equity price at its IPO, so I weight the perp 60% and the SpaceX pop (+11% open, +19% close) 40%. Only 6.3% of shares float, with 20% retail and ~$19B passive demand, which supports day one. Day five is faded 4% and given a wide, right-skewed range: SpaceX rose ~40% in three days, peaked at +56%, then later fell below its IPO price (about -50% from the peak by late July), and ANT carries a 316M-share lockup release and a $901B commitment load.",
+  "key_risks": [
+    "Nvidia reports 17 Nov, the day before pricing, after CEO Jensen Huang's resignation; a bad print hits placement partner demand.",
+    "The perp trades thin and offshore ($250M a day) and has swung $94-$138; it may overstate the equity open.",
+    "Pricing at the top of the range, not above it, would cut my IPO-price and open estimates.",
+    "A SpaceX-style fade: day five could land below day one if the AI trade turns, since only one mega comp is used.",
+    "Valuation skeptics (Ackman) and rising Treasury yields could cap the pop for a ~$1T+ company."
+  ],
+  "confidence": 0.35
+}
