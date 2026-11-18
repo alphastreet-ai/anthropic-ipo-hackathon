@@ -1,0 +1,51 @@
+{
+  "name": "poulami95/market-triangulation",
+  "method": "Monte Carlo triangulating order-book guidance, Hyperliquid pre-IPO perp and Polymarket brackets; Python stdlib",
+  "repo_url": "https://github.com/poulami95/anthropic-ipo-hackathon",
+  "ipo_price": {
+    "median": 82.85,
+    "p10": 77.3,
+    "p90": 89.49
+  },
+  "day1_open": {
+    "median": 96.89,
+    "p10": 81.5,
+    "p90": 118.94
+  },
+  "day1_close": {
+    "median": 97.98,
+    "p10": 77.88,
+    "p90": 126.16
+  },
+  "day5_close": {
+    "median": 95.34,
+    "p10": 71.76,
+    "p90": 140.58
+  },
+  "thesis": "ANT prices above its $70-$78 range and opens near where offshore money already trades it. The book is ~6.9x covered and it guided to the top of the range or above (Bloomberg, 17 Nov) and now plans to raise the price (WSJ, 18 Nov), so the model puts 84% on a price above $78 and a median of $82.85, capped where banks would still leave ~8% headroom under the Hyperliquid xyz:ANT perp ($96.61). The open blends that perp, discounted for its offshore retail premium (it has fallen from $138 at listing), with a SpaceX-style pop on the simulated IPO price, plus a first-trade shock as wide as past mega-IPO opens: median $96.89. The close is simulated from 6 comparable mega-IPO open-to-close moves, then tilted toward Polymarket's first-day market-cap brackets (33% <$1.25T, 39% $1.25T-1.5T, 27% $1.5T+); median $97.98. Day 5 adds comps' drift, a drag for the up-to-316M-share first-day lock-up release, and greenshoe support below issue: median $95.34. With a 6.3% float and a 20% retail slice, volatility is scaled by VIX (18.7) and ranges are widened 15% because pre-trade markets are under-dispersed. Signal pack not present (licensed, gitignored, sent to registrants); tilt = 0.",
+  "key_risks": [
+    "Up to 316M existing shares can sell on day one, about 38% of the offering, which could cap the close and day 5",
+    "The xyz:ANT perp is an offshore crypto derivative with no claim on shares; its premium has been volatile ($138 to ~$97) and may not converge to the Nasdaq open",
+    "A 6.3% float with a 20% retail allocation makes the first days prone to squeezes or sharp fades beyond comparable IPOs",
+    "Nvidia beat on 17 Nov but most of its 4.8% after-hours jump faded overnight; a weak AI tape on 19 Nov would hit the open",
+    "An upsized deal or an early greenshoe exercise adds supply and lowers the pop for any given IPO price"
+  ],
+  "confidence": 0.45,
+  "extra_predictions": [
+    {
+      "statement": "ANT's IPO is priced above $78",
+      "by_date": "2026-11-18",
+      "probability": 0.84
+    },
+    {
+      "statement": "ANT's first trade is above $100",
+      "by_date": "2026-11-19",
+      "probability": 0.4
+    },
+    {
+      "statement": "ANT closes the fifth trading day below its IPO price",
+      "by_date": "2026-11-25",
+      "probability": 0.29
+    }
+  ]
+}
