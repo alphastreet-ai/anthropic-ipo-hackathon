@@ -1,0 +1,733 @@
+{
+ "run_at": "2026-11-18T16:34:19Z",
+ "seed": 20261118,
+ "sims": 150000,
+ "deal": {
+  "_about": "Offering terms, read from context/anthropic-s1/offering.csv when present; these are the fallbacks and the share count used to turn Polymarket market-cap buckets into a per-share price.",
+  "range_low": 70.0,
+  "range_high": 78.0,
+  "shares_offered": 825000000.0,
+  "shares_outstanding_after_ipo": 13086672593.0,
+  "rule_430a_max_premium": 0.2,
+  "deal_size_usd_bn": 64.35
+ },
+ "vix": 18.7,
+ "vix_scale": 0.935,
+ "news": {
+  "fetched_at": "2026-11-18T16:33:18Z",
+  "headlines": 238,
+  "coverage_x": 6,
+  "pricing_hits": {
+   "above": [
+    {
+     "title": "Anthropic likely to price IPO above the current range of $70 to $78, sources tell CNBC - CNBC",
+     "source": "CNBC",
+     "tier": 1,
+     "published": "Tue, 17 Nov 2026 14:13:03 GMT"
+    },
+    {
+     "title": "Anthropic Is Said To Guide Ipo Pricing Above Marketed Range - Bloomberg - Investing.com",
+     "source": "Investing.com",
+     "tier": 2,
+     "published": "Wed, 18 Nov 2026 13:55:23 GMT"
+    }
+   ],
+   "top_or_above": [
+    {
+     "title": "Anthropic Said to Guide IPO Price to Top of Range or Above - Bloomberg.com",
+     "source": "Bloomberg.com",
+     "tier": 1,
+     "published": "Tue, 17 Nov 2026 14:45:22 GMT"
+    },
+    {
+     "title": "Anthropic is guiding its IPO price to the top of its range \u2014 or higher - Quartz",
+     "source": "Quartz",
+     "tier": 2,
+     "published": "Tue, 17 Nov 2026 16:01:45 GMT"
+    },
+    {
+     "title": "Anthropic guides its IPO to the top of the range or above, as a filing shows Amazon and Google will own 28% of it - Dealroom",
+     "source": "Dealroom",
+     "tier": 2,
+     "published": "Wed, 18 Nov 2026 05:32:14 GMT"
+    },
+    {
+     "title": "Anthropic IPO price: Reports point to $78 or more - NeoTeo",
+     "source": "NeoTeo",
+     "tier": 2,
+     "published": "Wed, 18 Nov 2026 13:00:10 GMT"
+    }
+   ],
+   "top_only": [
+    {
+     "title": "Watch Anthropic Is Said to Guide IPO Price to Top of Range - Bloomberg.com",
+     "source": "Bloomberg.com",
+     "tier": 1,
+     "published": "Tue, 17 Nov 2026 00:00:00 GMT"
+    }
+   ],
+   "hold_range": [],
+   "raise_range": [
+    {
+     "title": "Anthropic Weighs Raising IPO Price Range as Institutional Demand Surges, Valuation Could Hit $1.6 Trillion - BigGo Finance",
+     "source": "BigGo Finance",
+     "tier": 2,
+     "published": "Wed, 18 Nov 2026 08:56:00 GMT"
+    },
+    {
+     "title": "Anthropic may raise its IPO price range - Traders Union",
+     "source": "Traders Union",
+     "tier": 2,
+     "published": "Tue, 17 Nov 2026 14:51:31 GMT"
+    }
+   ],
+   "below_or_cut": []
+  },
+  "news_lr_above": 2.97
+ },
+ "coverage_mentions": [
+  {
+   "x": 6,
+   "title": "Anthropic's IPO is about six times oversubscribed, Bloomberg News reports - Reuters",
+   "source": "Reuters",
+   "published": "Thu, 12 Nov 2026 21:31:07 GMT"
+  },
+  {
+   "x": 6,
+   "title": "Anthropic\u2019s IPO Is About Six Times Oversubscribed - Bloomberg.com",
+   "source": "Bloomberg.com",
+   "published": "Thu, 12 Nov 2026 21:00:14 GMT"
+  },
+  {
+   "x": 15.0,
+   "title": "Altimeter Capital Says Anthropic IPO \u201810-20 Times Oversubscribed,\u2019 Bets $5B \u2014 AI Lab Expected To Announce Pricing On Wednesday - Yahoo Finance",
+   "source": "Yahoo Finance",
+   "published": "Tue, 17 Nov 2026 06:59:05 GMT"
+  },
+  {
+   "x": 6.0,
+   "title": "Anthropic\u2019s IPO Is Reportedly 6 Times Oversubscribed and Could Start Trading Nov. 19. Should You Buy on Day 1? - The Motley Fool",
+   "source": "The Motley Fool",
+   "published": "Tue, 17 Nov 2026 18:17:00 GMT"
+  },
+  {
+   "x": 6,
+   "title": "Anthropic IPO six times oversubscribed: what retail investors can realistically expect - investingLive",
+   "source": "investingLive",
+   "published": "Fri, 13 Nov 2026 03:07:06 GMT"
+  },
+  {
+   "x": 6.0,
+   "title": "Anthropic\u2019s IPO Is Reportedly 6 Times Oversubscribed and Could Start Trading Nov. 19. Should You Buy on Day 1? - Yahoo Finance",
+   "source": "Yahoo Finance",
+   "published": "Tue, 17 Nov 2026 18:37:02 GMT"
+  },
+  {
+   "x": 6,
+   "title": "Watch Anthropic IPO Said to Be Six Times Oversubscribed - Bloomberg.com",
+   "source": "Bloomberg.com",
+   "published": "Fri, 13 Nov 2026 00:00:00 GMT"
+  },
+  {
+   "x": 6.0,
+   "title": "Anthropic IPO reportedly 6 times oversubscribed - Yahoo Finance",
+   "source": "Yahoo Finance",
+   "published": "Fri, 13 Nov 2026 16:27:38 GMT"
+  },
+  {
+   "x": 6,
+   "title": "Anthropic's IPO said to be six times oversubscribed - Seeking Alpha",
+   "source": "Seeking Alpha",
+   "published": "Fri, 13 Nov 2026 09:21:58 GMT"
+  },
+  {
+   "x": 7.0,
+   "title": "Anthropic IPO 7x Oversubscribed, but Steve Eisman Is Unmoved - NVIDIA (NASDAQ:NVDA) - Benzinga",
+   "source": "Benzinga",
+   "published": "Tue, 17 Nov 2026 19:00:49 GMT"
+  },
+  {
+   "x": 6.0,
+   "title": "How Much Should You Trust Anthropic's \"6x Oversubscribed\" Headline? - Money Morning",
+   "source": "Money Morning",
+   "published": "Fri, 13 Nov 2026 09:25:33 GMT"
+  },
+  {
+   "x": 6,
+   "title": "Anthropic IPO Six Times Oversubscribed, Could Raise $64 Billion - Unite.AI",
+   "source": "Unite.AI",
+   "published": "Fri, 13 Nov 2026 22:31:05 GMT"
+  },
+  {
+   "x": 6,
+   "title": "Anthropic's IPO said to be six times oversubscribed - TradingView",
+   "source": "TradingView",
+   "published": "Fri, 13 Nov 2026 09:21:58 GMT"
+  },
+  {
+   "x": 7.0,
+   "title": "Anthropic's IPO Is 7x Oversubscribed, but Its Record Depends on $26 Billion From Its Own Suppliers - Memeburn",
+   "source": "Memeburn",
+   "published": "Tue, 17 Nov 2026 01:31:09 GMT"
+  },
+  {
+   "x": 6,
+   "title": "Why is Anthropic's IPO six times oversubscribed despite the AI selloff? - FXStreet",
+   "source": "FXStreet",
+   "published": "Tue, 17 Nov 2026 09:42:52 GMT"
+  },
+  {
+   "x": 6.0,
+   "title": "Anthropic IPO Draws 6x Oversubscription Early in Roadshow, Demand Exceeds SpaceX - BigGo Finance",
+   "source": "BigGo Finance",
+   "published": "Mon, 16 Nov 2026 01:35:00 GMT"
+  },
+  {
+   "x": 15.0,
+   "title": "Anthropic IPO Surges: 10-20x Oversubscription, HSG & Other Investors Boost Additional Investments - eu.36kr.com",
+   "source": "eu.36kr.com",
+   "published": "Wed, 18 Nov 2026 10:22:48 GMT"
+  },
+  {
+   "x": 6,
+   "title": "Anthropic IPO six times oversubscribed as it targets a $64.4B raise; pricing set for 18 November - Dealroom",
+   "source": "Dealroom",
+   "published": "Thu, 12 Nov 2026 22:04:42 GMT"
+  },
+  {
+   "x": 6,
+   "title": "Anthropic\u2019s IPO is about six times oversubscribed, say sources - The Straits Times",
+   "source": "The Straits Times",
+   "published": "Thu, 12 Nov 2026 23:52:00 GMT"
+  },
+  {
+   "x": 7,
+   "title": "Anthropic's IPO orders reach about seven times the shares on offer, Bloomberg reports - MLQ.ai",
+   "source": "MLQ.ai",
+   "published": "Mon, 16 Nov 2026 06:36:19 GMT"
+  },
+  {
+   "x": 7.0,
+   "title": "Anthropic IPO 7x oversubscribed, but Eisman sees limited impact - scanx.trade",
+   "source": "scanx.trade",
+   "published": "Wed, 18 Nov 2026 12:10:39 GMT"
+  },
+  {
+   "x": 6,
+   "title": "Anthropic IPO Six Times Oversubscribed: Price, Risks, Outlook - Univest",
+   "source": "Univest",
+   "published": "Fri, 13 Nov 2026 07:25:58 GMT"
+  },
+  {
+   "x": 6,
+   "title": "Anthropic IPO reported about six times oversubscribed as Fable 5.2 and Mythos 5.2 ship (Nov 16, 2026) - www.sharewise.com",
+   "source": "www.sharewise.com",
+   "published": "Mon, 16 Nov 2026 08:13:59 GMT"
+  },
+  {
+   "x": 7.0,
+   "title": "Anthropic IPO Is Nearly 7 Times Oversubscribed. Can Indian Investors Get A Piece? - NDTV Profit",
+   "source": "NDTV Profit",
+   "published": "Tue, 17 Nov 2026 10:08:21 GMT"
+  },
+  {
+   "x": 6,
+   "title": "Anthropic IPO reported about six times oversubscribed as Fable 5.2 and Mythos 5.2 ship - ValueWalk",
+   "source": "ValueWalk",
+   "published": "Mon, 16 Nov 2026 08:13:59 GMT"
+  },
+  {
+   "x": 6,
+   "title": "Anthropic IPO Targets $1.4 Trillion Valuation, Six Times Oversubscribed Ahead of Nasdaq Debut - OpenTools",
+   "source": "OpenTools",
+   "published": "Mon, 16 Nov 2026 08:08:52 GMT"
+  },
+  {
+   "x": 6,
+   "title": "Anthropic IPO: Can ANT Price Above $78 After Orders Reach Six Times the Shares? - TradingKey",
+   "source": "TradingKey",
+   "published": "Sun, 15 Nov 2026 12:05:11 GMT"
+  }
+ ],
+ "polymarket": {
+  "fetched_at": "2026-11-17T15:45:25Z",
+  "p_proceeds_ge_65bn": 0.6581,
+  "price_threshold_for_65bn": 78.79,
+  "proceeds_volume_usd": 274720,
+  "p_price_above_top_from_buckets": 0.5105,
+  "price_buckets_volume_usd": 4300,
+  "p_close_above_ipo_price": 0.94,
+  "p_open_above_ipo_price": 0.96,
+  "thin_open_market_median": 96.46,
+  "thin_close_market_median": 94.49,
+  "p_first_trade_nov_19": 0.9735,
+  "cap_events_used": 3,
+  "cap_market_volume_usd": 9729207,
+  "implied_day1_close": {
+   "p10": 72.29,
+   "median": 103.97,
+   "p90": 134.76
+  },
+  "implied_median_market_cap_usd_tn": 1.361
+ },
+ "perp": {
+  "fetched_at": "2026-11-18T16:33:13Z",
+  "mark": 96.28,
+  "mid": 96.2805,
+  "oracle": 96.531,
+  "prev_day": 97.83,
+  "open_interest_contracts": 1608507,
+  "day_notional_volume_usd": 75078051,
+  "funding_hourly": -2.3358e-06,
+  "daily_closes": [
+   102.36,
+   100.24,
+   103.93,
+   104.39,
+   102.14,
+   102.11,
+   102.07,
+   96.987,
+   97.466,
+   96.281
+  ],
+  "realized_daily_vol": 0.0262,
+  "open_interest_usd": 154867077
+ },
+ "comps": [
+  {
+   "company": "Facebook",
+   "ticker": "META",
+   "hot": true,
+   "premium": 0.0,
+   "r_open": 1.094217970766628,
+   "r_close": 1.005350650191685,
+   "r_fade": 0.863981166623071,
+   "r_open_close": 1.0883943533114533,
+   "size_bn": 16.0,
+   "coverage_x": null,
+   "years_ago": 14.5,
+   "weight": 0.04554935493199842,
+   "r_open_raw": 1.1065789473684209,
+   "r_close_raw": 1.0060526315789473,
+   "size_slope": -0.0886
+  },
+  {
+   "company": "Alibaba",
+   "ticker": "BABA",
+   "hot": true,
+   "premium": 0.0,
+   "r_open": 1.3300268772209698,
+   "r_close": 1.3459269575405226,
+   "r_fade": 0.9470657151986367,
+   "r_open_close": 0.9881865206499706,
+   "size_bn": 21.8,
+   "coverage_x": null,
+   "years_ago": 12.2,
+   "weight": 0.06965592941099144,
+   "r_open_raw": 1.363235294117647,
+   "r_close_raw": 1.3807352941176472,
+   "size_slope": -0.0886
+  },
+  {
+   "company": "Uber",
+   "ticker": "UBER",
+   "hot": false,
+   "premium": -0.09999999999999998,
+   "r_open": 0.9333333333333333,
+   "r_close": 0.9237777777777778,
+   "r_fade": 1.0343998075535241,
+   "r_open_close": 1.0103439980755353,
+   "size_bn": 8.1,
+   "coverage_x": null,
+   "years_ago": 7.5,
+   "weight": 0.021766356759040442,
+   "r_open_raw": 0.9333333333333333,
+   "r_close_raw": 0.9237777777777778,
+   "size_slope": -0.0886
+  },
+  {
+   "company": "Snowflake",
+   "ticker": "SNOW",
+   "hot": true,
+   "premium": 0.09090909090909083,
+   "r_open": 1.802807529575436,
+   "r_close": 1.8601600994883054,
+   "r_fade": 0.9260819910999094,
+   "r_open_close": 0.9691679388625495,
+   "size_bn": 3.4,
+   "coverage_x": null,
+   "years_ago": 6.2,
+   "weight": 0.05497381699744732,
+   "r_open_raw": 2.0416666666666665,
+   "r_close_raw": 2.1160833333333335,
+   "size_slope": -0.0886
+  },
+  {
+   "company": "DoorDash",
+   "ticker": "DASH",
+   "hot": true,
+   "premium": 0.0736842105263158,
+   "r_open": 1.6044668457979756,
+   "r_close": 1.6612111709472603,
+   "r_fade": 0.8384254129069706,
+   "r_open_close": 0.9658415942887455,
+   "size_bn": 3.4,
+   "coverage_x": null,
+   "years_ago": 5.9,
+   "weight": 0.05645395143786555,
+   "r_open_raw": 1.7843137254901962,
+   "r_close_raw": 1.8579411764705882,
+   "size_slope": -0.0886
+  },
+  {
+   "company": "Airbnb",
+   "ticker": "ABNB",
+   "hot": true,
+   "premium": 0.1333333333333333,
+   "r_open": 1.8863055132299815,
+   "r_close": 1.8716473835881013,
+   "r_fade": 0.9535622970078087,
+   "r_open_close": 1.0078316726592909,
+   "size_bn": 3.5,
+   "coverage_x": null,
+   "years_ago": 5.9,
+   "weight": 0.05729625961743664,
+   "r_open_raw": 2.1470588235294117,
+   "r_close_raw": 2.128088235294118,
+   "size_slope": -0.0886
+  },
+  {
+   "company": "Rivian",
+   "ticker": "RIVN",
+   "hot": true,
+   "premium": 0.054054054054053946,
+   "r_open": 1.317407453915125,
+   "r_close": 1.2509450931301145,
+   "r_fade": 1.7076342698302391,
+   "r_open_close": 1.0531297186023636,
+   "size_bn": 11.9,
+   "coverage_x": null,
+   "years_ago": 5.0,
+   "weight": 0.11745788576446549,
+   "r_open_raw": 1.3685897435897436,
+   "r_close_raw": 1.2914102564102565,
+   "size_slope": -0.0886
+  },
+  {
+   "company": "Arm",
+   "ticker": "ARM",
+   "hot": true,
+   "premium": 0.0,
+   "r_open": 1.0796051478131146,
+   "r_close": 1.196515453130806,
+   "r_fade": 0.832049064318289,
+   "r_open_close": 0.9022910192995974,
+   "size_bn": 4.9,
+   "coverage_x": 10.0,
+   "years_ago": 3.2,
+   "weight": 0.07992910225583018,
+   "r_open_raw": 1.1,
+   "r_close_raw": 1.2468627450980392,
+   "size_slope": -0.0886
+  },
+  {
+   "company": "Instacart",
+   "ticker": "CART",
+   "hot": true,
+   "premium": 0.0,
+   "r_open": 1.266613739314673,
+   "r_close": 1.0822059029553577,
+   "r_fade": 0.901780415430267,
+   "r_open_close": 1.1703999542561379,
+   "size_bn": 0.66,
+   "coverage_x": null,
+   "years_ago": 3.2,
+   "weight": 0.03427776248482642,
+   "r_open_raw": 1.4,
+   "r_close_raw": 1.1233333333333335,
+   "size_slope": -0.0886
+  },
+  {
+   "company": "Reddit",
+   "ticker": "RDDT",
+   "hot": true,
+   "premium": 0.0,
+   "r_open": 1.2577534315060275,
+   "r_close": 1.3259589549199302,
+   "r_fade": 1.1449246629659002,
+   "r_open_close": 0.9485613614502709,
+   "size_bn": 0.75,
+   "coverage_x": 5.0,
+   "years_ago": 2.7,
+   "weight": 0.04610696647041619,
+   "r_open_raw": 1.3823529411764706,
+   "r_close_raw": 1.4835294117647058,
+   "size_slope": -0.0886
+  },
+  {
+   "company": "CoreWeave",
+   "ticker": "CRWV",
+   "hot": false,
+   "premium": -0.2727272727272727,
+   "r_open": 0.975,
+   "r_close": 1.0,
+   "r_fade": 1.345,
+   "r_open_close": 0.975,
+   "size_bn": 1.5,
+   "coverage_x": null,
+   "years_ago": 1.6,
+   "weight": 0.018483361226608753,
+   "r_open_raw": 0.975,
+   "r_close_raw": 1.0,
+   "size_slope": -0.0886
+  },
+  {
+   "company": "Circle",
+   "ticker": "CRCL",
+   "hot": true,
+   "premium": 0.1071428571428572,
+   "r_open": 1.8513444625898523,
+   "r_close": 2.1701505600281052,
+   "r_fade": 1.408146101165445,
+   "r_open_close": 0.8530949403648178,
+   "size_bn": 1.05,
+   "coverage_x": 25.0,
+   "years_ago": 1.5,
+   "weight": 0.01806341804778948,
+   "r_open_raw": 2.225806451612903,
+   "r_close_raw": 2.6848387096774196,
+   "size_slope": -0.0886
+  },
+  {
+   "company": "Chime",
+   "ticker": "CHYM",
+   "hot": true,
+   "premium": 0.03846153846153855,
+   "r_open": 1.4043532417413869,
+   "r_close": 1.2555007046253388,
+   "r_fade": 0.8528698464025869,
+   "r_open_close": 1.1185602975511415,
+   "size_bn": 0.86,
+   "coverage_x": null,
+   "years_ago": 1.4,
+   "weight": 0.047786238377082194,
+   "r_open_raw": 1.5925925925925926,
+   "r_close_raw": 1.3744444444444444,
+   "size_slope": -0.0886
+  },
+  {
+   "company": "Figma",
+   "ticker": "FIG",
+   "hot": true,
+   "premium": 0.03125,
+   "r_open": 2.1074126841305283,
+   "r_close": 2.756952816168627,
+   "r_fade": 0.7819913419913419,
+   "r_open_close": 0.7643992569518208,
+   "size_bn": 1.2,
+   "coverage_x": 40.0,
+   "years_ago": 1.3,
+   "weight": 0.012284803830828413,
+   "r_open_raw": 2.5757575757575757,
+   "r_close_raw": 3.5,
+   "size_slope": -0.0886
+  },
+  {
+   "company": "Klarna",
+   "ticker": "KLAR",
+   "hot": true,
+   "premium": 0.08108108108108114,
+   "r_open": 1.213323121435015,
+   "r_close": 1.1034617138959824,
+   "r_fade": 0.9912701876909646,
+   "r_open_close": 1.0995606881104611,
+   "size_bn": 1.37,
+   "coverage_x": null,
+   "years_ago": 1.2,
+   "weight": 0.06205496447348732,
+   "r_open_raw": 1.3,
+   "r_close_raw": 1.1455,
+   "size_slope": -0.0886
+  },
+  {
+   "company": "Cerebras",
+   "ticker": "CBRS",
+   "hot": true,
+   "premium": 0.15625,
+   "r_open": 1.717868735910933,
+   "r_close": 1.5484952214320686,
+   "r_fade": 0.9344841996978173,
+   "r_open_close": 1.109379423413542,
+   "size_bn": 5.55,
+   "coverage_x": 20.0,
+   "years_ago": 0.5,
+   "weight": 0.05785982791388572,
+   "r_open_raw": 1.8918918918918919,
+   "r_close_raw": 1.6814594594594594,
+   "size_slope": -0.0886
+  },
+  {
+   "company": "SpaceX",
+   "ticker": "SPCX",
+   "hot": true,
+   "premium": 0.0,
+   "r_open": 1.112628655620656,
+   "r_close": 1.1948475742237346,
+   "r_fade": 1.149425287356322,
+   "r_open_close": 0.9311887805802389,
+   "size_bn": 75.0,
+   "coverage_x": 4.0,
+   "years_ago": 0.4,
+   "weight": 0.19999999999999996,
+   "r_open_raw": 1.1111111111111112,
+   "r_close_raw": 1.192222222222222,
+   "size_slope": -0.0886
+  }
+ ],
+ "comps_only": {
+  "r_open_median": 1.267,
+  "r_close_median": 1.251,
+  "r_fade_median": 0.954,
+  "open_median": 103.58,
+  "close_median": 102.27
+ },
+ "ipo_price_model": {
+  "prior_above_from_hot_comps": 0.6,
+  "hot_comps": 15,
+  "news_lr_above": 2.97,
+  "p_above_after_news": 0.817,
+  "p_above_pooled": 0.719,
+  "p_top_exactly": 0.211,
+  "p_within_below_top": 0.03,
+  "p_below_range": 0.04,
+  "premiums_used": [
+   0.0727,
+   0.0589,
+   0.1067,
+   0.0432,
+   0.0857,
+   0.0308,
+   0.025,
+   0.0649,
+   0.125
+  ],
+  "quantiles": {
+   "p10": 78.0,
+   "median": 81.75,
+   "p90": 86.75
+  }
+ },
+ "quantiles": {
+  "ipo_price": {
+   "p10": 78.0,
+   "median": 81.75,
+   "p90": 86.75
+  },
+  "day1_open": {
+   "median": 98.05,
+   "p10": 75.17,
+   "p90": 140.31
+  },
+  "day1_close": {
+   "median": 99.75,
+   "p10": 77.85,
+   "p90": 136.9
+  },
+  "day5_close": {
+   "median": 98.57,
+   "p10": 76.82,
+   "p90": 140.27
+  }
+ },
+ "confidence": 0.5,
+ "params": {
+  "_about": "Every tunable number in the entry. Values are priors chosen before the run and explained in ENTRY.md; change one and rerun run.py to see what moves.",
+  "seed": 20261118,
+  "sims": 150000,
+  "deal": {
+   "_about": "Offering terms, read from context/anthropic-s1/offering.csv when present; these are the fallbacks and the share count used to turn Polymarket market-cap buckets into a per-share price.",
+   "range_low": 70.0,
+   "range_high": 78.0,
+   "shares_offered": 825000000,
+   "shares_outstanding_after_ipo": 13086672593,
+   "rule_430a_max_premium": 0.2
+  },
+  "ipo_price": {
+   "_about": "How the probability of pricing above the range is pooled, and how the premium above the top is drawn.",
+   "pool_weights": {
+    "comps_prior_x_news": 1.0,
+    "polymarket_proceeds": 1.0,
+    "polymarket_price_buckets": 0.3
+   },
+   "news_lr": {
+    "_about": "Likelihood ratios for 'prices above the range' versus not, per distinct headline, by source tier; the product is capped.",
+    "above_tier1": 2.0,
+    "above_tier2": 1.25,
+    "top_or_above_tier1": 1.5,
+    "top_or_above_tier2": 1.15,
+    "top_only_tier1": 0.9,
+    "top_only_tier2": 0.95,
+    "hold_range_tier1": 0.8,
+    "hold_range_tier2": 0.9,
+    "raise_range_tier1": 1.3,
+    "raise_range_tier2": 1.1,
+    "below_or_cut_tier1": 0.4,
+    "below_or_cut_tier2": 0.6,
+    "cap": 6.0
+   },
+   "p_below_range": 0.04,
+   "p_within_below_top": 0.03,
+   "premium_shrink": 0.8,
+   "premium_kernel_sigma": 0.02,
+   "grid_step": 0.25
+  },
+  "trading": {
+   "_about": "Mixture weights for where ANT trades, and the perp bias corrections (half of the one observed case: SpaceX's perp was 17% above the open and 9% above the first close).",
+   "mixture": {
+    "polymarket": 0.4,
+    "perp": 0.25,
+    "comps": 0.35
+   },
+   "perp_bias": {
+    "open": -0.08,
+    "close": -0.04,
+    "day5": 0.0
+   },
+   "perp_basis_sigma": 0.12,
+   "day5_perp_weight": 0.5,
+   "comps_jitter_sigma": 0.08,
+   "similarity": {
+    "size_bandwidth": 2.0,
+    "coverage_bandwidth": 1.0,
+    "recency_half_life_years": 6.0,
+    "unknown_coverage_factor": 0.7,
+    "not_hot_factor": 0.3,
+    "max_weight": 0.2,
+    "size_slope_min": -0.35
+   },
+   "diffuse": {
+    "weight": 0.05,
+    "sigma": 0.35
+   },
+   "price_floor": 20.0,
+   "price_cap": 400.0
+  },
+  "news": {
+   "_about": "Which outlets count as tier 1 when reading headlines, and the default book coverage if no headline states one.",
+   "tier1": [
+    "bloomberg",
+    "reuters",
+    "cnbc",
+    "wall street journal",
+    "wsj",
+    "financial times",
+    "ft.com",
+    "the information",
+    "dow jones",
+    "barron"
+   ],
+   "default_coverage_x": 5.0
+  }
+ }
+}
