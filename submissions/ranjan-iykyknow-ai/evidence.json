@@ -1,0 +1,328 @@
+{
+  "cutoff": "2026-11-18T05:00:00Z",
+  "clusters": [
+    {
+      "cluster_id": "issuer-roadshow-launch",
+      "issuer": "ANT",
+      "kind": "fact",
+      "title": "Anthropic announced the launch of its proposed IPO roadshow on November 10, 2026.",
+      "claim_ids": [
+        "issuer-roadshow-launch"
+      ],
+      "source_urls": [
+        "https://www.anthropic.com/news/roadshow-launch"
+      ],
+      "synthetic": false,
+      "evidence": [
+        {
+          "url": "https://www.anthropic.com/news/roadshow-launch",
+          "origin_id": "anthropic-roadshow-2026-11-10",
+          "stance": "supports",
+          "primary": true,
+          "published_at": "2026-11-11T05:00:00Z",
+          "first_observed_at": "2026-11-18T04:58:23Z"
+        }
+      ],
+      "posts": [
+        {
+          "claim_id": "issuer-roadshow-launch",
+          "source_url": "https://www.anthropic.com/news/roadshow-launch",
+          "author": "Anthropic, PBC",
+          "published_at": "2026-11-11T05:00:00Z",
+          "first_observed_at": "2026-11-18T04:58:23Z",
+          "available_at": "2026-11-18T04:58:23Z"
+        }
+      ],
+      "available_at": "2026-11-18T04:58:23Z",
+      "status": "supported",
+      "independent_supporters": 1,
+      "independent_contradictors": 0,
+      "primary_support": true
+    },
+    {
+      "cluster_id": "nvidia-fy27q3-revenue",
+      "issuer": "NVDA",
+      "kind": "fact",
+      "title": "NVIDIA reported USD 115.8 billion of revenue for its third fiscal quarter ended October 25, 2026.",
+      "claim_ids": [
+        "nvidia-fy27q3-revenue"
+      ],
+      "source_urls": [
+        "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Third-Quarter-Fiscal-2027/default.aspx"
+      ],
+      "synthetic": false,
+      "evidence": [
+        {
+          "url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Third-Quarter-Fiscal-2027/default.aspx",
+          "origin_id": "nvidia-fy27q3-2026-11-17",
+          "stance": "supports",
+          "primary": true,
+          "published_at": "2026-11-18T05:00:00Z",
+          "first_observed_at": "2026-11-18T04:58:23Z"
+        }
+      ],
+      "posts": [
+        {
+          "claim_id": "nvidia-fy27q3-revenue",
+          "source_url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Third-Quarter-Fiscal-2027/default.aspx",
+          "author": "NVIDIA investor relations",
+          "published_at": "2026-11-18T05:00:00Z",
+          "first_observed_at": "2026-11-18T04:58:23Z",
+          "available_at": "2026-11-18T05:00:00Z"
+        }
+      ],
+      "available_at": "2026-11-18T05:00:00Z",
+      "status": "supported",
+      "independent_supporters": 1,
+      "independent_contradictors": 0,
+      "primary_support": true
+    },
+    {
+      "cluster_id": "sec-a3-compute-commitments",
+      "issuer": "ANT",
+      "kind": "fact",
+      "title": "Anthropic A3 discloses approximately USD 900.9 billion of aggregate committed spending, substantially related to compute and infrastructure.",
+      "claim_ids": [
+        "sec-a3-compute-commitments"
+      ],
+      "source_urls": [
+        "https://www.sec.gov/Archives/edgar/data/2130357/000162828026074338/anthropicpbc-sx1ax3.htm"
+      ],
+      "synthetic": false,
+      "evidence": [
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026074338/anthropicpbc-sx1ax3.htm",
+          "origin_id": "anthropic-s1a3-2026-11-17",
+          "stance": "supports",
+          "primary": true,
+          "published_at": "2026-11-18T05:00:00Z",
+          "first_observed_at": "2026-11-18T04:58:23Z"
+        }
+      ],
+      "posts": [
+        {
+          "claim_id": "sec-a3-compute-commitments",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026074338/anthropicpbc-sx1ax3.htm",
+          "author": "Anthropic, PBC via SEC EDGAR",
+          "published_at": "2026-11-18T05:00:00Z",
+          "first_observed_at": "2026-11-18T04:58:23Z",
+          "available_at": "2026-11-18T05:00:00Z"
+        }
+      ],
+      "available_at": "2026-11-18T05:00:00Z",
+      "status": "supported",
+      "independent_supporters": 1,
+      "independent_contradictors": 0,
+      "primary_support": true
+    },
+    {
+      "cluster_id": "sec-a3-concurrent-placement",
+      "issuer": "ANT",
+      "kind": "fact",
+      "title": "Anthropic A3 discloses an agreed USD 26.0 billion concurrent Class N private placement at the IPO price, contingent on completion.",
+      "claim_ids": [
+        "sec-a3-concurrent-placement"
+      ],
+      "source_urls": [
+        "https://www.sec.gov/Archives/edgar/data/2130357/000162828026074338/anthropicpbc-sx1ax3.htm"
+      ],
+      "synthetic": false,
+      "evidence": [
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026074338/anthropicpbc-sx1ax3.htm",
+          "origin_id": "anthropic-s1a3-2026-11-17",
+          "stance": "supports",
+          "primary": true,
+          "published_at": "2026-11-18T05:00:00Z",
+          "first_observed_at": "2026-11-18T04:58:23Z"
+        }
+      ],
+      "posts": [
+        {
+          "claim_id": "sec-a3-concurrent-placement",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026074338/anthropicpbc-sx1ax3.htm",
+          "author": "Anthropic, PBC via SEC EDGAR",
+          "published_at": "2026-11-18T05:00:00Z",
+          "first_observed_at": "2026-11-18T04:58:23Z",
+          "available_at": "2026-11-18T05:00:00Z"
+        }
+      ],
+      "available_at": "2026-11-18T05:00:00Z",
+      "status": "supported",
+      "independent_supporters": 1,
+      "independent_contradictors": 0,
+      "primary_support": true
+    },
+    {
+      "cluster_id": "sec-a3-early-release",
+      "issuer": "ANT",
+      "kind": "fact",
+      "title": "Anthropic A3 lists up to 315 million restricted Class A shares as eligible for sale on the first trading day, subject to the filing conditions.",
+      "claim_ids": [
+        "sec-a3-early-release"
+      ],
+      "source_urls": [
+        "https://www.sec.gov/Archives/edgar/data/2130357/000162828026074338/anthropicpbc-sx1ax3.htm"
+      ],
+      "synthetic": false,
+      "evidence": [
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026074338/anthropicpbc-sx1ax3.htm",
+          "origin_id": "anthropic-s1a3-2026-11-17",
+          "stance": "supports",
+          "primary": true,
+          "published_at": "2026-11-18T05:00:00Z",
+          "first_observed_at": "2026-11-18T04:58:23Z"
+        }
+      ],
+      "posts": [
+        {
+          "claim_id": "sec-a3-early-release",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026074338/anthropicpbc-sx1ax3.htm",
+          "author": "Anthropic, PBC via SEC EDGAR",
+          "published_at": "2026-11-18T05:00:00Z",
+          "first_observed_at": "2026-11-18T04:58:23Z",
+          "available_at": "2026-11-18T05:00:00Z"
+        }
+      ],
+      "available_at": "2026-11-18T05:00:00Z",
+      "status": "supported",
+      "independent_supporters": 1,
+      "independent_contradictors": 0,
+      "primary_support": true
+    },
+    {
+      "cluster_id": "sec-a3-offer-range",
+      "issuer": "ANT",
+      "kind": "fact",
+      "title": "Anthropic A3 retains a proposed IPO offer-price range of USD 70 to USD 78 per share.",
+      "claim_ids": [
+        "sec-a3-offer-range"
+      ],
+      "source_urls": [
+        "https://www.sec.gov/Archives/edgar/data/2130357/000162828026074338/anthropicpbc-sx1ax3.htm"
+      ],
+      "synthetic": false,
+      "evidence": [
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026074338/anthropicpbc-sx1ax3.htm",
+          "origin_id": "anthropic-s1a3-2026-11-17",
+          "stance": "supports",
+          "primary": true,
+          "published_at": "2026-11-18T05:00:00Z",
+          "first_observed_at": "2026-11-18T04:58:23Z"
+        }
+      ],
+      "posts": [
+        {
+          "claim_id": "sec-a3-offer-range",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026074338/anthropicpbc-sx1ax3.htm",
+          "author": "Anthropic, PBC via SEC EDGAR",
+          "published_at": "2026-11-18T05:00:00Z",
+          "first_observed_at": "2026-11-18T04:58:23Z",
+          "available_at": "2026-11-18T05:00:00Z"
+        }
+      ],
+      "available_at": "2026-11-18T05:00:00Z",
+      "status": "supported",
+      "independent_supporters": 1,
+      "independent_contradictors": 0,
+      "primary_support": true
+    },
+    {
+      "cluster_id": "sec-a3-offer-shares",
+      "issuer": "ANT",
+      "kind": "fact",
+      "title": "Anthropic A3 specifies a proposed offering of 825,000,000 Class A shares.",
+      "claim_ids": [
+        "sec-a3-offer-shares"
+      ],
+      "source_urls": [
+        "https://www.sec.gov/Archives/edgar/data/2130357/000162828026074338/anthropicpbc-sx1ax3.htm"
+      ],
+      "synthetic": false,
+      "evidence": [
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026074338/anthropicpbc-sx1ax3.htm",
+          "origin_id": "anthropic-s1a3-2026-11-17",
+          "stance": "supports",
+          "primary": true,
+          "published_at": "2026-11-18T05:00:00Z",
+          "first_observed_at": "2026-11-18T04:58:23Z"
+        }
+      ],
+      "posts": [
+        {
+          "claim_id": "sec-a3-offer-shares",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026074338/anthropicpbc-sx1ax3.htm",
+          "author": "Anthropic, PBC via SEC EDGAR",
+          "published_at": "2026-11-18T05:00:00Z",
+          "first_observed_at": "2026-11-18T04:58:23Z",
+          "available_at": "2026-11-18T05:00:00Z"
+        }
+      ],
+      "available_at": "2026-11-18T05:00:00Z",
+      "status": "supported",
+      "independent_supporters": 1,
+      "independent_contradictors": 0,
+      "primary_support": true
+    },
+    {
+      "cluster_id": "sec-a3-q3-revenue",
+      "issuer": "ANT",
+      "kind": "fact",
+      "title": "Anthropic A3 reports USD 16.956 billion of unaudited revenue for the quarter ended September 30, 2026.",
+      "claim_ids": [
+        "sec-a3-q3-revenue"
+      ],
+      "source_urls": [
+        "https://www.sec.gov/Archives/edgar/data/2130357/000162828026074338/anthropicpbc-sx1ax3.htm"
+      ],
+      "synthetic": false,
+      "evidence": [
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026074338/anthropicpbc-sx1ax3.htm",
+          "origin_id": "anthropic-s1a3-2026-11-17",
+          "stance": "supports",
+          "primary": true,
+          "published_at": "2026-11-18T05:00:00Z",
+          "first_observed_at": "2026-11-18T04:58:23Z"
+        }
+      ],
+      "posts": [
+        {
+          "claim_id": "sec-a3-q3-revenue",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026074338/anthropicpbc-sx1ax3.htm",
+          "author": "Anthropic, PBC via SEC EDGAR",
+          "published_at": "2026-11-18T05:00:00Z",
+          "first_observed_at": "2026-11-18T04:58:23Z",
+          "available_at": "2026-11-18T05:00:00Z"
+        }
+      ],
+      "available_at": "2026-11-18T05:00:00Z",
+      "status": "supported",
+      "independent_supporters": 1,
+      "independent_contradictors": 0,
+      "primary_support": true
+    }
+  ],
+  "summary": {
+    "input_claims": 8,
+    "included_claims": 8,
+    "excluded_late_claims": 0,
+    "clusters": 8,
+    "duplicate_claims": 0,
+    "input_evidence": 8,
+    "included_evidence": 8,
+    "excluded_late_evidence": 0,
+    "excluded_with_late_claim": 0,
+    "status_counts": {
+      "supported": 8,
+      "corroborated": 0,
+      "disputed": 0,
+      "unverified": 0,
+      "opinion": 0,
+      "unresolved_prediction": 0
+    }
+  }
+}

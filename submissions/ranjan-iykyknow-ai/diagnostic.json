@@ -1,0 +1,93 @@
+{
+  "kind": "conditional-return rolling-origin diagnostic; not a full IPO forecast backtest",
+  "cases": [
+    {
+      "ticker": "ARM",
+      "training_tickers": [
+        "SNOW",
+        "ABNB"
+      ],
+      "mean_absolute_percentage_error": 0.34419237942173364,
+      "fixed_10pct_baseline_error": 0.0593589585569457,
+      "forecast": {
+        "day1_open": 77.3969263603214,
+        "day1_close": 77.91967241421443,
+        "day5_close": 75.53474119605433
+      },
+      "actual": {
+        "day1_open": 56.1,
+        "day1_close": 63.59,
+        "day5_close": 52.91
+      }
+    },
+    {
+      "ticker": "RDDT",
+      "training_tickers": [
+        "SNOW",
+        "ABNB",
+        "ARM"
+      ],
+      "mean_absolute_percentage_error": 0.0827042011301689,
+      "fixed_10pct_baseline_error": 0.2717204172347843,
+      "forecast": {
+        "day1_open": 50.95275589537168,
+        "day1_close": 51.87303313540348,
+        "day5_close": 49.91905581372041
+      },
+      "actual": {
+        "day1_open": 47.0,
+        "day1_close": 50.44,
+        "day5_close": 57.75
+      }
+    },
+    {
+      "ticker": "CRWV",
+      "training_tickers": [
+        "SNOW",
+        "ABNB",
+        "ARM",
+        "RDDT"
+      ],
+      "mean_absolute_percentage_error": 0.28119346255155,
+      "fixed_10pct_baseline_error": 0.13678708734470815,
+      "forecast": {
+        "day1_open": 54.3760027289089,
+        "day1_close": 55.84233450186496,
+        "day5_close": 56.66568631452208
+      },
+      "actual": {
+        "day1_open": 39.0,
+        "day1_close": 40.0,
+        "day5_close": 53.8
+      }
+    },
+    {
+      "ticker": "FIG",
+      "training_tickers": [
+        "SNOW",
+        "ABNB",
+        "ARM",
+        "RDDT",
+        "CRWV"
+      ],
+      "mean_absolute_percentage_error": 0.5522853755458362,
+      "fixed_10pct_baseline_error": 0.6189170406869567,
+      "forecast": {
+        "day1_open": 40.69300416822644,
+        "day1_close": 42.15589973364275,
+        "day5_close": 45.10729854860455
+      },
+      "actual": {
+        "day1_open": 85.0,
+        "day1_close": 115.5,
+        "day5_close": 90.32
+      }
+    }
+  ],
+  "limitations": [
+    "Purposive tiny tech-IPO sample, selection bias and different market regimes.",
+    "Actual offer price is provided as an input in this diagnostic.",
+    "The diagnostic does not validate final scenario weights, supply shrinkage or predictive interval coverage.",
+    "Historical prices were retrieved for this run, not from archived vintage snapshots."
+  ]
+}

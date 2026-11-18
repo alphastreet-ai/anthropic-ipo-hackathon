@@ -1,0 +1,183 @@
+{
+  "status": "candidate submission",
+  "cutoff": "2026-11-18T05:00:00Z",
+  "engine": "scenarios",
+  "prediction_contract_checked": true,
+  "organizer_ci_status": "recorded separately by GitHub; not inferred by this offline run",
+  "baseline": {
+    "ipo_price": {
+      "median": 74.0,
+      "p10": 70.0,
+      "p90": 80.0
+    },
+    "day1_open": {
+      "median": 82.22,
+      "p10": 65.78,
+      "p90": 98.67
+    },
+    "day1_close": {
+      "median": 84.73,
+      "p10": 63.55,
+      "p90": 105.91
+    },
+    "day5_close": {
+      "median": 84.73,
+      "p10": 59.31,
+      "p90": 110.15
+    }
+  },
+  "scenario_forecast": {
+    "ipo_price": {
+      "median": 77.09,
+      "p10": 69.89,
+      "p90": 82.02
+    },
+    "day1_open": {
+      "median": 100.05,
+      "p10": 79.86,
+      "p90": 122.31
+    },
+    "day1_close": {
+      "median": 101.78,
+      "p10": 81.27,
+      "p90": 139.12
+    },
+    "day5_close": {
+      "median": 103.26,
+      "p10": 82.84,
+      "p90": 125.03
+    }
+  },
+  "model": {
+    "model": "supply-aware paired-path scenarios v1",
+    "seed": 20261118,
+    "draws": 30000,
+    "comparable_count": 6,
+    "comparables": [
+      "ARM",
+      "RDDT",
+      "SNOW",
+      "ABNB",
+      "CRWV",
+      "FIG"
+    ],
+    "excluded_comparables": [],
+    "effective_empirical_weight": 0.43421052631578944,
+    "early_eligible_to_offer_ratio": 0.38181818181818183,
+    "scenario_counts": {
+      "soft": 6119,
+      "filed": 14918,
+      "above": 8963
+    },
+    "evidence_roles": [
+      {
+        "field": "price_range_low",
+        "value": 70.0,
+        "cluster_id": "sec-a3-offer-range",
+        "role": "numeric model input from agent-reviewed primary source"
+      },
+      {
+        "field": "price_range_high",
+        "value": 78.0,
+        "cluster_id": "sec-a3-offer-range",
+        "role": "numeric model input from agent-reviewed primary source"
+      },
+      {
+        "field": "offered_shares",
+        "value": 825000000.0,
+        "cluster_id": "sec-a3-offer-shares",
+        "role": "numeric model input from agent-reviewed primary source"
+      },
+      {
+        "field": "early_eligible_shares",
+        "value": 315000000.0,
+        "cluster_id": "sec-a3-early-release",
+        "role": "numeric model input from agent-reviewed primary source"
+      }
+    ],
+    "context_only_clusters": [
+      "issuer-roadshow-launch",
+      "nvidia-fy27q3-revenue",
+      "sec-a3-compute-commitments",
+      "sec-a3-concurrent-placement",
+      "sec-a3-q3-revenue"
+    ],
+    "assumptions": [
+      "Pricing probabilities (soft20%, filed50%, above30%) are disclosed subjective scenario priors, not fitted historical frequencies or claims about orderbook demand.",
+      "Pricing supports derive from the filed range width: soft=[low-width/2, midpoint] with mode low; filed=[midpoint, high] with mode high; above=[high, high+width] with mode high+width/4.",
+      "A 10% prior opening return and flat intraday/four-session prior returns are conservative reference assumptions, not verified population averages.",
+      "Each path samples one historical IPO and preserves its joint opening/intraday/dayfive log-return pattern before shrinking all three stage returns toward their respective priors.",
+      "Effective empirical weight = 0.6/(1+early_eligible_shares/offered_shares). This is an explicit supply-risk sensitivity, not a trained coefficient. Eligibility is an upper bound, not actual selling volume.",
+      "The small purposive technology IPO sample and subjective scenario mixture do not establish predictive accuracy or80% empirical interval coverage.",
+      "NVIDIA earnings, financing and governance disclosures are context-only; no unsupported sentiment-to-percentage effect is assigned."
+    ],
+    "range_interpretation": "10th/90th percentiles of subjective model scenarios; historical 80% calibration is not established",
+    "supply_interpretation": "Eligible shares are an upper bound, not a claim they will all be sold. The chosen shrinkage channel is a sensitivity assumption, not a fitted causal coefficient."
+  },
+  "input_hashes": [
+    {
+      "file": "data/offering.csv",
+      "sha256": "2879f26847b1f681c3ec534b5f448bc362c6393117d084966009ad55c09dec6c"
+    },
+    {
+      "file": "data/comps.csv",
+      "sha256": "03535b6a827e56e8a2f130405f488ff3009c10401b43a5f44c5fe5636dd42788"
+    },
+    {
+      "file": "data/base_rates.md",
+      "sha256": "32858ed9fa3671dba57d7ff64b0b6d4ace25f9dd5ca4bfd8b068cbab8fcaafce"
+    },
+    {
+      "file": "data/prediction.schema.json",
+      "sha256": "2a20ce1fbd8b5af5a6a112151d170798289e4160f37817ae4b51e4a914b9af44"
+    },
+    {
+      "file": "data/claims_verified.jsonl",
+      "sha256": "f4494fba6b471361106364d4f1e8c34b0848ee63e600f01b7733212863fc33e6"
+    },
+    {
+      "file": "data/model_config.json",
+      "sha256": "98d6623316f85eecaf6ee8dac2155e8a0f0cb80c89ac1007aa9efa96becd1341"
+    },
+    {
+      "file": "data/research_sources.json",
+      "sha256": "005901506bf1f3a7b2a0bcf50ce5d4baf7b5b6e95d5adb5259d7bc5d04fb06f3"
+    },
+    {
+      "file": "data/comps_sources.json",
+      "sha256": "51e9c7c7c393674b93f06b522560d0bc2a561401c075d55e93059a3acc3a7974"
+    },
+    {
+      "file": "data/comps_verified.csv",
+      "sha256": "235ee16a9288d718a932003f919beae077beaf6527ede8c127a8cf7026c448a1"
+    }
+  ],
+  "evidence_summary": {
+    "input_claims": 8,
+    "included_claims": 8,
+    "excluded_late_claims": 0,
+    "clusters": 8,
+    "duplicate_claims": 0,
+    "input_evidence": 8,
+    "included_evidence": 8,
+    "excluded_late_evidence": 0,
+    "excluded_with_late_claim": 0,
+    "status_counts": {
+      "supported": 8,
+      "corroborated": 0,
+      "disputed": 0,
+      "unverified": 0,
+      "opinion": 0,
+      "unresolved_prediction": 0
+    }
+  },
+  "limitations": [
+    "No live social data was collected for this frozen run; X credentials remain unverified in this environment.",
+    "Hyperresearch was not installed or run; the compatible import adapter is supplied for future local research.",
+    "Primary-source annotations were reviewed by an AI agent, not signed off by a human.",
+    "Publication times on date-only sources are conservative end-of-New-York-day bounds, not invented precise publication times.",
+    "Historical prices are a small purposive provider-published sample; full vintage point-in-time backtesting is unavailable.",
+    "Model ranges are subjective scenario quantiles, not empirically calibrated 80% intervals.",
+    "The diagnostic is conditional on actual offer prices and does not validate this final supply-aware model."
+  ]
+}

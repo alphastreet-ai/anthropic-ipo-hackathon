@@ -1,0 +1,11 @@
+# ANT Signal Lens
+
+- **Author:** @ranjan-iykyknow-ai (Somyaranjan Rout)
+- **Repo:** https://github.com/ranjan-iykyknow-ai/ant-signal-lens
+- **Method and stack:** Python standard library; fixed-seed supply-aware paired historical IPO paths, imported primary-source evidence gates, source-independent audit and sensitivity analysis.
+- **The idea:** Make the evidence-to-assumption boundary inspectable. The filing's potential day-one additional share supply changes an explicitly disclosed shrinkage channel, while unrelated positive news cannot silently become a percentage price uplift. Eligibility remains subject to the filing's resale, lock-up and other conditions and does not imply actual selling.
+- **How it works:** Eight agent-reviewed issuer-disclosure claims from three original sources establish the filing context. Six sourced IPOs provide paired opening/intraday/fifth-session returns. Code samples 30,000 pricing/return scenarios, shrinks them toward conservative priors using the potential-supply ratio, and outputs medians plus p10/p90. Scenario probabilities, supply formula and priors are assumptions, not trained coefficients or validated causal effects.
+- **How to rerun:** Clone the linked repository and run `python3 run.py` with Python 3.10+. No keys, network fetches, paid APIs or Hyperresearch installation are required. Inputs and their hashes are committed. The output prediction is byte-for-byte reproducible.
+- **Run log:** See [RUN_LOG.txt](RUN_LOG.txt). Full evidence, input hashes, sensitivity, conditional rolling-return diagnostic and readable report are included in this folder and the linked repository.
+- **Research scope:** No live X posts were collected. Hyperresearch itself was not run; a compatible import adapter and optional X collector are provided separately. All source-review labels are agent reviews, not claimed human endorsements.
+- **Limits:** Small purposive historical sample; provider-published price history; subjective pricing weights and supply shrinkage. p10/p90 are model quantiles, not demonstrated 80% empirical market coverage. The diagnostic is conditional on known actual offer prices and does not establish an edge for the final model.
