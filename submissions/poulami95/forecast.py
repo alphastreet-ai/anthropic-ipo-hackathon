@@ -39,6 +39,9 @@ CFG = {
     "perp_sd": 0.08,            # perp drift over ~1.5 days plus basis uncertainty
     "pop_mu": math.log(1.13),   # SpaceX opened +11% on a ~4x book; ANT's ~7x book argues slightly more
     "pop_sd": 0.10,
+    "first_trade_shock": True,  # add a common shock to the open with the spread of comps' first-trade pops
+                                # (open / IPO price): averaging two anchors cancels their noise, but real first
+                                # trades still surprise (Alibaba and Rivian opened ~+36%, Uber -7%)
     "open_floor": 0.97,         # a 7x-covered deal with underwriter support rarely opens >3% below issue
     "nvidia_beta": 0.5,         # ANT open moves ~half of Nvidia's post-earnings move (supplier + placement partner)
     # Day-1 close and day 5: centre and spread come from comps.csv (median and MAD of log ratios).
@@ -71,14 +74,15 @@ def load_evidence():
 def comps_stats():
     rows = list(csv.DictReader(open(HERE / "data/comps.csv")))
     co = [math.log(float(r["day1_close"]) / float(r["day1_open"])) for r in rows]
+    pop = [math.log(float(r["day1_open"]) / float(r["ipo_price"])) for r in rows]
     d5 = [math.log(float(r["day5_close"]) / float(r["day1_close"])) for r in rows]
 
     def robust(xs):
         m = statistics.median(xs)
         return m, 1.4826 * statistics.median(abs(x - m) for x in xs)
 
-    (co_mu, co_sd), (d5_mu, d5_sd) = robust(co), robust(d5)
-    return {"n": len(rows), "co_mu": co_mu, "co_sd": co_sd, "d5_mu": d5_mu, "d5_sd": d5_sd,
+    (co_mu, co_sd), (d5_mu, d5_sd), (_, pop_sd) = robust(co), robust(d5), robust(pop)
+    return {"n": len(rows), "co_mu": co_mu, "co_sd": co_sd, "d5_mu": d5_mu, "d5_sd": d5_sd, "pop_sd": pop_sd,
             "names": ", ".join(r["company"] for r in rows)}
 
 
@@ -155,6 +159,8 @@ def simulate(ev, cs, vm, tilt):
         perp_leg = math.log(perp) + c["perp_basis"] + c["perp_sd"] * vm * t_draw(rng, 4)
         pop_leg = math.log(ipo) + c["pop_mu"] + c["pop_sd"] * vm * rng.gauss(0, 1)
         lo = c["w_perp"] * perp_leg + (1 - c["w_perp"]) * pop_leg + tilt + c["nvidia_beta"] * nv
+        if c["first_trade_shock"]:
+            lo += cs["pop_sd"] * vm * t_draw(rng, 3)
         opn = max(math.exp(lo), ipo * c["open_floor"])
         close = opn * math.exp(cs["co_mu"] + c["lockup_drag_close"] + cs["co_sd"] * vm * t_draw(rng, 4))
         d5 = close * math.exp(cs["d5_mu"] + c["lockup_drag_day5"] + cs["d5_sd"] * vm * t_draw(rng, 4))
@@ -253,7 +259,7 @@ def build_text(res, ev, cs, vix, tilt_note, probs, pm_note):
         f"so the model puts {probs['ipo_above']:.0%} on a price above ${o['range_high']} and a median of ${r['ipo_price']['median']:.2f}, "
         f"capped where banks would still leave ~8% headroom under the Hyperliquid xyz:ANT perp (${ev['perp']['price']:.2f}). "
         f"The open blends that perp, discounted for its offshore retail premium (it has fallen from $138 at listing), with a SpaceX-style "
-        f"pop on the simulated IPO price: median ${r['day1_open']['median']:.2f}. The close is simulated from {cs['n']} comparable mega-IPO "
+        f"pop on the simulated IPO price, plus a first-trade shock as wide as past mega-IPO opens: median ${r['day1_open']['median']:.2f}. The close is simulated from {cs['n']} comparable mega-IPO "
         f"open-to-close moves, then tilted toward Polymarket's first-day market-cap brackets ({pm_note}); median ${r['day1_close']['median']:.2f}. "
         f"Day 5 adds comps' drift, a drag for the up-to-{o['first_day_lockup_release_shares']/1e6:.0f}M-share first-day lock-up release, "
         f"and greenshoe support below issue: median ${r['day5_close']['median']:.2f}. With a {o['float_pct']}% float and a "
@@ -281,6 +287,7 @@ def main():
     vix, vix_date, vm = vix_multiplier()
     tilt, tilt_note = signal_tilt(as_of)
     log(f"evidence as of {ev['as_of']}; perp ${ev['perp']['price']:.2f} ({ev['perp']['as_of']}); book ~{ev['book']['oversubscription_x']}x, guidance {ev['book']['guidance']}")
+    log(f"comps first-trade pop spread (open/IPO, log MAD): {cs['pop_sd']:.3f}")
     log(f"comps ({cs['names']}): open->close {cs['co_mu']:+.3f} +/- {cs['co_sd']:.3f}; close->day5 {cs['d5_mu']:+.3f} +/- {cs['d5_sd']:.3f} (log, median/MAD)")
     log(f"VIX {vix:.2f} on {vix_date} -> volatility x{vm:.2f}")
     log(tilt_note)

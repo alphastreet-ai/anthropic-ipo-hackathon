@@ -1,15 +1,16 @@
 evidence as of 2026-11-18T12:00:00Z; perp $96.61 (2026-11-18T06:52:00Z); book ~6.9x, guidance raise_planned
+comps first-trade pop spread (open/IPO, log MAD): 0.134
 comps (SpaceX, Facebook, Alibaba, Uber, Rivian, Arm): open->close +0.001 +/- 0.095; close->day5 -0.010 +/- 0.212 (log, median/MAD)
 VIX 18.70 on 2026-11-12 -> volatility x1.04
 signal pack not present (licensed, gitignored, sent to registrants); tilt = 0
 Nvidia after-hours move: +1.4%
-close bracket $   0.00-$95.52: Polymarket 33.6%  model-before-tilt 58.0%
-close bracket $  95.52-$114.62: Polymarket 39.5%  model-before-tilt 38.2%
-close bracket $ 114.62-inf: Polymarket 26.9%  model-before-tilt 3.8%
-200,000 paths, effective sample after tilt 158,118
-ipo_price   median $  82.86   80% range $  77.30 - $  89.59
-day1_open   median $  95.37   80% range $  86.62 - $ 105.30
-day1_close  median $  96.70   80% range $  81.09 - $ 120.12
-day5_close  median $  94.21   80% range $  72.60 - $ 134.30
-P(IPO > $78) 84%; P(open > $100) 23%; P(day 5 < IPO) 28%
-wrote prediction.json, report.html and run_log.txt in submissions/poulami95 at 2026-11-18T13:04:11Z
+close bracket $   0.00-$95.52: Polymarket 33.6%  model-before-tilt 55.1%
+close bracket $  95.52-$114.62: Polymarket 39.5%  model-before-tilt 35.0%
+close bracket $ 114.62-inf: Polymarket 26.9%  model-before-tilt 9.9%
+200,000 paths, effective sample after tilt 179,999
+ipo_price   median $  82.85   80% range $  77.30 - $  89.49
+day1_open   median $  96.89   80% range $  81.50 - $ 118.94
+day1_close  median $  97.98   80% range $  77.88 - $ 126.16
+day5_close  median $  95.34   80% range $  71.76 - $ 140.58
+P(IPO > $78) 84%; P(open > $100) 40%; P(day 5 < IPO) 29%
+wrote prediction.json, report.html and run_log.txt in submissions/poulami95 at 2026-11-18T14:04:52Z
