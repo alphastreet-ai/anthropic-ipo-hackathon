@@ -1,0 +1,7 @@
+company,ticker,ipo_date,ipo_price,day1_open,day1_close,day5_close,verified,source
+SpaceX,SPCX,2026-06-12,135,150,160.95,185.00,yes,context/comps/large_ipos.csv; day5 (18 Jun): https://www.fxleaders.com/?p=458263 and Bloomberg 'first week up 37%'
+Facebook,META,2012-05-18,38,42.05,38.23,33.03,no,public daily price history; check with fetch_live.py --verify-comps
+Alibaba,BABA,2014-09-19,68,92.70,93.89,88.92,no,public daily price history; check with fetch_live.py --verify-comps
+Uber,UBER,2019-05-10,45,42.00,41.57,43.00,no,public daily price history; check with fetch_live.py --verify-comps
+Rivian,RIVN,2021-11-10,78,106.75,100.73,172.01,no,public daily price history; check with fetch_live.py --verify-comps
+Arm,ARM,2023-09-14,51,56.10,63.59,52.16,no,public daily price history; check with fetch_live.py --verify-comps

@@ -1,0 +1,124 @@
+{
+  "_about": "Every external number the model uses, with source and time. forecast.py reads only this file plus the repo's context/ (and signals/pack/ if present), so a rerun reproduces prediction.json exactly. fetch_live.py refreshes the market fields in place; commit after refreshing.",
+  "as_of": "2026-11-18T12:00:00Z",
+  "offering": {
+    "range_low": 70,
+    "range_high": 78,
+    "shares_offered": 825000000,
+    "shares_outstanding_after_ipo": 13086672593,
+    "float_pct": 6.3,
+    "first_day_lockup_release_shares": 316000000,
+    "greenshoe_shares": 123750000,
+    "retail_allocation_pct": 20,
+    "source": "context/anthropic-s1/offering.csv (S-1/A Amendment No. 2 and prospectus)"
+  },
+  "book": {
+    "oversubscription_x": 6.9,
+    "guidance": "raise_planned",
+    "notes": [
+      {
+        "claim": "Book about 6x covered",
+        "date": "2026-11-12",
+        "source": "Bloomberg via https://stockanalysis.com/news/anthropic-ipo-six-times-oversubscribed/"
+      },
+      {
+        "claim": "Orders for ~5.7B shares, nearly 7x the 825M offered",
+        "date": "2026-11-17",
+        "source": "https://www.forbes.com/sites/jonmarkman/2026/11/17/anthropic-ipo-is-7x-oversubscribed-small-buyers-should-wait/"
+      },
+      {
+        "claim": "Guiding investors to price at the high end of the range or above",
+        "date": "2026-11-17",
+        "source": "https://www.bloomberg.com/news/articles/2026-11-17/anthropic-is-said-to-guide-ipo-price-to-top-of-range-or-above"
+      },
+      {
+        "claim": "Likely to price above the $70-$78 range; books close 4 PM ET Tue",
+        "date": "2026-11-17",
+        "source": "https://www.cnbc.com/2026/11/17/anthropic-ipo-price.html"
+      },
+      {
+        "claim": "Stated range unchanged at $70-$78 in latest filing",
+        "date": "2026-11-17",
+        "source": "https://www.techflowpost.com/en-US/newsletter/145178"
+      },
+      {
+        "claim": "Planning to raise its IPO price after stronger than expected demand (WSJ)",
+        "date": "2026-11-18",
+        "source": "https://cryptonews.com/news/anthropic-price-bitcoin-65b-ai-ipo-nvidia/"
+      },
+      {
+        "claim": "WSJ: strong demand could push the price above $80 a share; price set Wed evening",
+        "date": "2026-11-18",
+        "source": "https://www.euronews.com/2026/11/18/anthropics-ipo-price-is-due-today-what-should-investors-know"
+      }
+    ]
+  },
+  "perp": {
+    "venue": "Hyperliquid trade.xyz, xyz:ANT (one unit = one ANT Class A share, USD)",
+    "price": 96.61,
+    "as_of": "2026-11-18T06:52:00Z",
+    "source": "https://bitquery.io/investigations/anthropic-pre-ipo-trading-hyperliquid",
+    "history": [
+      {
+        "date": "2026-10-26",
+        "price": 138.0,
+        "source": "https://senpi.ai/assets/xyz:ANT (listing open)"
+      },
+      {
+        "date": "2026-11-10",
+        "price": 102.87,
+        "source": "https://www.coingecko.com/learn/all-you-need-to-know-before-anthropic-ipo"
+      },
+      {
+        "date": "2026-11-11",
+        "price": 103.93,
+        "source": "https://cryptobriefing.com/anthropic-pre-ipo-perp-premium-hyperliquid/"
+      },
+      {
+        "date": "2026-11-15",
+        "price": 102.06,
+        "source": "https://fourweekmba.com/ai-anthropic-ipo-ant-perp-at-102-implies-1-34t-valuation/"
+      },
+      {
+        "date": "2026-11-17",
+        "price": 96.8,
+        "source": "https://www.tokenpost.com/news/investing/59007"
+      },
+      {
+        "date": "2026-11-18T06:52:00Z",
+        "price": 96.61,
+        "source": "https://bitquery.io/investigations/anthropic-pre-ipo-trading-hyperliquid"
+      }
+    ]
+  },
+  "polymarket_close_mcap": {
+    "market": "Polymarket 'Anthropic IPO Closing Market Cap' (first-day close x shares outstanding)",
+    "as_of": "2026-11-18",
+    "brackets_usd_tn": [
+      {
+        "lo": 0.0,
+        "hi": 1.25,
+        "prob": 0.333,
+        "source": "https://financefeeds.com/polymarket-traders-favor-1-25-1-5-trillion-anthropic-first-day-valuation-ahead-of-ipo-pricing/"
+      },
+      {
+        "lo": 1.25,
+        "hi": 1.5,
+        "prob": 0.391,
+        "source": "https://financefeeds.com/polymarket-traders-favor-1-25-1-5-trillion-anthropic-first-day-valuation-ahead-of-ipo-pricing/"
+      },
+      {
+        "lo": 1.5,
+        "hi": null,
+        "prob": 0.266,
+        "source": "residual: 1 - 0.333 - 0.391 - ~0.01 for the no-IPO/other outcome; the 18 Nov snapshot reported only the first two brackets"
+      }
+    ],
+    "share_basis_note": "Polymarket brackets map to price using shares_outstanding_after_ipo: $1.25T is 22.5% above $78, as FourWeekMBA's arithmetic confirms (https://fourweekmba.com/ai-anthropic-ipo-polymarket-odds-of-a-1-5t-debut-fall-to-34/)."
+  },
+  "nvidia": {
+    "after_hours_move_pct": 1.4,
+    "note": "Nvidia beat (Q3 revenue $115.8B, Q4 guide ~$130B) but the after-hours jump mostly faded overnight.",
+    "source": "NVDA closed $155.46 and traded up 4.8% after hours (https://public.com/stocks/nvda/after-hours) before pulling back to ~$157 (https://www.tradingkey.com/analysis/stocks/us-stocks/262310197-stock-nvidia-nvda-ai-jensen-huang-100-fed-tradingkey); Hyperliquid's NVDA perp gave back ~70% of the rise overnight (https://stablecoininsider.org/nvidia-earnings-call/). 1.4% = 30% of 4.8%."
+  }
+}
