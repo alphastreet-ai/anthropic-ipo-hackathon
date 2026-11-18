@@ -1,0 +1,68 @@
+{
+  "without_supply_shrinkage": {
+    "ipo_price": {
+      "median": 77.09,
+      "p10": 69.89,
+      "p90": 82.02
+    },
+    "day1_open": {
+      "median": 108.19,
+      "p10": 78.46,
+      "p90": 140.26
+    },
+    "day1_close": {
+      "median": 110.71,
+      "p10": 80.44,
+      "p90": 168.56
+    },
+    "day5_close": {
+      "median": 112.17,
+      "p10": 82.36,
+      "p90": 145.43
+    }
+  },
+  "base_empirical_weight_0.3": {
+    "ipo_price": {
+      "median": 77.09,
+      "p10": 69.89,
+      "p90": 82.02
+    },
+    "day1_open": {
+      "median": 90.88,
+      "p10": 81.05,
+      "p90": 103.04
+    },
+    "day1_close": {
+      "median": 92.78,
+      "p10": 81.8,
+      "p90": 108.26
+    },
+    "day5_close": {
+      "median": 93.66,
+      "p10": 82.94,
+      "p90": 103.6
+    }
+  },
+  "base_empirical_weight_0.9": {
+    "ipo_price": {
+      "median": 77.09,
+      "p10": 69.89,
+      "p90": 82.02
+    },
+    "day1_open": {
+      "median": 111.64,
+      "p10": 78.05,
+      "p90": 146.49
+    },
+    "day1_close": {
+      "median": 113.8,
+      "p10": 80.12,
+      "p90": 178.87
+    },
+    "day5_close": {
+      "median": 115.39,
+      "p10": 82.11,
+      "p90": 152.4
+    }
+  }
+}

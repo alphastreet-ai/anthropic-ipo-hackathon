@@ -1,0 +1,8 @@
+engine=scenarios
+information_cutoff=2026-11-18T05:00:00Z
+eligible_claim_clusters=8
+comparable_paths=6
+local_prediction_contract=PASS
+prices_usd={"day1_close": {"median": 101.78, "p10": 81.27, "p90": 139.12}, "day1_open": {"median": 100.05, "p10": 79.86, "p90": 122.31}, "day5_close": {"median": 103.26, "p10": 82.84, "p90": 125.03}, "ipo_price": {"median": 77.09, "p10": 69.89, "p90": 82.02}}
+prediction_sha256=6648db2f04afb7e7807219e7ce359f69e3985dd07577e3f5a57bb43098e55efb
+external_submission_state=not changed by this reproduction command
