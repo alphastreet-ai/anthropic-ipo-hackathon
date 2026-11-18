@@ -20,26 +20,26 @@
 - **Run log:** the output of the run that produced `prediction.json` is below; the full feature dump (every weight, every headline hit, every market bucket) is in [`run_log.json`](run_log.json).
 
 ```
+WARNING: polymarket refresh failed (<urlopen error [Errno 54] Connection reset by peer>); using the committed snapshot
+WARNING: fred refresh failed (The read operation timed out); using the committed snapshot
 ok   /Users/tamrit/Desktop/anthropic/anthropic-ipo-hackathon/submissions/tushar-amrit-6/prediction.json
 1/1 valid
+refreshed submissions/tushar-amrit-6/data/hyperliquid.json
+refreshed submissions/tushar-amrit-6/data/headlines.json
 
 == inputs ==
 book coverage (headline median): 6.0x from 27 mentions
   headline[above, tier 1] Anthropic likely to price IPO above the current range of $70 to $78, sources tell CNBC - C (CNBC)
+  headline[above, tier 2] Anthropic Is Said To Guide Ipo Pricing Above Marketed Range - Bloomberg - Investing.com (Investing.com)
   headline[top_or_above, tier 1] Anthropic Said to Guide IPO Price to Top of Range or Above - Bloomberg.com (Bloomberg.com)
   headline[top_or_above, tier 2] Anthropic is guiding its IPO price to the top of its range — or higher - Quartz (Quartz)
-  headline[top_or_above, tier 2] Anthropic Said to Guide IPO Price to $78 or Higher - The Defiant (The Defiant)
-  headline[top_or_above, tier 2] Anthropic Is Said To Guide IPO Price To Top Of Range Or Above - Bloomberg - Investing.com (Investing.com)
-  headline[top_or_above, tier 2] Anthropic Is Said To Guide IPO Price To Top Of Range Or Above - Bloomberg - Investing.com  (Investing.com Nigeria)
-  headline[top_or_above, tier 2] ANTHROPIC IS SAID TO GUIDE IPO PRICE TO TOP OF RANGE OR ABOVE - Moomoo (Moomoo)
-  headline[top_or_above, tier 2] Anthropic Is Said To Guide IPO Price To Top Of Range Or Above - Bloomberg - Investing.com  (Investing.com Canada)
-  headline[top_or_above, tier 2] Anthropic is said to guide IPO price to top of range or above - Moneycontrol.com (Moneycontrol.com)
-  headline[top_or_above, tier 2] Anthropic Is Said To Guide IPO Price To Top Of Range Or Above - Bloomberg By Investing.com (Investing.com India)
+  headline[top_or_above, tier 2] Anthropic guides its IPO to the top of the range or above, as a filing shows Amazon and Go (Dealroom)
+  headline[top_or_above, tier 2] Anthropic IPO price: Reports point to $78 or more - NeoTeo (NeoTeo)
   headline[top_only, tier 1] Watch Anthropic Is Said to Guide IPO Price to Top of Range - Bloomberg.com (Bloomberg.com)
-  headline[top_only, tier 2] Anthropic Said to Guide IPO Price to High End of Range, Bloomberg Reports - www.marketscre (www.marketscreener.com)
+  headline[raise_range, tier 2] Anthropic Weighs Raising IPO Price Range as Institutional Demand Surges, Valuation Could H (BigGo Finance)
   headline[raise_range, tier 2] Anthropic may raise its IPO price range - Traders Union (Traders Union)
 Polymarket: P(proceeds>=65B)=0.66  P(above $78, thin buckets)=0.51  implied day-1 close {'p10': 72.29, 'median': 103.97, 'p90': 134.76}  (cap market vol $9.7M)
-Hyperliquid xyz:ANT: mark $97.42  realized daily vol 2.6%  OI $131M
+Hyperliquid xyz:ANT: mark $96.28  realized daily vol 2.6%  OI $155M
 VIX 18.7 -> vol scale 0.93
 comps weights: SPCX 0.20, RIVN 0.12, ARM 0.08, BABA 0.07, KLAR 0.06, CBRS 0.06, ABNB 0.06, DASH 0.06
 comps-only medians (size-adjusted, slope -0.09): open x1.27 close x1.25 day5/day1 x0.95
@@ -49,9 +49,9 @@ prior(above|hot)=0.60  news LR=2.97  pooled P(above)=0.72  P(top)=0.21  P(within
 
 == prediction ==
 ipo_price   median   81.75   p10   78.00   p90   86.75
-day1_open   median   98.40   p10   75.59   p90  140.36
-day1_close  median  100.11   p10   78.17   p90  136.94
-day5_close  median   99.49   p10   77.44   p90  140.71
+day1_open   median   98.05   p10   75.17   p90  140.31
+day1_close  median   99.75   p10   77.85   p90  136.90
+day5_close  median   98.57   p10   76.82   p90  140.27
 confidence 0.50
 wrote /Users/tamrit/Desktop/anthropic/anthropic-ipo-hackathon/submissions/tushar-amrit-6/prediction.json and run_log.json
 ```
@@ -61,9 +61,9 @@ wrote /Users/tamrit/Desktop/anthropic/anthropic-ipo-hackathon/submissions/tushar
 | Source | Day-one close it implies | Notes |
 |---|---|---|
 | Polymarket closing-market-cap markets (3 events, $9.7M volume) | p10 $72 · median $104 · p90 $135 | Median cap $1.36T on 13.09B shares; the binary "close above IPO price" market sits at 94%, consistent with this CDF |
-| Hyperliquid `xyz:ANT` pre-IPO perp | $97.42 mark, $131M open interest | Quoted as one Class A share in USD; converts to the live ANT price after listing. Realized daily vol 2.6% over the last ten sessions |
+| Hyperliquid `xyz:ANT` pre-IPO perp | $96.28 mark, $155M open interest | Quoted as one Class A share in USD; converts to the live ANT price after listing. Realized daily vol 2.6% over the last ten sessions |
 | 17 comparables, paired bootstrap | 1.25x the IPO price (~$102) | SpaceX, Rivian, Arm, Alibaba, Klarna, Cerebras carry the most weight; no single deal may exceed 20% |
-| Mixture (submitted) | median $100.11 · p10 $78 · p90 $137 |  |
+| Mixture (submitted) | median $99.75 · p10 $78 · p90 $137 |  |
 
 ## Data and provenance
 
